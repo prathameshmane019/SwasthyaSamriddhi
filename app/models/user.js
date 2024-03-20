@@ -1,9 +1,6 @@
-import mongoose from 'mongoose';
+import { Schema, model, mongoose } from 'mongoose';
 
-const { Schema, model } = mongoose;
-
-const patientSchema = new Schema({
-  
+const userSchema = new Schema({
   fullname: {
     firstName: String,
     middleName: String,
@@ -50,6 +47,9 @@ const patientSchema = new Schema({
   }
 }, { timestamps: true });
 
-const Patient = mongoose.models.Patient || model('Patient', patientSchema);
 
-export default Patient;
+
+
+const User = mongoose.models.User || model('User', userSchema);
+
+export default User;
