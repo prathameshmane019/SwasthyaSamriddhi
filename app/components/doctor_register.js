@@ -1,10 +1,9 @@
-"use client"
-
+'use client'
 import React, { useState } from "react";
-import { Input, Button, Select, SelectItem } from "@nextui-org/react";
-import axios from "axios";
+import { Input, Button } from "@nextui-org/react";
+import axios from 'axios';
 
-export default function RegisterComponent() {
+export default function DoctorRegistrationForm() {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
@@ -14,26 +13,29 @@ export default function RegisterComponent() {
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [mobile, setMobile] = useState("");
-  const [bloodGroup, setBloodGroup] = useState("");
+  const [degree, setDegree] = useState("");
+  const [specialization, setSpecialization] = useState("");
+  const [licenseNumber, setLicenseNumber] = useState("");
+  const [hospitalName, setHospitalName] = useState("");
   const [building, setBuilding] = useState("");
   const [city, setCity] = useState("");
   const [taluka, setTaluka] = useState("");
   const [district, setDistrict] = useState("");
   const [state, setState] = useState("");
   const [pincode, setPincode] = useState("");
-  const [allergies, setAllergies] = useState("");
-  const [medicationName, setMedicationName] = useState("");
-  const [medicationFrequency, setMedicationFrequency] = useState("");
+  const [hospitalContactNo, setHospitalContactNo] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleCancel = () => {
+
+  }
   const handleSelectionChange = (event) => {
     setGender(event.target.value);
   };
-  const handleCancel =()=>{
 
-  }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password == confirmPassword) {
+    if (password === confirmPassword) {
       const formData = {
         fullname: {
           firstName,
@@ -45,32 +47,37 @@ export default function RegisterComponent() {
         dob,
         gender,
         mobile,
-        bloodGroup,
-        address: {
-          building,
-          city,
-          taluka,
-          district,
-          state,
-          pincode
-        },
-        allergies,
-        medication: {
-          name: medicationName,
-          frequency: medicationFrequency
-        },
-
-        password
+        degree,
+        specialization,
+        licenseNumber,
+        hospitalDetails: {
+          hospitalName,
+          hospitalAddress: {
+            building,
+            city,
+            taluka,
+            district,
+            state,
+            pincode: parseInt(pincode) // Parse pincode to an integer
+          },
+          hospitalContactNo
+        }
       };
       console.log("Form Data:", formData);
-      const result = await axios.post("/api/register/user", formData);
-      // Perform further processing such as API call to register the user
-    };
-  }
+      try {
+        const result = await axios.post("/api/register/doctor", formData);
+        console.log(result);
+      } catch (error) {
+        console.error("Error registering doctor:", error);
+      }
+    } else {
+      console.error("Passwords do not match");
+    }
+  };
   return (
-    <div className="flex justify-center items-center  bg-gray-100">
+    <div className="flex justify-center items-center bg-gray-100">
       <form onSubmit={handleSubmit} className="w-full max-w-6xl bg-white shadow-md rounded-lg p-8">
-        <h2 className="text-3xl font-bold mb-6 text-center">Register</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center">Doctor Registration</h2>
         <div className="grid grid-cols-6 gap-6">
           <div className="col-span-2">
             <Input
@@ -104,11 +111,11 @@ export default function RegisterComponent() {
           </div>
           <div className="col-span-2">
             <Input
-              type="tel"
+              type="text"
               variant="bordered"
-              label="Mobile"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
+              label="Aadhar Card Number"
+              value={adharCard}
+              onChange={(e) => setAdharCard(e.target.value)}
               className="mb-4"
             />
           </div>
@@ -124,16 +131,6 @@ export default function RegisterComponent() {
           </div>
           <div className="col-span-2">
             <Input
-              type="text"
-              variant="bordered"
-              label="Adhar No."
-              value={adharCard}
-              onChange={(e) => setAdharCard(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-2">
-            <Input
               type="date"
               variant="bordered"
               label="Date of Birth"
@@ -142,7 +139,6 @@ export default function RegisterComponent() {
               className="mb-4"
             />
           </div>
-
           <div className="col-span-2">
             <select
               id="gender"
@@ -155,6 +151,57 @@ export default function RegisterComponent() {
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
+          </div>
+          <div className="col-span-2">
+            <Input
+              type="text"
+              variant="bordered"
+              label="Mobile"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              className="mb-4"
+            />
+          </div>
+          <div className="col-span-2">
+            <Input
+              type="text"
+              variant="bordered"
+              label="Degree"
+              value={degree}
+              onChange={(e) => setDegree(e.target.value)}
+              className="mb-4"
+            />
+          </div>
+          <div className="col-span-2">
+            <Input
+              type="text"
+              variant="bordered"
+              label="Specialization"
+              value={specialization}
+              onChange={(e) => setSpecialization
+                (e.target.value)}
+              className="mb-4"
+            />
+          </div>
+          <div className="col-span-2">
+            <Input
+              type="text"
+              variant="bordered"
+              label="License Number"
+              value={licenseNumber}
+              onChange={(e) => setLicenseNumber(e.target.value)}
+              className="mb-4"
+            />
+          </div>
+          <div className="col-span-3">
+            <Input
+              type="text"
+              variant="bordered"
+              label="Hospital Name"
+              value={hospitalName}
+              onChange={(e) => setHospitalName(e.target.value)}
+              className="mb-4"
+            />
           </div>
           <div className="col-span-2">
             <Input
@@ -220,39 +267,9 @@ export default function RegisterComponent() {
             <Input
               type="text"
               variant="bordered"
-              label="Blood Group"
-              value={bloodGroup}
-              onChange={(e) => setBloodGroup(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-2">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Allergies"
-              value={allergies}
-              onChange={(e) => setAllergies(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-2">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Medication Name"
-              value={medicationName}
-              onChange={(e) => setMedicationName(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-2">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Medication Frequency"
-              value={medicationFrequency}
-              onChange={(e) => setMedicationFrequency(e.target.value)}
+              label="Hospital Contact Number"
+              value={hospitalContactNo}
+              onChange={(e) => setHospitalContactNo(e.target.value)}
               className="mb-4"
             />
           </div>
@@ -276,10 +293,14 @@ export default function RegisterComponent() {
               className="mb-4"
             />
           </div>
-          <div className="col-span-3"><Button color="default" className="w-full" onClick={handleCancel}>Cancel</Button></div>
-          <div className="col-span-3"><Button color="primary" className="w-full" type="submit">  Register</Button></div>
+        
+        <div className="col-span-3"><Button color="default" className="w-full" onClick={handleCancel}>Cancel</Button></div>
+
+        <div className="col-span-3"><Button color="primary" className="w-full" type="submit">  Register
+        </Button></div>
+
         </div>
       </form>
     </div>
   );
-}  
+}
