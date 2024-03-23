@@ -1,6 +1,10 @@
 import { Schema, model, mongoose } from 'mongoose';
 
 const userSchema = new Schema({
+  userId: {
+    type: String,
+    required:true
+  },
   fullname: {
     firstName: String,
     middleName: String,
@@ -26,7 +30,10 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
- 
+  password: {
+    type: String,
+    required: true
+  },
   bloodGroup: {
     type: String,
     required: true

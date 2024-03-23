@@ -1,9 +1,13 @@
 'use client'
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import axios from 'axios';
+import Link from "next/link";
 
 export default function DoctorRegistrationForm() {
+  const router = useRouter();
+
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
@@ -67,6 +71,7 @@ export default function DoctorRegistrationForm() {
       try {
         const result = await axios.post("/api/register/doctor", formData);
         console.log(result);
+        router.push("/login");
       } catch (error) {
         console.error("Error registering doctor:", error);
       }
@@ -300,6 +305,9 @@ export default function DoctorRegistrationForm() {
         </Button></div>
 
         </div>
+        <div className="mt-2 ">
+            <p className="text-sm text-center">Already have an account? <Link href="/login" className="text-blue-500">Login</Link></p>
+          </div>
       </form>
     </div>
   );

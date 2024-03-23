@@ -1,10 +1,12 @@
 "use client"
 
 import React, { useState } from "react";
-import { Input, Button, Select, SelectItem } from "@nextui-org/react";
+import Link from "next/link";
+import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
 
 export default function RegisterComponent() {
+  const [userId, setUserId] = useState("U032400001");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
@@ -28,13 +30,14 @@ export default function RegisterComponent() {
   const handleSelectionChange = (event) => {
     setGender(event.target.value);
   };
-  const handleCancel =()=>{
+  const handleCancel = () => {
 
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password == confirmPassword) {
       const formData = {
+        userId,
         fullname: {
           firstName,
           middleName,
@@ -63,8 +66,12 @@ export default function RegisterComponent() {
         password
       };
       console.log("Form Data:", formData);
-      const result = await axios.post("/api/register/user", formData);
-      // Perform further processing such as API call to register the user
+      try {
+        const result = await axios.post("/api/register/user", formData);
+        console.log(result);
+      } catch (error) {
+        console.log("User Registration failed");
+      }
     };
   }
   return (
@@ -278,7 +285,10 @@ export default function RegisterComponent() {
           </div>
           <div className="col-span-3"><Button color="default" className="w-full" onClick={handleCancel}>Cancel</Button></div>
           <div className="col-span-3"><Button color="primary" className="w-full" type="submit">  Register</Button></div>
-        </div>
+           </div>
+           <div className="mt-2 ">
+            <p className="text-sm text-center">Already have an account? <Link href="/login" className="text-blue-500">Login</Link></p>
+          </div>
       </form>
     </div>
   );

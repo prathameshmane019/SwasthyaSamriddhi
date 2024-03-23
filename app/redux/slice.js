@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,current } from "@reduxjs/toolkit";
 
 export const userSlice = createSlice({
   name: "user",
@@ -8,17 +8,18 @@ export const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.user = action.payload;
+      let userData = JSON.stringify(state.user);
+      localStorage.setItem("user",userData);
     },
     logout: (state) => {
       state.user = null;
+      localStorage.removeItem("user");
     },
-    setUserFromLocalStorage: (state, action) => {
-      state.user = action.payload;
-    },
+    
   },
 });
 
-export const { login, logout, setUserFromLocalStorage } = userSlice.actions;
+export const { login, logout } = userSlice.actions;
 
 // Asynchronous action creator to load user data from local storage
 export const loadUserFromLocalStorage = () => (dispatch) => {
@@ -45,7 +46,6 @@ export const saveUserToLocalStorage = (user) => (dispatch) => {
   }
 };
 
-// Asynchronous action creator to clear user data from local storage
 export const clearUserFromLocalStorage = () => (dispatch) => {
   if (typeof window !== "undefined") { // Check if running in the client-side environment
     try {
