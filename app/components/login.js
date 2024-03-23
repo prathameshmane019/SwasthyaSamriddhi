@@ -1,35 +1,64 @@
 'use client'
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { Input, Button } from "@nextui-org/react";
-import { signIn } from "next-auth/react";
-export default function LoginComponent() {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const [userId, setUserId] = React.useState("");
-  const [password, setPassword] = React.useState("");
-
+import { signIn,useSession } from "next-auth/react";
+import { useSelector, useDispatch } from 'react-redux';
+import { login, logout } from './../redux/slice';
+// import Doctor from "../models/doctor";
+import User from "../models/user";
+import { useRouter } from "next/navigation";
+export default  function LoginComponent () {
+  const router = useRouter();
+  const [isVisible, setIsVisible] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+const [user,setUser]= useState({});
   const toggleVisibility = () => setIsVisible(!isVisible);
-
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    const result = await signIn('credentials',{
-      userId,
-      password,
-      redirect: false,
-    });
-    console.log(result);
+  const dispatch = useDispatch();
+  const { data: session } = useSession(); 
 
 
-    if(result!='undefined'){
-      console.log("logged in successfull");
+  // const user = useSelector((state) => state.user.user); // Get the user from Redux state
+  useEffect(() => {
+   
+    if (user) {
+      dispatch(login(user)); 
+      // Dispatch action to store user in Redux state
+    } else {
+      dispatch(logout()); // Dispatch action to clear user from Redux state
     }
-    console.log("UserId:", userId);
-    console.log("Password:", password);
+    if(session?.user?.role=="user"){
+      router.replace("/user")
+    }
+    if(session?.user?.role=="doctor"){
+      router.replace("/doctor")
+    }
+  }, [session, dispatch]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await signIn('credentials', {
+        userId,
+        password,
+        redirect: false,
+      });
+      if (result.ok) {
+        const userData = await User.findOne({userId:userId})
+        setUser(userData);
+        console.log("Login Successfull");
+      }
+    } catch (error) {
+      console.log("Failed to login", error);
+    }
+
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen ">
       <form onSubmit={handleSubmit}>
-        <div className="w-96 p-8 bg-white rounded-lg shadow-lg text-center">
+        <div className="w-100 p-9 bg-white rounded-lg shadow-lg text-center">
           <h2 className="text-2xl font-bold mb-4">Login</h2>
           <Input
             type="text"
@@ -66,7 +95,9 @@ export default function LoginComponent() {
           <Button color="primary" className="w-full" type="submit">
             Login
           </Button>
-        </div>
+          <div className="mt-2">
+            <p className="text-sm">Don't have an account? <Link href="/register" className="text-blue-500">Register</Link></p>
+          </div> </div>
       </form>
     </div>
   );
