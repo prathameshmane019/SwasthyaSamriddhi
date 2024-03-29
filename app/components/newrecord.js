@@ -27,7 +27,7 @@ export default function RegisterHealthRecordComponent() {
     };
 
     try {
-      const result = await axios.post("/api/register/healthrecord", formData);
+      const result = await axios.post("/api/records/newrecord", formData);
       console.log(result);
     } catch (error) {
       console.log("HealthRecord Registration failed");

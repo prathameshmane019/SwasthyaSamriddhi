@@ -5,8 +5,6 @@ import { Input, Button } from "@nextui-org/react";
 import { signIn,useSession } from "next-auth/react";
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout } from './../redux/slice';
-// import Doctor from "../models/doctor";
-import User from "../models/user";
 import { useRouter } from "next/navigation";
 export default  function LoginComponent () {
   const router = useRouter();
@@ -24,7 +22,6 @@ const [user,setUser]= useState({});
    
     if (user) {
       dispatch(login(user)); 
-      // Dispatch action to store user in Redux state
     } else {
       dispatch(logout()); // Dispatch action to clear user from Redux state
     }
