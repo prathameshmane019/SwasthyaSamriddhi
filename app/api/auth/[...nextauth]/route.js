@@ -1,9 +1,8 @@
-
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectMongoDB } from '../../../libs/connectDb';
 import User from '../../../models/user'
-// import Doctor from '@/app/models/doctor';
+import Doctor from '@/app/models/doctor';
 export const authOptions = ({
   providers: [
     CredentialsProvider({
@@ -15,24 +14,27 @@ export const authOptions = ({
 
           const Id = credentials.userId;
           const password = credentials.password;
+          console.log(credentials);
           let userRole;
           let id;
           const user = await User.findOne({ userId: Id });
-          // const doctor = await Doctor.findOne({ doctorId: Id });
+          const doctor = await Doctor.findOne({ doctorId: Id });
           if (user) {
+            console.log(user);
             userRole="user";
             id= user.userId;
           }
-          // if(doctor){
-          //   userRole ="doctor";
-          //   id = doctor.doctorId;
-          // }
-          const isVerified = user.password == password;
+          if(doctor){
+            console.log(doctor);
+            userRole ="doctor";
+            id = doctor.doctorId;
+          }
+          const isVerified = (user.password == password) || (doctor.password == password);
 
           console.log(isVerified);
-          console.log(user);
+          console.log(user || doctor);
 
-          if (!user) {
+          if (!user && !doctor) {
             return null;
           }
           if (isVerified) {

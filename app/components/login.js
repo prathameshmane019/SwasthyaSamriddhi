@@ -22,7 +22,6 @@ const [user,setUser]= useState({});
    
     if (user) {
       dispatch(login(user)); 
-      // Dispatch action to store user in Redux state
     } else {
       dispatch(logout()); // Dispatch action to clear user from Redux state
     }

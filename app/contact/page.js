@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { Input, Textarea, Button } from '@nextui-org/react';
 import { CheckCircleIcon } from '@heroicons/react/solid';
+import axios from 'axios';
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
@@ -13,11 +13,10 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Your form submission logic here
-    // For demonstration purposes, let's just show a success message
     setShowSuccessMessage(true);
-    // Clear form data
     setFormData({ name: '', email: '', message: '' });
+    console.log(formData);
+    axios.post("/api/nodemailer",formData)
   };
 
   return (
