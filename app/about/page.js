@@ -1,11 +1,8 @@
-// pages/about.js
-
 import React from 'react';
 
 const About = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
-      {/* Header Section */}
       <div className="py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -15,7 +12,6 @@ const About = () => {
         </div>
       </div>
 
-      {/* Mission, Vision, and Values Section */}
       <div className="bg-white py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -38,7 +34,6 @@ const About = () => {
         </div>
       </div>
 
-      {/* Illustration Section 1 */}
       <div className="bg-gray-800 py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-8">Visualizing Our Mission</h2>

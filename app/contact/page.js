@@ -1,11 +1,7 @@
-// pages/contact.js
 "use client"
-// pages/contact.js
-
 import { useState } from 'react';
 import { Input, Textarea, Button } from '@nextui-org/react';
-import { CheckCircleIcon } from '@heroicons/react/solid'; // Import the CheckCircleIcon
-
+import { CheckCircleIcon } from '@heroicons/react/solid';
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);

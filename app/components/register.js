@@ -1,9 +1,9 @@
 "use client"
-
 import React, { useState } from "react";
 import Link from "next/link";
 import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function RegisterComponent() {
   const [userId, setUserId] = useState("U032400001");
@@ -27,6 +27,8 @@ export default function RegisterComponent() {
   const [medicationName, setMedicationName] = useState("");
   const [medicationFrequency, setMedicationFrequency] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const router = useRouter()
   const handleSelectionChange = (event) => {
     setGender(event.target.value);
   };
@@ -69,6 +71,7 @@ export default function RegisterComponent() {
       try {
         const result = await axios.post("/api/register/user", formData);
         console.log(result);
+        router.back()
       } catch (error) {
         console.log("User Registration failed");
       }
