@@ -71,7 +71,10 @@ export default function RegisterComponent() {
       try {
         const result = await axios.post("/api/register/user", formData);
         console.log(result);
-        router.back()
+        if(result.status=="200"){
+          router.back()
+        }
+        
       } catch (error) {
         console.log("User Registration failed");
       }

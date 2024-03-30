@@ -1,8 +1,9 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectMongoDB } from '../../../libs/connectDb';
-import User from '../../../models/user'
+import User from '../../../models/user';
 import Doctor from '@/app/models/doctor';
+
 export const authOptions = ({
   providers: [
     CredentialsProvider({
@@ -11,81 +12,80 @@ export const authOptions = ({
       async authorize(credentials) {
         try {
           await connectMongoDB();
-
+      
           const Id = credentials.userId;
           const password = credentials.password;
-          console.log(credentials);
           let userRole;
           let id;
-          const user = await User.findOne({ userId: Id });
-          const doctor = await Doctor.findOne({ doctorId: Id });
+      
+          // Find user by _id
+          const user = await User.findOne({ _id: Id });
+          // Find doctor by _id
+          const doctor = await Doctor.findOne({ _id: Id });
+          
           if (user) {
-            console.log(user);
-            userRole="user";
-            id= user.userId;
-          }
-          if(doctor){
-            console.log(doctor);
-            userRole ="doctor";
-            id = doctor.doctorId;
-          }
-          const isVerified = (user.password == password) || (doctor.password == password);
-
-          console.log(isVerified);
-          console.log(user || doctor);
-
-          if (!user && !doctor) {
+            userRole = "user";
+            id = user._id;
+          } else if (doctor) {
+            userRole = "doctor";
+            id = doctor._id;
+          } else {
+            // Neither user nor doctor found
             return null;
           }
+      
+          // Check if user or doctor password matches
+          const isVerified = (user && user.password === password) || (doctor && doctor.password === password);
+      
           if (isVerified) {
             const userWithRole = {
-              ...user.toObject(),
+              ...user?.toObject(), // Optional chaining to prevent errors if user is null
+              ...doctor?.toObject(), // Optional chaining to prevent errors if doctor is null
               role: userRole,
-              Id :id
+              id: id
             };
-
             return Promise.resolve(userWithRole);
-
           } else {
-
+            return null; // Return null if credentials are invalid
           }
         } catch (error) {
           console.error('Error during authorization:', error);
           return null;
         }
-      },
+      }
+      
+      ,
     }),
   ],
   session: {
     sessionCallback: async (session, user) => {
-      session.user = { ...user, role: user.role ,id:user.Id};
+      session.user = { ...user, role: user.role, id: user.id }; // Add id to the session
       return Promise.resolve(session);
     },
   },
   callbacks: {
     async jwt({ token, account, user }) {
-      // Persist the OAuth access_token and or the user id to the token right after signin
       if (account) {
-        token.accessToken = account.access_token
-        token.role = user.role
-        token.id = user.id
+        token.accessToken = account.access_token;
+        token.role = user.role;
+        token.id = user.id; // Add id to the token
       }
-      return token
+      return token;
     },
     async session({ session, token }) {
       // Send properties to the client, like an access_token and user id from a provider.
-      session.user.accessToken = token.accessToken
-      session.user.role = token.role
-      session.user.id = token.id
+      session.user.accessToken = token.accessToken;
+      session.user.role = token.role;
+      session.user.id = token.id; // Add id to the session
 
-      return session
+      return session;
     }
   },
   secret: process.env.NEXTAUTH_SECRET, // Your secret should be set in your environment variables
   pages: {
     signIn: "/", // Customize the sign-in page route as needed
   },
-})
+});
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

@@ -1,9 +1,13 @@
+import { connectMongoDB } from '@/app/libs/connectDb';
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-
+import Message from '@/app/models/contacts';
 export async function POST(req) {
     const data = await req.json();
 console.log(data);
+await connectMongoDB();
+const newMessage = new Message(data)
+await newMessage.save()
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
