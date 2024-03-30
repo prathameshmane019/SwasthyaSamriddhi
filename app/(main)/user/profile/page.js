@@ -1,5 +1,5 @@
+"use client"
 import { useState } from 'react';
-
 export default function UserDashboard() {
     const [activeTab, setActiveTab] = useState('profile');
 
@@ -48,10 +48,7 @@ export default function UserDashboard() {
 
     return (
         <div className="dashboard-container">
-            <div className="sidebar">
-                <button onClick={() => setActiveTab('profile')}>Profile</button>
-                <button onClick={() => setActiveTab('healthRecord')}>Health Record</button>
-            </div>
+            
             <div className="content">
                 {activeTab === 'profile' && (
                     <div>

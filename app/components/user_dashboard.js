@@ -5,7 +5,7 @@ const UserSidebar = () => {
             <div className="p-4">
                 <h2 className="text-xl font-semibold">Doctor Dashboard</h2>
                 <div className="text-white text-start ml-3">
-                    <Link href="/doctor/profile" className="">
+                    <Link href="/user/profile" className="">
                         Profile
                     </Link></div>
                
