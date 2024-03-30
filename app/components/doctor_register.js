@@ -41,6 +41,7 @@ export default function DoctorRegistrationForm() {
     e.preventDefault();
     if (password === confirmPassword) {
       const formData = {
+        password,
         fullname: {
           firstName,
           middleName,
@@ -71,7 +72,9 @@ export default function DoctorRegistrationForm() {
       try {
         const result = await axios.post("/api/register/doctor", formData);
         console.log(result);
+        if(result.status=='200'){
         router.push("/login");
+        }
       } catch (error) {
         console.error("Error registering doctor:", error);
       }

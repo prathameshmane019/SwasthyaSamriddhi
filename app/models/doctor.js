@@ -1,30 +1,20 @@
 import mongoose from 'mongoose';
+import moment from 'moment';
 
 const { Schema, model } = mongoose;
 
-// Define the hospital details schema
-const hospitalDetailsSchema = new Schema({
-  hospitalName: {
-    type: String,
-    required: true
-  },
-  hospitalAddress: {
-    building: String,
-    city: String,
-    taluka: String,
-    district: String,
-    state: String,
-    pincode: Number
-  },
-  hospitalContactNo: String,
-}, { _id: false });
+// Define a separate counter schema
+const counterSchema = new Schema({
+  _id: { type: String, required: true },
+  sequence_value: { type: Number, default: 0 }
+});
 
-// Define the doctor schema with embedded hospital details
+// Create a model for the counter
+const Counter = mongoose.models.Counter || mongoose.model('Counter', counterSchema);
+
+// Define the doctor schema
 const doctorSchema = new Schema({
-  doctorId: {
-    type: String,
-    unique: true,
-  },
+  _id: { type: String }, // Define _id field explicitly
   fullname: {
     firstName: String,
     middleName: String,
@@ -42,6 +32,9 @@ const doctorSchema = new Schema({
   dob: {
     type: Date,
     required: true
+  },
+  password:{
+    type:String
   },
   mobile: {
     type: String,
@@ -63,10 +56,44 @@ const doctorSchema = new Schema({
     type: String,
     required: true
   },
-  hospitalDetails: hospitalDetailsSchema
+  hospitalDetails: {
+    hospitalName: {
+      type: String,
+      required: true
+    },
+    hospitalAddress: {
+      building: String,
+      city: String,
+      taluka: String,
+      district: String,
+      state: String,
+      pincode: Number
+    },
+    hospitalContactNo: String,
+  },
 }, { timestamps: true });
 
-// Check if the Doctor model is already registered with Mongoose
+// Pre-save middleware to generate doctorId
+doctorSchema.pre('save', async function(next) {
+  try {
+    if (!this.isNew) {
+      return next();
+    }
+    const counter = await Counter.findOneAndUpdate(
+      { _id: 'doctorId' },
+      { $inc: { sequence_value: 1 } },
+      { upsert: true, new: true }
+    );
+    const prefix = 'D'; // Prefix for doctor role
+    const currentDate = moment().format('DDMMYY'); // Current date in DDMMYY format
+    const paddedSequence = String(counter.sequence_value).padStart(6, '0'); // Pad sequence value with leading zeros
+    this._id = `${prefix}${currentDate}${paddedSequence}`; // Assign doctorId to _id
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 const Doctor = mongoose.models.Doctor || model('Doctor', doctorSchema);
 
 export default Doctor;

@@ -11,12 +11,12 @@ const Contact = () => {
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     setShowSuccessMessage(true);
     setFormData({ name: '', email: '', message: '' });
     console.log(formData);
-    axios.post("/api/nodemailer",formData)
+    const result = await axios.post("/api/nodemailer",formData);
   };
 
   return (

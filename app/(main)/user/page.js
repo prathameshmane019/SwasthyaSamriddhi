@@ -1,11 +1,12 @@
 "use client"
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import {  signOut } from 'next-auth/react';// Import your HealthRecordCard component
+import { useRouter } from 'next/navigation'; // Import useRouter from 'next/router' instead of 'next/navigation'
+import { signOut, useSession } from 'next-auth/react'; // Import useSession hook
 
-const UserPage = ({ user }) => {
+const UserPage = () => {
   const router = useRouter();
   const [healthRecords, setHealthRecords] = useState([]);
+  const { data: session } = useSession(); // Use useSession hook to get session data
 
   // Function to fetch user's health records (dummy implementation)
   const fetchHealthRecords = async () => {
@@ -33,6 +34,14 @@ const UserPage = ({ user }) => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-4">Your Health Records</h1>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {/* Display user information if session exists */}
+        {session && (
+          <div>
+            <p>Name: {session.user.id}</p>
+            <p>Email: {session.user.email}</p>
+            <p>Email: {session.user.role}</p>
+          </div>
+        )}
       </div>
       <div className="mt-8">
         <button
