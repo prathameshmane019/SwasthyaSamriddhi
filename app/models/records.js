@@ -1,14 +1,7 @@
-// models/HealthRecord.js
 
 import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 const healthRecordSchema = new mongoose.Schema({
-   
- 
-    visitDate: {
-        type: Date,
-        required: [true, "Please provide Visit Date"]
-    },
     diagnosis: {
         type: String,
         required: [true, "Please provide Diagnosis"]
@@ -24,6 +17,14 @@ const healthRecordSchema = new mongoose.Schema({
     notes: {
         type: String,
         required: [true, "Please provide Notes"]
+    },
+    patientId:{
+        type:String,
+        required:true
+    },
+    doctorId:{
+        type:String,
+        required:true
     }
 }, {
     timestamps: true
@@ -36,5 +37,4 @@ try {
 } catch (error) {
     HealthRecord = mongoose.model('HealthRecord', healthRecordSchema);
 }
-
 export default HealthRecord;

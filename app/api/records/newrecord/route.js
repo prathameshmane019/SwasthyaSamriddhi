@@ -4,16 +4,13 @@ import { connectMongoDB } from "../../../libs/connectDb";
 
 export async function POST(req) {
     connectMongoDB();
-    console.log("Trying");
-    const doctorData = await req.json();
-
+    const recordData = await req.json();
     try {
-        const record = new HealthRecord(doctorData);
+        const record = new HealthRecord(recordData);
         console.log(record);
         await record.save();
         console.log(record);
     } catch (error) {
-        // Handle any errors
         console.error("Error:", error);
         return NextResponse.error("Failed to add record", 500); // Return an error response
     }
