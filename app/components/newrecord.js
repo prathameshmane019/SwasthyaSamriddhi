@@ -1,11 +1,10 @@
 "use client"
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
-import { useSearchParams } from 'next/navigation';
 import { useSession, getSession } from 'next-auth/react';
 
-export default function RegisterHealthRecordComponent() {
+export default function RegisterHealthRecordComponent({searchParams}) {
   const [formData, setFormData] = useState({
     diagnosis: "",
     prescription: "",
@@ -14,7 +13,6 @@ export default function RegisterHealthRecordComponent() {
   });
   const [patientId, setPatientId] = useState("");
   const [doctorId, setDoctorId] = useState("");
-  const searchParams = useSearchParams();
   const { data: session, status } = useSession(); // Using useSession hook
 
   useEffect(() => {
@@ -29,7 +27,7 @@ export default function RegisterHealthRecordComponent() {
   }, []);
 
   useEffect(() => {
-    setPatientId(searchParams.get('id'));
+    setPatientId(searchParams.id);
   }, [searchParams]);
 
   const handleSubmit = async (e) => {
@@ -68,7 +66,7 @@ export default function RegisterHealthRecordComponent() {
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+  
       <div className="flex justify-center items-center bg-gray-100 min-h-screen">
         <form onSubmit={handleSubmit} className="max-w-lg w-full p-8 bg-white rounded-lg shadow-md">
           <h2 className="text-3xl font-bold mb-6 text-center">Register Health Record</h2>
@@ -108,6 +106,5 @@ export default function RegisterHealthRecordComponent() {
           </div>
         </form>
       </div>
-    </Suspense>
   );
 }
