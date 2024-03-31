@@ -1,5 +1,4 @@
 "use client"
-// Import necessary modules
 import React, { useState,useEffect } from 'react';
 import Link from 'next/link';
 import { Input, Button } from '@nextui-org/react';
@@ -114,7 +113,7 @@ export default function LoginComponent() {
           </div>
           <div className="mt-2">
             <p className="text-sm">
-              Don't have an account?{' '}
+              Don&apos;'t have an account?{' '}
               <Link href="/register" className="text-blue-500">
                 Register
               </Link>
