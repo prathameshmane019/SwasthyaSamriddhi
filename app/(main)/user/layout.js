@@ -1,10 +1,10 @@
 
 import UserSidebar from "@/app/components/user_dashboard";
 
-export default function DoctorLayout({ children }) {
+export default function UserLayout({ children }) {
     return (    
         <div className="flex "><UserSidebar/>
-        <div className="w-full h-full m-3">
+        <div className="w-full h-full ">
             {children}
         </div>
        </div>

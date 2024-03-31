@@ -1,127 +1,104 @@
 "use client"
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
+import { useSearchParams } from 'next/navigation';
+import { getSession } from 'next-auth/react';
 
 export default function RegisterHealthRecordComponent() {
-  const [visitDate, setVisitDate] = useState("");
-  const [diagnosis, setDiagnosis] = useState("");
-  const [prescription, setPrescription] = useState("");
-  const [status, setStatus] = useState("");
-  const [notes, setNotes] = useState("");
+  const [formData, setFormData] = useState({
+    diagnosis: "",
+    prescription: "",
+    status: "",
+    notes: "",
+  });
   const [patientId, setPatientId] = useState("");
   const [doctorId, setDoctorId] = useState("");
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const fetchDoctorId = async () => {
+      const session = await getSession();
+      if (session) {
+        setDoctorId(session.user.id);
+      }
+    };
+
+    fetchDoctorId();
+  }, []);
+
+  useEffect(() => {
+    setPatientId(searchParams.get('id'));
+  }, [searchParams]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = {
-      visitDate,
-      diagnosis,
-      prescription,
-      status,
-      notes,
-      patientId,
-      doctorId,
-    };
-
     try {
-      const result = await axios.post("/api/records/newrecord", formData);
+      const result = await axios.post("/api/records/newrecord", {
+        ...formData,
+        patientId,
+        doctorId,
+      });
       console.log(result);
     } catch (error) {
       console.log("HealthRecord Registration failed");
     }
   };
 
+  const handleCancel = () => {
+    setFormData({
+      diagnosis: "",
+      prescription: "",
+      status: "",
+      notes: "",
+    });
+  };
+
+  const handleChange = (e, field) => {
+    setFormData({
+      ...formData,
+      [field]: e.target.value,
+    });
+  };
+
   return (
-    <div className="flex justify-center items-center  bg-gray-100">
-      <form onSubmit={handleSubmit} className="w-full max-w-6xl bg-white shadow-md rounded-lg p-8">
+    <div className="flex justify-center items-center bg-gray-100 min-h-screen">
+      <form onSubmit={handleSubmit} className="max-w-lg w-full p-8 bg-white rounded-lg shadow-md">
         <h2 className="text-3xl font-bold mb-6 text-center">Register Health Record</h2>
-        <div className="grid grid-cols-2 gap-6">
-          <div className="col-span-1">
-            <Input
-              type="date"
-              variant="bordered"
-              label="Visit Date"
-              value={visitDate}
-              onChange={(e) => setVisitDate(e.target.value)}
-              className="mb-4"
-            />
+        <div className="grid grid-cols-1 gap-6">
+          <Input
+            type="text"
+            variant="bordered"
+            label="Diagnosis"
+            value={formData.diagnosis}
+            onChange={(e) => handleChange(e, "diagnosis")}
+          />
+          <Input
+            type="text"
+            variant="bordered"
+            label="Prescription"
+            value={formData.prescription}
+            onChange={(e) => handleChange(e, "prescription")}
+          />
+          <Input
+            type="text"
+            variant="bordered"
+            label="Status"
+            value={formData.status}
+            onChange={(e) => handleChange(e, "status")}
+          />
+          <Input
+            type="text"
+            variant="bordered"
+            label="Notes"
+            value={formData.notes}
+            onChange={(e) => handleChange(e, "notes")}
+          />
+           <div className="flex justify-between">
+            <Button color="default"  onClick={handleCancel} className="w-1/2 m-2">Cancel</Button>
+            <Button color="primary" type="submit" className="w-1/2 m-2">Add Record</Button>
           </div>
-          <div className="col-span-1">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Diagnosis"
-              value={diagnosis}
-              onChange={(e) => setDiagnosis(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-1">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Prescription"
-              value={prescription}
-              onChange={(e) => setPrescription(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-1">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Status"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-2">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Notes"
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-1">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Patient ID"
-              value={patientId}
-              onChange={(e) => setPatientId(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-1">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Doctor ID"
-              value={doctorId}
-              onChange={(e) => setDoctorId(e.target.value)}
-              className="mb-4"
-            />
-          </div>
-          <div className="col-span-2">
-            <Button color="primary" className="w-full" type="submit">
-              Register Health Record
-            </Button>
-          </div>
-        </div>
-        <div className="mt-2 ">
-          <p className="text-sm text-center">
-            Already have an account?{" "}
-            <Link href="/login" className="text-blue-500">
-              Login
-            </Link>
-          </p>
         </div>
       </form>
     </div>
