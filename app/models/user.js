@@ -60,7 +60,14 @@ const userSchema = new Schema({
   medication: {
     name: String,
     frequency: String
-  }
+  },
+  
+    record: {
+      id: String
+      
+    }
+  
+  
 }, { timestamps: true });
 
 // Pre-save middleware to generate userId
