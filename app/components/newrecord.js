@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
-import { useSession, getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
-export default function RegisterHealthRecordComponent({searchParams}) {
+export const dynamic = 'auto';
+export default function RegisterHealthRecordComponent({search}) {
   const [formData, setFormData] = useState({
     diagnosis: "",
     prescription: "",
@@ -17,7 +18,6 @@ export default function RegisterHealthRecordComponent({searchParams}) {
 
   useEffect(() => {
     const fetchDoctorId = async () => {
-      const session = await getSession();
       if (session) {
         setDoctorId(session.user.id);
       }
@@ -27,8 +27,8 @@ export default function RegisterHealthRecordComponent({searchParams}) {
   }, []);
 
   useEffect(() => {
-    setPatientId(searchParams.id);
-  }, [searchParams]);
+    setPatientId(search.id);
+  }, [search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

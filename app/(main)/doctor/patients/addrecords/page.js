@@ -4,7 +4,7 @@ import React from 'react'
 const page = ({searchParams}) => {
   return (
     <div>
-      <RegisterHealthRecordComponent searchParams={searchParams}></RegisterHealthRecordComponent>
+      <RegisterHealthRecordComponent search={searchParams}></RegisterHealthRecordComponent>
     </div>
   )
 }

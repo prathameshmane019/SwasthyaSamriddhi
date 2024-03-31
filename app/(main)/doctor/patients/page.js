@@ -22,11 +22,11 @@ import { useRouter } from 'next/navigation';
   };
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`/api/finduser?id=${id}`);
+      const response = await axios.post("/api/finduser",{id});
       const userData = response.data;
       setUserData(userData);
       setError(null);
-      const generatedOtp = generateOTP(); // Generate OTP
+      const generatedOtp = generateOTP();
       setOtp(generatedOtp);
       setOtpSent(true);
     } catch (error) {
@@ -36,6 +36,7 @@ import { useRouter } from 'next/navigation';
   };
   const sendOTP = async () => {
     try {
+      console.log(otp);
       await axios.post('/api/sendotp', { email: userData.email, otp });
       setOtpError(null);
     } catch (error) {
