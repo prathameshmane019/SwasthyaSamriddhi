@@ -113,7 +113,7 @@ export default function LoginComponent() {
           </div>
           <div className="mt-2">
             <p className="text-sm">
-              Don&apos;'t have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/register" className="text-blue-500">
                 Register
               </Link>
