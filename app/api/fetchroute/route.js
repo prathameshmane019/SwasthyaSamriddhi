@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import HealthRecord from '../../../models/records';
-import { connectMongoDB } from "../../../libs/connectDb";
+import HealthRecord from '@/app/models/records';
+import { connectMongoDB } from '@/app/libs/connectDb';
 
 export async function POST(req) {
     const { userId } = req.json();

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect, Suspense } from "react";
 import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
