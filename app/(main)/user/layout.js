@@ -1,4 +1,3 @@
-
 import UserSidebar from "@/app/components/user_dashboard";
 
 export default function UserLayout({ children }) {

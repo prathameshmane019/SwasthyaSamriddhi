@@ -1,12 +1,6 @@
-
 import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 const healthRecordSchema = new mongoose.Schema({
-    userId: {
-        type: String,
-        ref: 'User',  // Reference to the User model
-        required: true
-      },
     diagnosis: {
         type: String,
         required: [true, "Please provide Diagnosis"]
@@ -25,7 +19,8 @@ const healthRecordSchema = new mongoose.Schema({
     },
     patientId:{
         type:String,
-        required:true
+        required:true,
+        ref: 'User',
     },
     doctorId:{
         type:String,

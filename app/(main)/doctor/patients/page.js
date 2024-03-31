@@ -2,22 +2,60 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-const SearchUser = () => {
+  const SearchUser = () => {
   const [id, setId] = useState("");
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
-
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [otpError, setOtpError] = useState(null);
+  const [enteredOTP, setEnteredOTP] = useState(""); // Define enteredOTP state
+  const router = useRouter();
+  const generateOTP = () => {
+    let otp = "";
+    for (let i = 0; i < 6; i++) {
+      otp += Math.floor(Math.random() * 10);
+    }
+    return otp;
+  };
   const handleSearch = async () => {
     try {
       const response = await axios.get(`/api/finduser?id=${id}`);
       const userData = response.data;
       setUserData(userData);
       setError(null);
+      const generatedOtp = generateOTP(); // Generate OTP
+      setOtp(generatedOtp);
+      setOtpSent(true);
     } catch (error) {
       setUserData(null);
       setError("User not found");
     }
+  };
+  const sendOTP = async () => {
+    try {
+      await axios.post('/api/sendotp', { email: userData.email, otp });
+      setOtpError(null);
+    } catch (error) {
+      setOtpError("Failed to send OTP");
+    }
+  };
+
+  const handleValidateOTP = () => {
+    if (otp === enteredOTP) {
+      setOtpError(null);
+      handleAddRecord(); 
+      } else {
+      setOtpError("Invalid OTP");
+    }
+  };
+  const handleAddRecord = () => {
+    router.push({
+      pathname: '/doctor/patients/addrecords',
+      query: { id }
+    });
   };
 
   return (
@@ -48,11 +86,26 @@ const SearchUser = () => {
                 id:id
               } }
                   }
-                      className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">View Health Record</Link>
+                className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">View Health Record</Link>
           </div>
         </div>
       )}
       {error && <p className="text-red-500 mt-4">{error}</p>}
+      {otpSent && (
+        <>
+          <input
+            type="text"
+            value={enteredOTP}
+            onChange={(e) => setEnteredOTP(e.target.value)}
+            placeholder="Enter OTP"
+            className="border p-2 mr-2"
+          />
+          <button onClick={handleValidateOTP} className="bg-blue-500 text-white px-4 py-2 rounded">
+            Validate OTP
+          </button>
+          {otpError && <p className="text-red-500 mt-4">{otpError}</p>}
+        </>
+      )}
     </div>
   );
 };
