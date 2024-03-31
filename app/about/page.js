@@ -7,7 +7,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-indigo-600 leading-tight mb-4">About Us</h1>
-            <p className="text-lg text-gray-600">Welcome to Swasthya Samrudhhi. Here's a brief overview of our project and what we aim to achieve.</p>
+            <p className="text-lg text-gray-600">Welcome to Swasthya Samrudhhi. Here&apos;s a brief overview of our project and what we aim to achieve.</p>
           </div>
         </div>
       </div>
@@ -62,17 +62,17 @@ const About = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Testimonial 1 */}
             <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
-              <p className="text-gray-700">"Swasthya Samrudhhi has transformed the way we approach healthcare. Their solutions are top-notch and user-friendly."</p>
+              <p className="text-gray-700">&quot;Swasthya Samrudhhi has transformed the way we approach healthcare. Their solutions are top-notch and user-friendly.&quot;</p>
               <p className="text-gray-900 font-semibold mt-4">- John Smith, CEO</p>
             </div>
             {/* Testimonial 2 */}
             <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
-              <p className="text-gray-700">"We've been using Swasthya Samrudhhi's services for years, and we couldn't be happier with the results. Highly recommended!"</p>
+              <p className="text-gray-700">&quot;We&apos;ve been using Swasthya Samrudhhi&apos;s services for years, and we couldn&apos;t be happier with the results. Highly recommended!&quot;</p>
               <p className="text-gray-900 font-semibold mt-4">- Jane Doe, COO</p>
             </div>
             {/* Testimonial 3 */}
             <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
-              <p className="text-gray-700">"The team at Swasthya Samrudhhi goes above and beyond to meet our needs. We're extremely satisfied with their dedication and expertise."</p>
+              <p className="text-gray-700">&quot;The team at Swasthya Samrudhhi goes above and beyond to meet our needs. We&apos;re extremely satisfied with their dedication and expertise.&quot;</p>
               <p className="text-gray-900 font-semibold mt-4">- Alice Johnson, CFO</p>
             </div>
           </div>
