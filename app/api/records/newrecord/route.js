@@ -15,7 +15,7 @@ export async function POST(req) {
         // Update the User record array with the new HealthRecord ID
         const user = await User.findById(recordData.userId);
         if (user) {
-            user.record = { id: record._id };  // Set the record ID
+            user.record = { id: record._id };  
             await user.save();
         } else {
             throw new Error('User not found');
@@ -26,6 +26,5 @@ export async function POST(req) {
         console.error("Error:", error);
         return NextResponse.error("Failed to add record", 500); // Return an error response
     }
-
     return NextResponse.json({ message: "record added successfully" }); // Return a success response
 }

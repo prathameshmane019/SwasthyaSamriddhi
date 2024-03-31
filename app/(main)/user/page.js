@@ -1,8 +1,5 @@
 import React from 'react';
-
-// UserProfilePage component
 const UserProfilePage = () => {
-    // Example user profile data
     const userProfile = {
         userId: "U032400001",
         password: "********",

@@ -1,18 +1,13 @@
-// pages/api/records/[userId].js
-
 import { NextResponse } from 'next/server';
 import HealthRecord from '../../../models/records';
 import { connectMongoDB } from "../../../libs/connectDb";
 
-export async function GET(req) {
-    const { userId } = req.query;
+export async function POST(req) {
+    const { userId } = req.json();
 
     try {
         connectMongoDB();
-
-        // Fetch health records for the specified user
-        const records = await HealthRecord.find({ userId });
-
+        const records = await HealthRecord.find({ patientId:userId });
         return NextResponse.json(records); // Return the records
     } catch (error) {
         console.error("Error:", error);

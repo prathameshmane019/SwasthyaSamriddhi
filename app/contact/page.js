@@ -27,6 +27,7 @@ const Contact = () => {
           <Input
             label="Name"
             name="name"
+            variant='bordered'
             value={formData.name}
             onChange={handleChange}
             className="mb-4"
@@ -36,6 +37,7 @@ const Contact = () => {
             label="Email"
             type="email"
             name="email"
+            variant='bordered'
             value={formData.email}
             onChange={handleChange}
             className="mb-4"
@@ -43,12 +45,13 @@ const Contact = () => {
           <Textarea
             label="Message"
             name="message"
+            variant='bordered'
             value={formData.message}
             onChange={handleChange}
             rows={4}
             className="mb-4"
           />
-          <div className="flex justify-center"> {/* Center the button */}
+          <div className="flex justify-center"> 
             <Button
               type="submit"
               className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition duration-300"
