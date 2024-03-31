@@ -1,10 +1,10 @@
 import { connectMongoDB } from "@/app/libs/connectDb";
 import { NextResponse } from "next/server";
 import User from "@/app/models/user";
-export async function GET(req) {
+export async function POST(req) {
     try {
       connectMongoDB();
-     const id = req.nextUrl.searchParams.get("id")
+      const {id}=req.json()
       if (!id) {
         return NextResponse.error({ status: 400, message: "ID parameter is missing" });
       }
