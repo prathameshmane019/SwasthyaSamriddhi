@@ -4,8 +4,8 @@ import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from 'next-auth/react';
 
-export const dynamic = 'auto';
-export default function RegisterHealthRecordComponent({search}) {
+
+export default function RegisterHealthRecordComponent({ search }) {
   const [formData, setFormData] = useState({
     diagnosis: "",
     prescription: "",
@@ -19,12 +19,19 @@ export default function RegisterHealthRecordComponent({search}) {
   useEffect(() => {
     const fetchDoctorId = async () => {
       if (session) {
-        setDoctorId(session.user.id);
+        console.log("Session:", session);
+        if (session.user && session.user.id) {
+          setDoctorId(session.user.id);
+        } else {
+          console.log("Doctor ID not found in session");
+        }
+      } else {
+        console.log("Session not available");
       }
     };
 
     fetchDoctorId();
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     setPatientId(search.id);
@@ -66,45 +73,44 @@ export default function RegisterHealthRecordComponent({search}) {
   }
 
   return (
-  
-      <div className="flex justify-center items-center bg-gray-100 min-h-screen">
-        <form onSubmit={handleSubmit} className="max-w-lg w-full p-8 bg-white rounded-lg shadow-md">
-          <h2 className="text-3xl font-bold mb-6 text-center">Register Health Record</h2>
-          <div className="grid grid-cols-1 gap-6">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Diagnosis"
-              value={formData.diagnosis}
-              onChange={(e) => handleChange(e, "diagnosis")}
-            />
-            <Input
-              type="text"
-              variant="bordered"
-              label="Prescription"
-              value={formData.prescription}
-              onChange={(e) => handleChange(e, "prescription")}
-            />
-            <Input
-              type="text"
-              variant="bordered"
-              label="Status"
-              value={formData.status}
-              onChange={(e) => handleChange(e, "status")}
-            />
-            <Input
-              type="text"
-              variant="bordered"
-              label="Notes"
-              value={formData.notes}
-              onChange={(e) => handleChange(e, "notes")}
-            />
-             <div className="flex justify-between">
-              <Button color="default"  onClick={handleCancel} className="w-1/2 m-2">Cancel</Button>
-              <Button color="primary" type="submit" className="w-1/2 m-2">Add Record</Button>
-            </div>
+    <div className="flex justify-center items-center bg-gray-100 min-h-screen">
+      <form onSubmit={handleSubmit} className="max-w-lg w-full p-8 bg-white rounded-lg shadow-md">
+        <h2 className="text-3xl font-bold mb-6 text-center">Register Health Record</h2>
+        <div className="grid grid-cols-1 gap-6">
+          <Input
+            type="text"
+            variant="bordered"
+            label="Diagnosis"
+            value={formData.diagnosis}
+            onChange={(e) => handleChange(e, "diagnosis")}
+          />
+          <Input
+            type="text"
+            variant="bordered"
+            label="Prescription"
+            value={formData.prescription}
+            onChange={(e) => handleChange(e, "prescription")}
+          />
+          <Input
+            type="text"
+            variant="bordered"
+            label="Status"
+            value={formData.status}
+            onChange={(e) => handleChange(e, "status")}
+          />
+          <Input
+            type="text"
+            variant="bordered"
+            label="Notes"
+            value={formData.notes}
+            onChange={(e) => handleChange(e, "notes")}
+          />
+           <div className="flex justify-between">
+            <Button color="default"  onClick={handleCancel} className="w-1/2 m-2">Cancel</Button>
+            <Button color="primary" type="submit" className="w-1/2 m-2">Add Record</Button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
+    </div>
   );
 }

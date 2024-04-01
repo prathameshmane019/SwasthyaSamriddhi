@@ -62,12 +62,10 @@ const userSchema = new Schema({
     frequency: String
   },
   
-    record: {
-      id: String
-      
-    }
-  
-  
+  records: {
+    type: [String],
+    default: []
+  }
 }, { timestamps: true });
 
 // Pre-save middleware to generate userId

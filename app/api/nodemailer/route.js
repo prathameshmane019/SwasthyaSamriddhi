@@ -9,7 +9,6 @@ export async function POST(req) {
 
         await connectMongoDB();
 
-        // Save message to database
         const newMessage = new Message(data);
         await newMessage.save();
 
@@ -74,7 +73,7 @@ export async function POST(req) {
                         </div>
                         <div class="thank-you">Thank you for connecting with us!</div>
                         <div class="footer">
-                            <p>Visit our website: <a href="https://www.swasthyasamruddhi.com">SwasthyaSamruddhi</a></p>
+                            <p>Visit our website: <a href="https://swasthya-samriddhi.vercel.app/">SwasthyaSamruddhi</a></p>
                         </div>
                     </div>
                 </body>
@@ -83,12 +82,9 @@ export async function POST(req) {
         };
 
         await transporter.sendMail(mailOptions);
-        
-        // Respond with success message
         return NextResponse.json({ message: "Email sent successfully" });
     } catch (error) {
         console.error('Error:', error);
-        // Respond with error message
         return NextResponse.json({ message: "Failed to send email" });
     }
 }
