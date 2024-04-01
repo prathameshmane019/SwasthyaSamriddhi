@@ -4,27 +4,28 @@ import nodemailer from 'nodemailer';
 import Message from '@/app/models/contacts';
 
 export async function POST(req) {
-    const data = await req.json();
-    console.log(data);
-
-    await connectMongoDB();
-    
-    const newMessage = new Message(data);
-    await newMessage.save();
-
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'maneprathamesh019@gmail.com',
-            pass: 'ppmn ujpq uivu ovzg'
-        }
-    });
-
     try {
+        const data = await req.json();
+
+        await connectMongoDB();
+
+        const newMessage = new Message(data);
+        await newMessage.save();
+
+        // Create Nodemailer transporter
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'maneprathamesh019@gmail.com',
+                pass: 'ppmn ujpq uivu ovzg'
+            }
+        });
+
+        // Send email
         const mailOptions = {
             from: 'maneprathamesh019@gmail.com',
             to: data.email,
-            subject: 'Thank You for Connecting with SwasthyaSamruddhi',
+            subject: 'Thank You for Connecting with SwasthyaSamriddhi',
             html: `
                 <html>
                 <head>
@@ -72,7 +73,7 @@ export async function POST(req) {
                         </div>
                         <div class="thank-you">Thank you for connecting with us!</div>
                         <div class="footer">
-                            <p>Visit our website: <a href="https://www.swasthyasamruddhi.com">SwasthyaSamruddhi</a></p>
+                            <p>Visit our website: <a href="https://swasthya-samriddhi.vercel.app/">SwasthyaSamruddhi</a></p>
                         </div>
                     </div>
                 </body>
@@ -80,18 +81,10 @@ export async function POST(req) {
             `
         };
 
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log(error);
-                return NextResponse.json({ message: 'Failed to send email' });
-            } else {
-                console.log('Email sent: ' + info.response);
-                return NextResponse.json({ message: "Email sent successfully" });
-            }
-        });
-
+        await transporter.sendMail(mailOptions);
+        return NextResponse.json({ message: "Email sent successfully" });
     } catch (error) {
-        console.log(error);
-        return NextResponse.json({ message: "Email not sent" });
+        console.error('Error:', error);
+        return NextResponse.json({ message: "Failed to send email" });
     }
 }

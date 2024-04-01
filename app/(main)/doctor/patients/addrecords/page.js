@@ -1,9 +1,10 @@
 import RegisterHealthRecordComponent from '@/app/components/newrecord'
+
 import React from 'react'
-const page = () => {
+const page = ({searchParams}) => {
   return (
     <div>
-      <RegisterHealthRecordComponent></RegisterHealthRecordComponent>
+      <RegisterHealthRecordComponent search={searchParams}></RegisterHealthRecordComponent>
     </div>
   )
 }

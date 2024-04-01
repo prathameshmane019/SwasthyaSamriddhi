@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
-import { useSearchParams } from 'next/navigation';
-import { getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
-export default function RegisterHealthRecordComponent() {
+
+export default function RegisterHealthRecordComponent({ search }) {
   const [formData, setFormData] = useState({
     diagnosis: "",
     prescription: "",
@@ -14,22 +14,28 @@ export default function RegisterHealthRecordComponent() {
   });
   const [patientId, setPatientId] = useState("");
   const [doctorId, setDoctorId] = useState("");
-  const searchParams = useSearchParams();
+  const { data: session, status } = useSession(); // Using useSession hook
 
   useEffect(() => {
     const fetchDoctorId = async () => {
-      const session = await getSession();
       if (session) {
-        setDoctorId(session.user.id);
+        console.log("Session:", session);
+        if (session.user && session.user.id) {
+          setDoctorId(session.user.id);
+        } else {
+          console.log("Doctor ID not found in session");
+        }
+      } else {
+        console.log("Session not available");
       }
     };
 
     fetchDoctorId();
-  }, []);
+  }, [session]);
 
   useEffect(() => {
-    setPatientId(searchParams.get('id'));
-  }, [searchParams]);
+    setPatientId(search.id);
+  }, [search]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,6 +67,10 @@ export default function RegisterHealthRecordComponent() {
       [field]: e.target.value,
     });
   };
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex justify-center items-center bg-gray-100 min-h-screen">
