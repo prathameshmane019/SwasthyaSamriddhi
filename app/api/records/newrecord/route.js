@@ -1,31 +1,33 @@
 import { NextResponse } from 'next/server';
-import HealthRecord from '../../../models/records';
-import User from '../../../models/user';
-import { connectMongoDB } from "../../../libs/connectDb";
+import User from '@/app/models/user';
+import { connectMongoDB } from '@/app/libs/connectDb';
+import HealthRecord from '@/app/models/records';
+import { decrypt } from "../../../libs/encryption"; // Import decrypt function
 
 export async function POST(req) {
     connectMongoDB();
-    const recordData = await req.json();
-    try {
-        const record = new HealthRecord(recordData);
-        await record.save();
+    const { userId } = await req.json();
 
-        // Find the user by ID
-        const user = await User.findById(recordData.patientId);
-        if (user) {
-            if (!user.records) {
-                user.records = [];
-            }
-            user.records.push(record._id);
-            console.log(user);
-            await user.save();
-        } else {
+    try {
+        const user = await User.findById({_id: userId});
+        if (!user) {
             throw new Error('User not found');
         }
-        console.log("Record added:", record);
+
+        const records = await HealthRecord.find({ _id: { $in: user.records } });
+
+        // Decrypt sensitive fields
+        const decryptedRecords = records.map(record => ({
+            ...record._doc,
+            diagnosis: decrypt(record.diagnosis),
+            prescription: decrypt(record.prescription),
+            status: decrypt(record.status),
+            notes: decrypt(record.notes),
+        }));
+
+        return NextResponse.json(decryptedRecords);
     } catch (error) {
         console.error("Error:", error);
-        return NextResponse.error("Failed to add record", 500); // Return an error response
+        return NextResponse.error("Failed to fetch records", 500); // Return an error response
     }
-    return NextResponse.json({ message: "Record added successfully" }); // Return a success response
 }
