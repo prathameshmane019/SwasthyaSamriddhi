@@ -8,6 +8,10 @@ export async function POST(req) {
     connectMongoDB();
     const { userId } = await req.json();
 
+  
+    
+    console.log(userId);
+
     try {
         const user = await User.findById({_id: userId});
         if (!user) {
