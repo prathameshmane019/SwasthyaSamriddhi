@@ -3,8 +3,8 @@ import User from '@/app/models/user';
 import { connectMongoDB } from '@/app/libs/connectDb';
 import HealthRecord from '@/app/models/records';
 export async function POST(req) {
-    const { userId } =await req.json();
-
+    const { userId } = await req.json();
+    console.log(userId);
     try {
         connectMongoDB();
         const user = await User.findById({_id:userId});
