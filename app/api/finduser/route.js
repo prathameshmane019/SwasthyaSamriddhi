@@ -9,7 +9,7 @@ export async function POST(req) {
         return NextResponse.error({ status: 400, message: "ID parameter is missing" });
       }
   
-      const user = await User.findOne({ _id: id.id});
+      const user = await User.findOne({ _id: id});
       console.log(user);
       if (user) {
         return NextResponse.json(user);

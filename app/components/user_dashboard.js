@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useRouter } from 'next/navigation'; // Import useRouter from next/router
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react'; // Import useSession hook
+import { useSession, signOut } from 'next-auth/react'; // Import useSession hook and signOut function
 
 const UserSidebar = () => {
   const router = useRouter();
@@ -12,6 +12,11 @@ const UserSidebar = () => {
   useEffect(() => {
     setActiveMenu(router.pathname);
   }, [router.pathname]);
+
+  const handleLogout = async () => {
+    await signOut(); // Call the signOut function to sign out the user
+    router.push('/login'); // Redirect to the home page after logout
+  };
 
   return (
     <div className="bg-gray-800 text-white h-screen w-1/4 flex flex-col justify-between sticky top-0">
@@ -26,6 +31,7 @@ const UserSidebar = () => {
           <Link href={{ pathname: '/user/records', query: { id: session ? session.user.id : '' } }} className={`block py-2 px-4 rounded-md ${activeMenu === '/user/records' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/user/records')}>Records
           </Link>
         </nav>
+        <button onClick={handleLogout} className="block py-2 px-4 rounded-md mt-4 bg-red-500 text-white">Logout</button>
       </div>
       <div className="p-4">
         <p className="text-xs">&copy; 2024 User Dashboard</p>

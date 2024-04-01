@@ -7,20 +7,14 @@ import { decrypt } from "../../../libs/encryption"; // Import decrypt function
 export async function POST(req) {
     connectMongoDB();
     const { userId } = await req.json();
-
-  
-    
-    console.log(userId);
-
     try {
         const user = await User.findById({_id: userId});
+        console.log(user);
         if (!user) {
             throw new Error('User not found');
         }
-
         const records = await HealthRecord.find({ _id: { $in: user.records } });
 
-        // Decrypt sensitive fields
         const decryptedRecords = records.map(record => ({
             ...record._doc,
             diagnosis: decrypt(record.diagnosis),

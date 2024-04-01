@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import User from '@/app/models/user';
 import { connectMongoDB } from '@/app/libs/connectDb';
 import HealthRecord from '@/app/models/records';
-import { decrypt } from "../../../libs/encryption"; // Import decrypt function
+import { encrypt } from "../../../libs/encryption"; // Import decrypt function
 
 export async function POST(req) {
     connectMongoDB();
@@ -16,7 +16,6 @@ export async function POST(req) {
 
         const records = await HealthRecord.find({ _id: { $in: user.records } });
 
-        // Decrypt sensitive fields
         const decryptedRecords = records.map(record => ({
             ...record._doc,
             diagnosis: decrypt(record.diagnosis),
