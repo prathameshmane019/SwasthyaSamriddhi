@@ -4,15 +4,16 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-  const SearchUser = () => {
+const SearchUser = () => {
   const [id, setId] = useState("");
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [otpError, setOtpError] = useState(null);
-  const [enteredOTP, setEnteredOTP] = useState(""); // Define enteredOTP state
+  const [enteredOTP, setEnteredOTP] = useState("");
   const router = useRouter();
+
   const generateOTP = () => {
     let otp = "";
     for (let i = 0; i < 6; i++) {
@@ -20,9 +21,10 @@ import { useRouter } from 'next/navigation';
     }
     return otp;
   };
+
   const handleSearch = async () => {
     try {
-      const response = await axios.post("/api/finduser",{id});
+      const response = await axios.post("/api/finduser", { id });
       const userData = response.data;
       setUserData(userData);
       setError(null);
@@ -34,11 +36,15 @@ import { useRouter } from 'next/navigation';
       setError("User not found");
     }
   };
+
   const sendOTP = async () => {
     try {
-      console.log(otp);
-      await axios.post('/api/sendotp', { email: userData.email, otp });
-      setOtpError(null);
+      if (userData && userData.email) {
+        await axios.post('/api/sendotp', { email: userData.email, otp });
+        setOtpError(null);
+      } else {
+        setOtpError("User data or email not available");
+      }
     } catch (error) {
       setOtpError("Failed to send OTP");
     }
@@ -48,15 +54,13 @@ import { useRouter } from 'next/navigation';
     if (otp === enteredOTP) {
       setOtpError(null);
       handleAddRecord(); 
-      } else {
+    } else {
       setOtpError("Invalid OTP");
     }
   };
+  
   const handleAddRecord = () => {
-    router.push({
-      pathname: '/doctor/patients/addrecords',
-      query: { id }
-    });
+    router.push(`/doctor/patients/addrecords?id=${id}`);
   };
 
   return (
@@ -82,12 +86,7 @@ import { useRouter } from 'next/navigation';
               <div className="block mt-1 text-lg leading-tight font-semibold text-gray-900">{userData.fullname.firstName} {userData.fullname.middleName} {userData.fullname.surName}</div>
               <p className="mt-2 text-gray-600">{userData.mobile}</p>
             </div>
-            <Link href={{pathname:'/doctor/patients/addrecords',
-              query:{
-                id:id
-              } }
-                  }
-                className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">View Health Record</Link>
+            <button onClick={handleAddRecord} className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">Add Record</button>
           </div>
         </div>
       )}

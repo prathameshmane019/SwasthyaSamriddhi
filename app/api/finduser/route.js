@@ -4,7 +4,7 @@ import User from "@/app/models/user";
 export async function POST(req) {
     try {
       connectMongoDB();
-      const {id}=req.json()
+      const {id} = await req.json()
       if (!id) {
         return NextResponse.error({ status: 400, message: "ID parameter is missing" });
       }
