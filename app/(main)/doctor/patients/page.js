@@ -12,6 +12,7 @@ const SearchUser = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [otpError, setOtpError] = useState(null);
+  const [enteredOTP, setEnteredOTP] = useState("");
   const router = useRouter();
 
   const generateOTP = () => {
@@ -28,9 +29,7 @@ const SearchUser = () => {
       const userData = response.data;
       setUserData(userData);
       setError(null);
-      const generatedOtp = generateOTP();
-      setOtp(generatedOtp);
-      setOtpSent(true);
+  
     } catch (error) {
       setUserData(null);
       setError("User not found");
@@ -50,11 +49,23 @@ const SearchUser = () => {
     }
   };
 
+  const handleValidateOTP = async () => {
+    console.log(enteredOTP);
+    if (otp === enteredOTP) {
+      setOtpError(null);
+      handleAddRecord();
+    } else {
+      setOtpError("Invalid OTP");
+    }
+  };
+  const handleRecords = () => {
+    const generatedOtp = generateOTP();
+    setOtp(generatedOtp);
+    console.log(otp)
+    setOtpSent(true);
+  };
   const handleAddRecord = () => {
-    router.push({
-      pathname: '/doctor/patients/addrecords',
-      query: { id }
-    });
+    router.push(`/doctor/patients/addrecords?id=${id}`);
   };
 
   return (
@@ -65,7 +76,6 @@ const SearchUser = () => {
           type="text"
           value={id}
           onChange={(e) => setId(e.target.value)}
-          placeholder="Enter user's ID"
           className="border p-2 mr-2"
         />
         <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-2 rounded">
@@ -80,18 +90,23 @@ const SearchUser = () => {
               <div className="block mt-1 text-lg leading-tight font-semibold text-gray-900">{userData.fullname.firstName} {userData.fullname.middleName} {userData.fullname.surName}</div>
               <p className="mt-2 text-gray-600">{userData.mobile}</p>
             </div>
-            <Link href={{ pathname:'/doctor/patients/addrecords', query:{ id: id }}} className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">View Health Record</Link>
+            <button onClick={handleRecords} className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">View Health Record</button>
           </div>
         </div>
       )}
       {error && <p className="text-red-500 mt-4">{error}</p>}
       {otpSent && (
-        <OTPForm
-          userData={userData}
-          otp={otp}
-          setOtpError={setOtpError}
-          handleAddRecord={handleAddRecord}
-        />
+        <div className="mt-4">
+          <input
+            type="text"
+            value={enteredOTP}
+            onChange={(e) => setEnteredOTP(e.target.value)}
+            className="border p-2 mr-2"
+          />
+          <button onClick={handleValidateOTP} className="bg-blue-500 text-white px-4 py-2 rounded">
+            Validate OTP
+          </button>
+        </div>
       )}
       {otpError && <p className="text-red-500 mt-4">{otpError}</p>}
     </div>
