@@ -1,9 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import axios from 'axios';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import OTPForm from '@/app/components/otp';
 
 const SearchUser = () => {
   const [id, setId] = useState("");
@@ -51,6 +49,7 @@ const SearchUser = () => {
 
   const handleValidateOTP = async () => {
     console.log(enteredOTP);
+    console.log(otp);
     if (otp === enteredOTP) {
       setOtpError(null);
       handleAddRecord();
@@ -58,12 +57,20 @@ const SearchUser = () => {
       setOtpError("Invalid OTP");
     }
   };
-  const handleRecords = () => {
-    const generatedOtp = generateOTP();
-    setOtp(generatedOtp);
-    console.log(otp)
-    setOtpSent(true);
+
+  const handleRecords = async () => {
+      const generatedOtp = generateOTP();
+      setOtp(generatedOtp);
+      console.log(generatedOtp);
+      setOtpSent(true); 
+      try {
+        await sendOTP();
+      } catch (error) {
+        setOtpError("Failed to send OTP");
+      }
   };
+  
+
   const handleAddRecord = () => {
     router.push(`/doctor/patients/addrecords?id=${id}`);
   };
@@ -90,7 +97,7 @@ const SearchUser = () => {
               <div className="block mt-1 text-lg leading-tight font-semibold text-gray-900">{userData.fullname.firstName} {userData.fullname.middleName} {userData.fullname.surName}</div>
               <p className="mt-2 text-gray-600">{userData.mobile}</p>
             </div>
-            <button onClick={handleRecords} className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">View Health Record</button>
+            <button onClick={() => {handleRecords(); sendOTP();}} className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">View Health Record</button>
           </div>
         </div>
       )}
