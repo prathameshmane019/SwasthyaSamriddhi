@@ -7,27 +7,30 @@ import { decrypt } from "../../../libs/encryption"; // Import decrypt function
 export async function POST(req) {
     connectMongoDB();
     const { userId } = await req.json();
-
-  
-    
-    console.log(userId);
-
     try {
-        const user = await User.findById({_id: userId});
+        const user = await User.findById({ _id: userId });
         if (!user) {
             throw new Error('User not found');
         }
-
         const records = await HealthRecord.find({ _id: { $in: user.records } });
 
-        // Decrypt sensitive fields
-        const decryptedRecords = records.map(record => ({
-            ...record._doc,
-            diagnosis: decrypt(record.diagnosis),
-            prescription: decrypt(record.prescription),
-            status: decrypt(record.status),
-            notes: decrypt(record.notes),
-        }));
+        // Map records and attempt decryption
+        const decryptedRecords = records.map(record => {
+            try {
+                return {
+                    ...record._doc,
+                    diagnosis: decrypt(record.diagnosis),
+                    prescription: decrypt(record.prescription),
+                    status: decrypt(record.status),
+                    notes: decrypt(record.notes),
+                };
+            } catch (error) {
+                console.error("Error decrypting record:", error);
+                return null; // If decryption fails, return null for this record
+            }
+        }).filter(record => record !== null); // Filter out records where decryption failed
+
+        console.log("Decrypted Records:", decryptedRecords);
 
         return NextResponse.json(decryptedRecords);
     } catch (error) {

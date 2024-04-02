@@ -8,7 +8,8 @@ const UserProfilePage = ({ searchParams }) => {
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
-        setId(searchParams);
+        setId(searchParams.id);
+        console.log(id);
     }, [searchParams]);
 
     useEffect(() => {
