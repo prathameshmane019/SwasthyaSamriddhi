@@ -1,8 +1,7 @@
-// pages/api/records/[userId].js
 
 import { NextResponse } from 'next/server';
-import HealthRecord from '../../../models/records';
-import { connectMongoDB } from "../../../libs/connectDb";
+import HealthRecord from '@/app/models/records';
+import { connectMongoDB } from '@/app/libs/connectDb';
 
 export async function GET(req) {
     const { userId } = req.query;

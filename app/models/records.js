@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { Schema } from 'mongoose';
-const healthRecordSchema = new mongoose.Schema({
+import { Schema,model } from 'mongoose';
+const healthRecordSchema = new Schema({
     diagnosis: {
         type: String,
         required: [true, "Please provide Diagnosis"]
