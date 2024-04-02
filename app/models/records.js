@@ -31,4 +31,4 @@ const healthRecordSchema = new mongoose.Schema({
 });
 const HealthRecord = mongoose.models.HealthRecord || model('HealthRecord', healthRecordSchema);
 
-export default healthRecordSchema
+export default HealthRecord
