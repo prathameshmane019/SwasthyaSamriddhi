@@ -1,8 +1,9 @@
 "use client"
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import OTPForm from '@/app/components/otp';
 
 const SearchUser = () => {
   const [id, setId] = useState("");
@@ -11,7 +12,6 @@ const SearchUser = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [otpError, setOtpError] = useState(null);
-  const [enteredOTP, setEnteredOTP] = useState("");
   const router = useRouter();
 
   const generateOTP = () => {
@@ -50,17 +50,11 @@ const SearchUser = () => {
     }
   };
 
-  const handleValidateOTP = () => {
-    if (otp === enteredOTP) {
-      setOtpError(null);
-      handleAddRecord(); 
-    } else {
-      setOtpError("Invalid OTP");
-    }
-  };
-  
   const handleAddRecord = () => {
-    router.push(`/doctor/patients/addrecords?id=${id}`);
+    router.push({
+      pathname: '/doctor/patients/addrecords',
+      query: { id }
+    });
   };
 
   return (
@@ -86,26 +80,20 @@ const SearchUser = () => {
               <div className="block mt-1 text-lg leading-tight font-semibold text-gray-900">{userData.fullname.firstName} {userData.fullname.middleName} {userData.fullname.surName}</div>
               <p className="mt-2 text-gray-600">{userData.mobile}</p>
             </div>
-            <button onClick={handleAddRecord} className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">Add Record</button>
+            <Link href={{ pathname:'/doctor/patients/addrecords', query:{ id: id }}} className="bg-green-500 text-white px-4 py-2 rounded mt-4 ml-auto mr-4">View Health Record</Link>
           </div>
         </div>
       )}
       {error && <p className="text-red-500 mt-4">{error}</p>}
       {otpSent && (
-        <>
-          <input
-            type="text"
-            value={enteredOTP}
-            onChange={(e) => setEnteredOTP(e.target.value)}
-            placeholder="Enter OTP"
-            className="border p-2 mr-2"
-          />
-          <button onClick={handleValidateOTP} className="bg-blue-500 text-white px-4 py-2 rounded">
-            Validate OTP
-          </button>
-          {otpError && <p className="text-red-500 mt-4">{otpError}</p>}
-        </>
+        <OTPForm
+          userData={userData}
+          otp={otp}
+          setOtpError={setOtpError}
+          handleAddRecord={handleAddRecord}
+        />
       )}
+      {otpError && <p className="text-red-500 mt-4">{otpError}</p>}
     </div>
   );
 };
