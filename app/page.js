@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { ArrowRightIcon, UserCircleIcon, LockClosedIcon, ChatIcon } from '@heroicons/react/solid';
 
+
 export default function Home() {
   const router = useRouter();
 
@@ -22,7 +23,9 @@ export default function Home() {
   };
 
   return (
+    <>
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-400 to-blue-500">
+      
       <main className="flex flex-col items-center justify-center px-20 text-center mt-20">
         <img src="/vecteezy_family-health-insurance_16390596.png" alt="SecureHealth Logo" className="h-56 mb-8" />
 
@@ -60,5 +63,6 @@ export default function Home() {
         </div>
       </main>
     </div>
+    </>
   );
 }

@@ -74,7 +74,7 @@ export async function sendOTPEmail(data) {
             <div style="background-color: #4CAF50; padding: 10px; border-radius: 8px 8px 0 0; color: white; font-size: 24px; text-align: center;">One-Time Password (OTP) for Verification</div>
             <div style="padding: 20px;">
                 <p style="font-size: 16px;">Dear ${data.name},</p>
-                <p style="font-size: 16px;">Your One-Time Password (OTP) for verification is: <strong>${otp}</strong></p>
+                <p style="font-size: 16px;">Your One-Time Password (OTP) for verification is: <strong>${data.otp}</strong></p>
                 <p style="font-size: 16px;">Please use this OTP to verify your account.</p>
                 <p style="font-size: 16px;">This OTP is valid for a single use and expires after a certain period of time.</p>
                 <p style="font-size: 16px;">Best Regards,<br/>Your Application Team</p>
