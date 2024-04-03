@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./Providers";
+import Nav from "./components/navbar";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "SwasthyaSamriddhi",
@@ -12,7 +13,12 @@ export default function RootLayout({ children }) {
 
     <html lang="en">
       <head><link rel="icon" href="/favicon.ico" /></head>
-      <body className={inter.className}><AuthProvider>{children}</AuthProvider></body>
+      <body className={inter.className}>
+    
+        <AuthProvider>
+          <Nav />
+          {children}
+          </AuthProvider></body>
     </html>
       );
 }
