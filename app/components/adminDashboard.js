@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 
-const Sidebar = ({ doctor }) => {
+const AdminDashboard = ({ admin }) => {
   const router = useRouter();
   const [activeMenu, setActiveMenu] = useState('');
   const { data: session } = useSession();
@@ -30,14 +30,14 @@ const Sidebar = ({ doctor }) => {
               <path fillRule="evenodd" d="M10 2a4 4 0 00-3.464 6.5A5.485 5.485 0 002 13.5C2 15.985 5.134 19 10 19s8-3.015 8-5.5a5.485 5.485 0 00-4.536-5.5A4 4 0 0010 2zM6.5 8a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm7 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 16c-3.866 0-7-2.015-7-4.5S6.134 7 10 7s7 2.015 7 4.5S13.866 16 10 16zm0-2a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" clipRule="evenodd" />
             </svg>
           </div>
-          <p className="text-lg font-medium">{doctor ? `ID: ${doctor.id}` : 'Loading...'}</p>
+          <p className="text-lg font-medium">{admin ? `ID: ${admin.id}` : 'Loading...'}</p>
         </div>
         <nav>
-          <Link href="/doctor/profile" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/profile' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/profile')}>Profile
+          <Link href="/admin" className={`block py-2 px-4 rounded-md ${activeMenu === '/admin' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/')}>Dashboard
           </Link>
-          <Link href="/doctor/patients" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/patients' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/patients')}>Patients
+          <Link href="/admin/patients" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/patients' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/patients')}>Patients
           </Link>
-          <Link href="/doctor/Record" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/Record' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/Record')}>Records
+          <Link href="/admin/doctor" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/doctor' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/Record')}>Doctors
           </Link>
         </nav>
       </div>
@@ -52,4 +52,4 @@ const Sidebar = ({ doctor }) => {
   );
 };
 
-export default Sidebar;
+export default AdminDashboard;
