@@ -1,18 +1,6 @@
-import { connectMongoDB } from '@/app/libs/connectDb';
-import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import Message from '@/app/models/contacts';
-
-export async function POST(req) {
+async function sendEmail(data, subject, htmlContent) {
     try {
-        const data = await req.json();
-
-        await connectMongoDB();
-
-        const newMessage = new Message(data);
-        await newMessage.save();
-
-        // Create Nodemailer transporter
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -21,137 +9,77 @@ export async function POST(req) {
             }
         });
 
-        // Send email to the registered user
-        const registrationMailOptions = {
-            from: 'maneprathamesh019@gmail.com',
+        const mailOptions = {
+            from: 'SwasthyaSamriddhi Team',
             to: data.email,
-            subject: 'Thank You for Registering with SwasthyaSamriddhi',
-            html: `
-                <html>
-                <head>
-                    <style>
-                        .container {
-                            font-family: Arial, sans-serif;
-                            max-width: 600px;
-                            margin: 20px auto;
-                            padding: 20px;
-                            border: 1px solid #ccc;
-                            border-radius: 5px;
-                            background-color: #f4f4f4;
-                        }
-                        .header {
-                            background-color: #3498db; /* Blue color */
-                            color: white;
-                            padding: 10px;
-                            text-align: center;
-                            border-radius: 5px 5px 0 0;
-                        }
-                        .content {
-                            padding: 20px;
-                        }
-                        .thank-you {
-                            text-align: center;
-                            font-size: 24px;
-                            color: #3498db; /* Blue color */
-                        }
-                        .footer {
-                            text-align: center;
-                            margin-top: 20px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="header">
-                        <h2>Swasthya Samruddhi</h2>
-                            <h3>Your Privacy, Our Promise</h3>
-                        </div>
-                        <div class="content">
-                            <p>Dear ${data.name},</p>
-                            <p>Thank you for registering with <strong>SwasthyaSamruddhi</strong>. We are excited to have you onboard.</p>
-                            <p>Best Regards,<br>Swasthya Samruddhi Team</p>
-                        </div>
-                        <div class="thank-you">Thank you for registering with us!</div>
-                        <div class="footer">
-                            <p>Visit our website: <a href="https://swasthya-samriddhi.vercel.app/">SwasthyaSamruddhi</a></p>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            `
+            subject: subject,
+            html: htmlContent
         };
-
-        await transporter.sendMail(registrationMailOptions);
-
-        // Send email to the contact
-        const contactMailOptions = {
-            from: 'maneprathamesh019@gmail.com',
-            to: data.email,
-
-        // 
-
-            subject: 'Thank You for Connecting with SwasthyaSamriddhi',
-            html: `
-                <html>
-                <head>
-                    <style>
-                        .container {
-                            font-family: Arial, sans-serif;
-                            max-width: 600px;
-                            margin: 20px auto;
-                            padding: 20px;
-                            border: 1px solid #ccc;
-                            border-radius: 5px;
-                            background-color: #f4f4f4;
-                        }
-                        .header {
-                            background-color: #3498db; /* Blue color */
-                            color: white;
-                            padding: 10px;
-                            text-align: center;
-                            border-radius: 5px 5px 0 0;
-                        }
-                        .content {
-                            padding: 20px;
-                        }
-                        .thank-you {
-                            text-align: center;
-                            font-size: 24px;
-                            color: #3498db; /* Blue color */
-                        }
-                        .footer {
-                            text-align: center;
-                            margin-top: 20px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <div class="header">
-                        <h2>Swasthya Samruddhi</h2>
-                            <h3>Your Privacy, Our Promise</h3>
-                        </div>
-                        <div class="content">
-                            <p>Dear ${data.name},</p>
-                            <p>Thank you for connecting with <strong>SwasthyaSamruddhi</strong>. We have received your health record details and will review it shortly.</p>
-                            <p>Best Regards,<br>Swasthya Samruddhi Team</p>
-                        </div>
-                        <div class="thank-you">Thank you for connecting with us!</div>
-                        <div class="footer">
-                            <p>Visit our website: <a href="https://swasthya-samriddhi.vercel.app/">SwasthyaSamruddhi</a></p>
-                        </div>
-                    </div>
-                </body>
-                </html>
-            `
-        };
-
 
         await transporter.sendMail(mailOptions);
-        return NextResponse.json({ message: "Email sent successfully" });
+        console.log('Email sent successfully');
     } catch (error) {
-        console.error('Error:', error);
-        return NextResponse.json({ message: "Failed to send email" });
-
+        console.error('Error sending email:', error);
     }
+}
+
+export async function sendRegistrationEmail(data) {
+    const subject = 'Welcome to SwasthyaSamriddhi';
+    const htmlContent = `
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f8f8;">
+            <div style="background-color: #4CAF50; padding: 10px; border-radius: 8px 8px 0 0; color: white; font-size: 24px; text-align: center;">Welcome to SwasthyaSamriddhi</div>
+            <div style="padding: 20px;">
+                <p style="font-size: 16px;">Dear ${data.name},</p>
+                <p style="font-size: 16px;">Thank you for registering with SwasthyaSamriddhi. We are excited to have you onboard!</p>
+                <p style="font-size: 16px;">Best Regards,<br/>SwasthyaSamriddhi Team</p>
+            </div>
+        </div>
+    `;
+    await sendEmail(data, subject, htmlContent);
+}
+
+export async function sendHealthRecordAddedEmail(data) {
+    const subject = 'New Health Record Added';
+    const htmlContent = `
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f8f8;">
+            <div style="background-color: #4CAF50; padding: 10px; border-radius: 8px 8px 0 0; color: white; font-size: 24px; text-align: center;">New Health Record Added</div>
+            <div style="padding: 20px;">
+                <p style="font-size: 16px;">Dear ${data.name},</p>
+                <p style="font-size: 16px;">We have successfully added your new health record. Thank you for providing the details!</p>
+                <p style="font-size: 16px;">Best Regards,<br/>SwasthyaSamriddhi Team</p>
+            </div>
+        </div>
+    `;
+    await sendEmail(data, subject, htmlContent);
+}
+
+export async function sendContactUsReply(data) {
+    const subject = 'Thank You for Contacting SwasthyaSamriddhi';
+    const htmlContent = `
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f8f8;">
+            <div style="background-color: #4CAF50; padding: 10px; border-radius: 8px 8px 0 0; color: white; font-size: 24px; text-align: center;">Thank You for Contacting SwasthyaSamriddhi</div>
+            <div style="padding: 20px;">
+                <p style="font-size: 16px;">Dear ${data.name},</p>
+                <p style="font-size: 16px;">We have received your message and will get back to you shortly.</p>
+                <p style="font-size: 16px;">Best Regards,<br/>SwasthyaSamriddhi Team</p>
+            </div>
+        </div>
+    `;
+    await sendEmail(data, subject, htmlContent);
+}
+export async function sendOTPEmail(data) {
+    const subject = 'One-Time Password (OTP) for Verification';
+    const htmlContent = `
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f8f8f8;">
+            <div style="background-color: #4CAF50; padding: 10px; border-radius: 8px 8px 0 0; color: white; font-size: 24px; text-align: center;">One-Time Password (OTP) for Verification</div>
+            <div style="padding: 20px;">
+                <p style="font-size: 16px;">Dear ${data.name},</p>
+                <p style="font-size: 16px;">Your One-Time Password (OTP) for verification is: <strong>${otp}</strong></p>
+                <p style="font-size: 16px;">Please use this OTP to verify your account.</p>
+                <p style="font-size: 16px;">This OTP is valid for a single use and expires after a certain period of time.</p>
+                <p style="font-size: 16px;">Best Regards,<br/>Your Application Team</p>
+            </div>
+        </div>
+    `;
+    await sendEmail(data, subject, htmlContent);
 }

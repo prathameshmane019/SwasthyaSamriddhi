@@ -1,9 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import axios from 'axios';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import OTPForm from '@/app/components/otp';
 
 const SearchUser = () => {
   const [id, setId] = useState("");
@@ -36,21 +34,39 @@ const SearchUser = () => {
     }
   };
 
-  const sendOTP = async () => {
+  const sendOTP = async (generatedOtp) => {
     try {
-      if (userData && userData.email) {
-        await axios.post('/api/sendotp', { email: userData.email, otp });
-        setOtpError(null);
-      } else {
-        setOtpError("User data or email not available");
+      if (userData) {
+        await axios.post('/api/sendOtp', { email: userData.email, otp: generatedOtp });
       }
+    } catch (error) {
+      throw new Error("Failed to send OTP");
+    }
+  };
+
+  const handleRecords = async () => {
+    if (!userData) {
+      setError("Please search for a user first");
+      return;
+    }
+
+    try {
+      const generatedOtp = generateOTP();
+      await sendOTP(generatedOtp); // Pass the generated OTP to sendOTP
+      setOtp(generatedOtp); // Set the OTP only after sending
+      setOtpSent(true);
+      setOtpError(null); // Clear any previous OTP error
     } catch (error) {
       setOtpError("Failed to send OTP");
     }
   };
 
   const handleValidateOTP = async () => {
-    console.log(enteredOTP);
+    if (!enteredOTP || !otp) {
+      setOtpError("Please enter OTP first");
+      return;
+    }
+
     if (otp === enteredOTP) {
       setOtpError(null);
       handleAddRecord();
@@ -58,12 +74,7 @@ const SearchUser = () => {
       setOtpError("Invalid OTP");
     }
   };
-  const handleRecords = () => {
-    const generatedOtp = generateOTP();
-    setOtp(generatedOtp);
-    console.log(otp)
-    setOtpSent(true);
-  };
+
   const handleAddRecord = () => {
     router.push(`/doctor/patients/addrecords?id=${id}`);
   };

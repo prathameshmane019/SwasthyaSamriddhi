@@ -16,7 +16,7 @@ const Contact = () => {
     setShowSuccessMessage(true);
     setFormData({ name: '', email: '', message: '' });
     console.log(formData);
-    const result = await axios.post("/api/nodemailer",formData);
+    const result = await axios.post("/api/contact",formData);
   };
 
   return (
