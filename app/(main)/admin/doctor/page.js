@@ -34,7 +34,6 @@ export default function App() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   useEffect(() => {
-    // Fetch doctors data
     const fetchDoctors = async () => {
       try {
         const response = await axios.get('/api/admin/doctors');
@@ -61,7 +60,7 @@ export default function App() {
 
   const handleItemsPerPageChange = (value) => {
     setItemsPerPage(value);
-    setPage(1); // Reset to first page when items per page changes
+    setPage(1); 
   };
 
   return (

@@ -35,9 +35,9 @@ const AdminDashboard = ({ admin }) => {
         <nav>
           <Link href="/admin" className={`block py-2 px-4 rounded-md ${activeMenu === '/admin' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/')}>Dashboard
           </Link>
-          <Link href="/admin/patients" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/patients' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/patients')}>Patients
+          <Link href="/admin/users" className={`block py-2 px-4 rounded-md ${activeMenu === "/admin/users" ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu("/admin/uesrs")}>Users
           </Link>
-          <Link href="/admin/doctor" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/doctor' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/Record')}>Doctors
+          <Link href="/admin/doctor" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/doctor' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/admin/doctor')}>Doctors
           </Link>
         </nav>
       </div>
