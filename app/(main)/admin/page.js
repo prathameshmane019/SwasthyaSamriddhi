@@ -4,9 +4,9 @@ import axios from 'axios';
 import { Card, CardBody } from '@nextui-org/react';
 
 function Dashboard() {
-  const [recordCount, setRecordCount] = useState(0);
-  const [userCount, setUserCount] = useState(0);
-  const [doctorCount, setDoctorCount] = useState(0);
+  const [recordCount, setRecordCount] = useState("Loading");
+  const [userCount, setUserCount] = useState("Loading");
+  const [doctorCount, setDoctorCount] = useState("Loading");
 
   useEffect(() => {
     fetchData();
