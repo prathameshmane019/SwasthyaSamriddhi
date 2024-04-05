@@ -3,204 +3,172 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
-const validateMobile = (value) => {
-  const regex = /^[6-9]\d{9}$/;
-  return regex.test(value);
+const SuccessMessage = ({ message, onClose }) => {
+  return (
+    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <strong className="font-bold">Success!</strong>
+      <span className="block sm:inline"> {message}</span>
+      <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={onClose}>
+        <svg className="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <title>Close</title>
+          <path d="M14.348 5.652a.5.5 0 0 1 0 .707L10.06 10l4.288 4.646a.5.5 0 0 1-.707.707L9.354 10l4.287-4.646a.5.5 0 0 1 .707-.707z"/>
+        </svg>
+      </span>
+    </div>
+  );
 };
-const validateEmail = (value) => {
-  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return regex.test(value);
-};
-
-const validateAadhaar = (value) => {
-  const regex = /^[0-9]{12}$/;
-  return regex.test(value);
-};
-
-const validateBloodGroup = (value) => {
-  const validBloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-  return validBloodGroups.includes(value);
-};
-
-const validatePassword = (password, confirmPassword) => {
-  return password === confirmPassword;
-};
-
-
 export default function RegisterComponent() {
-  const router = useRouter();
-  const [formValues, setFormValues] = useState({
-    userId: "U032400001",
-    fullname: {
-      firstName: "",
-      middleName: "",
-      surName: "",
-    },
-    adharCard: "",
-    email: "",
-    dob: "",
-    gender: "",
-    mobile: "",
-    bloodGroup: "",
-    address: {
-      building: "",
-      city: "",
-      taluka: "",
-      district: "",
-      state: "",
-      pincode: "",
-    },
-    allergies: "",
-    medication: {
-      name: "",
-      frequency: "",
-    },
-    password: "",
-    confirmPassword: "",
-  });
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [surName, setSurName] = useState("");
+  const [adharCard, setAdharCard] = useState("");
+  const [email, setEmail] = useState("");
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [bloodGroup, setBloodGroup] = useState("");
+  const [building, setBuilding] = useState("");
+  const [city, setCity] = useState("");
+  const [taluka, setTaluka] = useState("");
+  const [district, setDistrict] = useState("");
+  const [state, setState] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [allergies, setAllergies] = useState("");
+  const [medicationName, setMedicationName] = useState("");
+  const [medicationFrequency, setMedicationFrequency] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
 
   const handleSelectionChange = (event) => {
-    setFormValues({ ...formValues, gender: event.target.value });
+    setGender(event.target.value);
   };
-
-  const handleInputChange = (event) => {
-    setFormValues({
-      ...formValues,
-      [event.target.name]: event.target.value,
-    });
-  };
-  const [emailError, setEmailError] = useState("");
   const handleCancel = () => {
 
   }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password == confirmPassword) {
+      const formData = {
+        fullname: {
+          firstName,
+          middleName,
+          surName
+        },
+        adharCard,
+        email,
+        dob,
+        gender,
+        mobile,
+        bloodGroup,
+        address: {
+          building,
+          city,
+          taluka,
+          district,
+          state,
+          pincode
+        },
+        allergies,
+        medication: {
+          name: medicationName,
+          frequency: medicationFrequency
+        },
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const {
-      password,
-      confirmPassword,
-      mobile,
-      adharCard,
-      bloodGroup,
-      ...otherFormValues
-    } = formValues;
-
-    if (!validatePassword(password, confirmPassword)) {
-      alert("Passwords do not match");
-      return;
-    }
-
-    if (!validateMobile(mobile)) {
-      alert("Please enter a valid mobile number");
-      return;
-    }
-
-    if (!validateAadhaar(adharCard)) {
-      alert("Please enter a valid Aadhaar number");
-      return;
-    }
-
-    if (!validateBloodGroup(bloodGroup)) {
-      alert("Please enter a valid blood group");
-      return;
-    }
-    if (!validateEmail(formValues.email)) {
-      setEmailError("Please enter a valid email address");
-      return;
-    }
-    setEmailError("");
-    
-    if (!validatePassword(password, confirmPassword)) {
-      alert("Passwords do not match");
-      return;
-    }
-
-    // Submit the form data to the server
-    axios.post("/api/register/user", formValues).then((response) => {
-      if (response.status === 200) {
-        router.back();
+        password
+      };
+      console.log("Form Data:", formData);
+      try {
+        const result = await axios.post("/api/register/user", formData);
+        console.log(result);
+        setSuccessMessage("Registration successful!");
+      } catch (error) {
+        console.log("User Registration failed");
+        setSuccessMessage("Registration Failed!");
       }
-    });
-  };
-
+    };
+  }
   return (
     <div className="flex justify-center items-center  bg-gray-100">
       <form onSubmit={handleSubmit} className="w-full max-w-6xl bg-white shadow-md rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-6 text-center">Register</h2>
         <div className="grid grid-cols-6 gap-6">
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="First Name"
-              value={formValues.fullname.firstName}
-              onChange={handleInputChange}
-              name="fullname.firstName"
-              required
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="Middle Name"
-              value={formValues.fullname.middleName}
-              onChange={handleInputChange}
-              name="fullname.middleName"
+              value={middleName}
+              onChange={(e) => setMiddleName(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
-              label="Sur Name"
-              value={formValues.fullname.surName}
-              onChange={handleInputChange}
-              name="fullname.surName"
-              required
+              label="Surname"
+              value={surName}
+              onChange={(e) => setSurName(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
+            <Input
+              type="tel"
+              variant="bordered"
+              label="Mobile"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              className="mb-4"
+            />
+          </div>
+          <div className="col-span-2">
+            <Input
+              type="email"
+              variant="bordered"
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mb-4"
+            />
+          </div>
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
-              label="Adhar Card"
-              value={formValues.adharCard}
-              onChange={handleInputChange}
-              name="adharCard"
-              required
+              label="Adhar No."
+              value={adharCard}
+              onChange={(e) => setAdharCard(e.target.value)}
+              className="mb-4"
             />
           </div>
-          
-    <div className="col-span-3">
-      <Input
-        type="email"
-        variant="bordered"
-        label="Email"
-        value={formValues.email}
-        onChange={handleInputChange}
-        name="email"
-        required
-        feedback={emailError} // Display the error message
-      />
-    </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="date"
               variant="bordered"
               label="Date of Birth"
-              value={formValues.dob}
-              onChange={handleInputChange}
-              name="dob"
-              required
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+
+          <div className="col-span-2">
             <select
               id="gender"
-              value={formValues.gender}
+              value={gender}
               onChange={handleSelectionChange}
               className="block appearance-none w-full border border-gray-300 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:border-gray-500 bg-white text-gray-700 h-14"
             >
@@ -210,126 +178,104 @@ export default function RegisterComponent() {
               <option value="other">Other</option>
             </select>
           </div>
-          <div className="col-span-3">
-            <Input
-              type="tel"
-              variant="bordered"
-              label="Mobile"
-              value={formValues.mobile}
-              onChange={handleInputChange}
-              name="mobile"
-              required
-              valid={validateMobile(formValues.mobile)}
-              feedback="Please enter a valid mobile number"
-            />
-          </div>
-          <div className="col-span-3">
-            <Input
-              type="text"
-              variant="bordered"
-              label="Blood Group"
-              value={formValues.bloodGroup}
-              onChange={handleInputChange}
-              name="bloodGroup"
-              required
-              valid={validateBloodGroup(formValues.bloodGroup)}
-              feedback="Please enter a valid blood group"
-            />
-          </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="Building"
-              value={formValues.address.building}
-              onChange={handleInputChange}
-              name="address.building"
-              required
+              value={building}
+              onChange={(e) => setBuilding(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="City"
-              value={formValues.address.city}
-              onChange={handleInputChange}
-              name="address.city"
-              required
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="Taluka"
-              value={formValues.address.taluka}
-              onChange={handleInputChange}
-              name="address.taluka"
-              required
+              value={taluka}
+              onChange={(e) => setTaluka(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="District"
-              value={formValues.address.district}
-              onChange={handleInputChange}
-              name="address.district"
-              required
+              value={district}
+              onChange={(e) => setDistrict(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="State"
-              value={formValues.address.state}
-              onChange={handleInputChange}
-              name="address.state"
-              required
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="Pincode"
-              value={formValues.address.pincode}
-              onChange={handleInputChange}
-              name="address.pincode"
-              required
+              value={pincode}
+              onChange={(e) => setPincode(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
+            <Input
+              type="text"
+              variant="bordered"
+              label="Blood Group"
+              value={bloodGroup}
+              onChange={(e) => setBloodGroup(e.target.value)}
+              className="mb-4"
+            />
+          </div>
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="Allergies"
-              value={formValues.allergies}
-              onChange={handleInputChange}
-              name="allergies"
+              value={allergies}
+              onChange={(e) => setAllergies(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="Medication Name"
-              value={formValues.medication.name}
-              onChange={handleInputChange}
-              name="medication.name"
+              value={medicationName}
+              onChange={(e) => setMedicationName(e.target.value)}
+              className="mb-4"
             />
           </div>
-          <div className="col-span-3">
+          <div className="col-span-2">
             <Input
               type="text"
               variant="bordered"
               label="Medication Frequency"
-              value={formValues.medication.frequency}
-              onChange={handleInputChange}
-              name="medication.frequency"
+              value={medicationFrequency}
+              onChange={(e) => setMedicationFrequency(e.target.value)}
+              className="mb-4"
             />
           </div>
           <div className="col-span-3">
@@ -337,14 +283,9 @@ export default function RegisterComponent() {
               type="password"
               variant="bordered"
               label="Password"
-              value={formValues.password}
-              onChange={handleInputChange}
-              name="password"
-              required
-              feedback={
-                !validatePassword(formValues.password, formValues.confirmPassword) &&
-                "Passwords do not match"
-              }
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mb-4"
             />
           </div>
           <div className="col-span-3">
@@ -352,39 +293,18 @@ export default function RegisterComponent() {
               type="password"
               variant="bordered"
               label="Confirm Password"
-              value={formValues.confirmPassword}
-              onChange={handleInputChange}
-              name="confirmPassword"
-              required
-              feedback={
-                !validatePassword(formValues.password, formValues.confirmPassword) &&
-                "Passwords do not match"
-              }
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="mb-4"
             />
           </div>
           <div className="col-span-3"><Button color="default" className="w-full" onClick={handleCancel}>Cancel</Button></div>
-
-          <div className="col-span-3">
-            <Button color="primary" className="w-full" type="submit">
-              Register
-            </Button>
+          <div className="col-span-3"><Button color="primary" className="w-full" type="submit">  Register</Button></div>
+           </div>
+           <div className="mt-2 ">
+            <p className="text-sm text-center">Already have an account? <Link href="/login" className="text-blue-500">Login</Link></p>
           </div>
-        </div>
-        <div className="mt-2">
-          <p className="text-sm text-center">
-            Already have an account?{" "}
-            <Link href="/login" className="text-blue-500">
-              Login
-            </Link>
-          </p>
-        </div>
-        {showSuccessMessage && (
-          <div className="mt-4 flex items-center space-x-2 text-green-500">
-            
-            <span>You registered successfully!</span>
-          </div>
-        )}
       </form>
     </div>
   );
-}
+}  

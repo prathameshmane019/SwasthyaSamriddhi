@@ -33,12 +33,11 @@ const Sidebar = ({ doctor }) => {
           <p className="text-lg font-medium">{doctor ? `ID: ${doctor.id}` : 'Loading...'}</p>
         </div>
         <nav>
-          <Link href="/doctor/profile" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/profile' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/profile')}>Profile
+          <Link href="/doctor/" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/')}>Profile
           </Link>
           <Link href="/doctor/patients" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/patients' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/patients')}>Patients
           </Link>
-          <Link href="/doctor/records" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/Record' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/Record')}>Records
-          </Link>
+          
         </nav>
       </div>
       <div className="p-4">
