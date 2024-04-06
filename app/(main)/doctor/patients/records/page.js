@@ -13,10 +13,11 @@ const UserRecords = ({searchParams}) => {
 
   useEffect(() => {
     console.log(searchParams);
-    setId(searchParams.id)
+    setId(searchParams)
+    console.log(searchParams);
     const fetchRecords = async () => {
       try {
-          const response = await axios.post("/api/records/findrecords", { userId:id });
+          const response = await axios.post("/api/records/userrecords", { userId:id });
           setUserHealthRecords(response.data.map(record => ({
             ...record,
             visitDate: moment(record.createdAt).format('DD/MM/YY') // Extract visit date from created date
