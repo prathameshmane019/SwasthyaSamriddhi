@@ -1,5 +1,5 @@
 "use client"
-import axios from "axios"; // Corrected import statement
+import axios from "axios"; 
 import { useState, useEffect } from "react";
 
 const DoctorProfile = () => {

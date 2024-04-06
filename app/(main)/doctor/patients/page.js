@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -16,6 +15,7 @@ const SearchUser = () => {
   const [otpError, setOtpError] = useState(null);
   const [enteredOTP, setEnteredOTP] = useState("");
   const [action, setAction] = useState(""); 
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
   const router = useRouter();
 
   const generateOTP = () => {
@@ -51,10 +51,9 @@ const SearchUser = () => {
   
   const handleAction = async(actionType) => {
     if (!otpSent) {
-      showOtp(true)
+      setShowOtp(true)
       const generatedOtp = generateOTP(); 
       setOtp(generatedOtp); 
-      console.log((generatedOtp));
       await sendOTP(generatedOtp); // Send OTP
       setOtpSent(true);
     }
@@ -75,9 +74,23 @@ const SearchUser = () => {
       } else if (action === "addRecord") {
         router.push(`/doctor/patients/addrecords?id=${id}`);
       }
+      setSuccessMessage("Form submitted successfully."); // Setting success message
+      resetFields(); // Clear fields after successful submission
     } else {
       setOtpError("Invalid OTP");
     }
+  };
+
+  const resetFields = () => {
+    setId("");
+    setUserData(null);
+    setError(null);
+    setOtpSent(false);
+    setOtp("");
+    setOtpError(null);
+    setEnteredOTP("");
+    setAction("");
+    setShowOtp(false);
   };
 
   return (
@@ -141,10 +154,10 @@ const SearchUser = () => {
           <p>{otpError}</p>
         </div>
       )}
-      {otpSent && !otpError && (
+      {successMessage && (
         <div className="flex items-center mt-4 text-green-500">
           <CheckCircleIcon className="w-6 h-6 mr-2" />
-          <p>OTP sent successfully.</p>
+          <p>{successMessage}</p>
         </div>
       )}
     </div>
