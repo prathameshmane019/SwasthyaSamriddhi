@@ -9,15 +9,12 @@ const AdminDashboard = ({ admin }) => {
   const [activeMenu, setActiveMenu] = useState('');
   const { data: session } = useSession();
 
-  // Update active menu based on route change
   useEffect(() => {
     setActiveMenu(router.pathname);
   }, [router.pathname]);
-
-  // Logout function using NextAuth.js signOut
   const handleLogout = async () => {
     await signOut({ redirect: false });
-    router.push('/'); // Redirect to the home page after logout
+    router.push('/'); 
   };
 
   return (
