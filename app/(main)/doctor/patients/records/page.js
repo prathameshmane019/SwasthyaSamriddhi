@@ -1,15 +1,19 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation'
 import axios from 'axios';
 import moment from 'moment';
-const UserRecords = () => {
-    const searchParams = useSearchParams()
-    const id = searchParams.get('id')
+import { Suspense } from 'react';
+
+export const dynamic = 'force-dynamic'
+
+const UserRecords = ({searchParams}) => {
+    const [id,setId]=useState("")
   const [userHealthRecords, setUserHealthRecords] = useState([]);
 
 
   useEffect(() => {
+    console.log(searchParams);
+    setId(searchParams.id)
     const fetchRecords = async () => {
       try {
           const response = await axios.post("/api/records/findrecords", { userId:id });
@@ -23,9 +27,10 @@ const UserRecords = () => {
       }
     };
     fetchRecords();
-  }, [id]);
+  }, [searchParams]);
 
   return (
+    <Suspense >
     <div className="container mx-auto px-4">
       <h2 className="text-2xl font-semibold mb-4">Health Records</h2>
       <div className="overflow-x-auto">
@@ -55,6 +60,7 @@ const UserRecords = () => {
         </table>
       </div>
     </div>
+    </Suspense>
   );
 };
 export default UserRecords;
