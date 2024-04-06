@@ -7,9 +7,9 @@ import { decrypt } from "../../../libs/encryption"; // Import decrypt function
 export async function POST(req) {
     connectMongoDB();
     const { userId } = await req.json();
-    console.log(userId);
+    console.log(userId.id);
     try {
-        const user = await User.findById({ _id: userId });
+        const user = await User.findById({ _id: userId.id});
         if (!user) {
             throw new Error('User not found');
         }
