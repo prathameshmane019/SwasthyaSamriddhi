@@ -1,18 +1,12 @@
 "use client"
 import { signOut } from 'next-auth/react';
-import { useDispatch } from 'react-redux';
-import { logout } from '../redux/slice';
 
-export const Loguout = async () => {
+export const Logout = async () => {
   try {
-    // Log out the user from NextAuth session
-    await signOut({ redirect: false, callbackUrl: '/' });
-
-    const dispatch = useDispatch();
-    dispatch(logout());
-    clearUserFromLocalStorage();
+    await signOut();
     window.location.replace("/")
   } catch (error) {
     console.error('Logout Error:', error);
   }
+  return 
 };

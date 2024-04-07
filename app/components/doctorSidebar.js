@@ -1,22 +1,25 @@
+"use client"
 import Link from "next/link";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { signOut, useSession } from 'next-auth/react';
+import {  useSession } from 'next-auth/react';
 import { LogoutIcon } from '@heroicons/react/solid';
-const Sidebar = ({ doctor }) => {
+import { Logout } from "../utils/logout";
+const Sidebar = () => {
   const router = useRouter();
   const [activeMenu, setActiveMenu] = useState('');
   const { data: session } = useSession();
-
-  // Update active menu based on route change
+  const [doctor,setDoctor]=useState()
   useEffect(() => {
     setActiveMenu(router.pathname);
   }, [router.pathname]);
-
-  // Logout function using NextAuth.js signOut
+useEffect(()=>{
+  if(session){
+    setDoctor(session?.user)
+  }
+},[session])
   const handleLogout = async () => {
-    await signOut({ redirect: false });
-    router.push('/'); // Redirect to the home page after logout
+    await Logout()
   };
 
   return (

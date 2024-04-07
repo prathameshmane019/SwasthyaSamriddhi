@@ -1,17 +1,16 @@
 "use client"
 import axios from "axios"; 
 import { useState, useEffect } from "react";
-
+import { useSession } from "next-auth/react";
 const DoctorProfile = () => {
     const [doctor, setDoctor] = useState(null);
-
+  const { data: session } = useSession();
     useEffect(() => {
         const fetchDoctor = async () => {
-            const doctorInfo = JSON.parse(localStorage.getItem('user')); // Parse the stored string to object
-            if (doctorInfo) {
+             if (session) {
                 try {
-                    const response = await axios.post("api/finddoctor", { id: doctorInfo.id }); // Pass data as object
-                    setDoctor(response.data); // Set the data received from the server
+                    const response = await axios.post("api/finddoctor", { id: session.user.id }); // Pass data as object
+                    setDoctor(response.data); 
                 } catch (error) {
                     console.error("Error fetching doctor info:", error);
                 }
@@ -19,7 +18,7 @@ const DoctorProfile = () => {
         };
 
         fetchDoctor();
-    }, []);
+    }, [session]);
 
     return (
         <div className="bg-white rounded-lg shadow-lg p-6">

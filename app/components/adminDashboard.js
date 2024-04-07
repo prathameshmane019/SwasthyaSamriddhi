@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {  useSession } from 'next-auth/react';
-import { Loguout } from "../utils/logout";
+import { Logout } from "../utils/logout";
 
 const AdminDashboard = ({ admin }) => {
   const router = useRouter();
@@ -13,9 +13,9 @@ const AdminDashboard = ({ admin }) => {
   useEffect(() => {
     setActiveMenu(router.pathname);
   }, [router.pathname]);
-  console.log(session);
+  
   const handleLogout = async () => {
-    await Loguout() 
+     Logout() 
   };
 
   return (

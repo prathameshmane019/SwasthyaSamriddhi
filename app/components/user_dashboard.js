@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { LogoutIcon } from '@heroicons/react/solid';
+import { Logout } from "../utils/logout";
 
 const UserSidebar = () => {
   const router = useRouter();
@@ -15,8 +16,7 @@ const UserSidebar = () => {
   }, [router.pathname]);
 
   const handleLogout = async () => {
-    await signOut();
-    router.push('/login');
+    await Logout()
   };
 
   return (
@@ -27,7 +27,7 @@ const UserSidebar = () => {
           <p className="text-lg font-medium">{session ? `ID: ${session.user.id}` : 'Loading...'}</p>
         </div>
         <nav>
-          <Link href={{ pathname: '/user/', query: { id: session ? session.user.id : '' } }} className={`block py-2 px-4 rounded-md ${activeMenu === '/user/profile' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/user/profile')}>Profile
+          <Link href="user/" className={`block py-2 px-4 rounded-md ${activeMenu === '/user/profile' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/user/profile')}>Profile
           </Link>
           <Link href={{ pathname: '/user/records', query: { id: session ? session.user.id : '' } }} className={`block py-2 px-4 rounded-md ${activeMenu === '/user/records' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/user/records')}>Records
           </Link>

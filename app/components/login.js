@@ -4,9 +4,7 @@ import Link from 'next/link';
 import { Input, Button } from '@nextui-org/react';
 import { signIn,useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
-import { login } from './../redux/slice';
 import { useRouter } from 'next/navigation';
-
 export default function LoginComponent() {
 
   const [isVisible, setIsVisible] = useState(false);
@@ -19,11 +17,9 @@ export default function LoginComponent() {
   useEffect(() => {
     if (session?.user?.role === "user") {
       router.replace("/user");
-      dispatch(login(session?.user));
     }
     if (session?.user?.role === "doctor") {
-      router.replace("/doctor");
-      dispatch(login(session?.user));
+      router.replace("/doctor");      
     }
   }, [session, dispatch]);
 
@@ -35,9 +31,9 @@ export default function LoginComponent() {
         password,
         redirect: false,
       });
+      
       if (result.ok) {
         console.log('Login Successful');
-        dispatch(login(result.session.user));
       }
     } catch (error) {
       console.error('Failed to login', error);

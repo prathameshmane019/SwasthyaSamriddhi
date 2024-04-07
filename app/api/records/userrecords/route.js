@@ -7,9 +7,9 @@ import { decrypt } from "../../../libs/encryption";
 export async function POST(req) {
     connectMongoDB();
     const { id } = await req.json();
-    console.log(id.id);
+    console.log(id);
     try {
-        const user = await User.findById( id.id);
+        const user = await User.findById(id);
         if (!user) {
             throw new Error('User not found');
         }
@@ -27,7 +27,7 @@ export async function POST(req) {
                 };
             } catch (error) {
                 console.error("Error decrypting record:", error);
-                return null; // If decryption fails, return null for this record
+                return null; 
             }
         }).filter(record => record !== null); // Filter out records where decryption failed
 
