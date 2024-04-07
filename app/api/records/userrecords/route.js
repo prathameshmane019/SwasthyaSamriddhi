@@ -2,14 +2,14 @@ import { NextResponse } from 'next/server';
 import User from '@/app/models/user';
 import { connectMongoDB } from '@/app/libs/connectDb';
 import HealthRecord from '@/app/models/records';
-import { decrypt } from "../../../libs/encryption"; // Import decrypt function
+import { decrypt } from "../../../libs/encryption";
 
 export async function POST(req) {
     connectMongoDB();
-    const { userId } = await req.json();
-    console.log(userId.id);
+    const { id } = await req.json();
+    console.log(id.id);
     try {
-        const user = await User.findById({ _id: userId.id});
+        const user = await User.findById( id.id);
         if (!user) {
             throw new Error('User not found');
         }
