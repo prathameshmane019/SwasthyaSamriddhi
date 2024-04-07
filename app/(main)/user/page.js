@@ -1,16 +1,18 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
-
-const UserProfilePage = ({ searchParams }) => {
+import { useSession } from 'next-auth/react';
+const UserProfilePage = () => {
     const [id, setId] = useState("");
     const [loading, setLoading] = useState(false); // State to track loading status
     const [userData, setUserData] = useState(null);
 
+    const { data: session } = useSession();
     useEffect(() => {
-        setId(searchParams.id);
-        console.log(id);
-    }, [searchParams]);
+        if(session){
+            setId(session.user.id)
+        }
+    }, [session]);
 
     useEffect(() => {
         const fetchUserData = async () => {
