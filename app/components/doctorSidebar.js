@@ -1,9 +1,8 @@
-"use client"
 import Link from "next/link";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
-
+import { LogoutIcon } from '@heroicons/react/solid';
 const Sidebar = ({ doctor }) => {
   const router = useRouter();
   const [activeMenu, setActiveMenu] = useState('');
@@ -21,7 +20,7 @@ const Sidebar = ({ doctor }) => {
   };
 
   return (
-    <div className="bg-gray-800 text-white h-[100vh] w-1/4 flex flex-col justify-between">
+    <div className="bg-gradient-to-br from-green-500 to-green-800 text-white h-[100vh] w-1/4 flex flex-col justify-between backdrop-blur-lg border border-green-900 rounded-md">
       <div className="p-4">
         <h2 className="text-xl font-semibold mb-4">Doctor Dashboard</h2>
         <div className="flex items-center mb-4">
@@ -37,16 +36,17 @@ const Sidebar = ({ doctor }) => {
           </Link>
           <Link href="/doctor/patients" className={`block py-2 px-4 rounded-md ${activeMenu === '/doctor/patients' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/doctor/patients')}>Patients
           </Link>
-          
-        </nav>
-      </div>
-      <div className="p-4">
+          <div className="p-4">
         {session ? (
-          <button onClick={handleLogout} className="text-xs bg-red-500 text-white px-4 py-2 rounded-md">Logout</button>
-        ) : (
+         <button onClick={handleLogout} className="flex items-center justify-center block py-2 px-4 rounded-md mt-4 bg-red-500 text-white">
+         <LogoutIcon className="w-6 h-6 mr-2" /> Logout
+       </button>  ) : (
           <p className="text-xs">&copy; 2024 Doctor Dashboard</p>
         )}
       </div>
+        </nav>
+      </div>
+      
     </div>
   );
 };

@@ -26,7 +26,7 @@ export default function Home() {
     <>
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-400 to-blue-500">
       
-      <main className="flex flex-col items-center justify-center px-20 text-center mt-20">
+      <main className="flex flex-col items-center justify-center px-20 text-center mt-10">
         <img src="/vecteezy_family-health-insurance_16390596.png" alt="SecureHealth Logo" className="h-56 mb-8" />
 
         <h1 className="text-4xl md:text-6xl font-bold text-white">
