@@ -18,6 +18,7 @@ const SuccessMessage = ({ message, onClose }) => {
     </div>
   );
 };
+
 export default function RegisterComponent() {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -47,6 +48,9 @@ export default function RegisterComponent() {
   const handleCancel = () => {
 
   }
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessage("");
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password == confirmPassword) {
@@ -81,16 +85,19 @@ export default function RegisterComponent() {
       console.log("Form Data:", formData);
       try {
         const result = await axios.post("/api/register/user", formData);
-        console.log(result);
         setSuccessMessage("Registration successful!");
+        console.log(result);
       } catch (error) {
         console.log("User Registration failed");
         setSuccessMessage("Registration Failed!");
       }
-    };
+    } else {
+      setSuccessMessage("Passwords do not match.");
+    }
   }
   return (
-    <div className="flex justify-center items-center  bg-gray-100">
+    <div className="flex flex-col justify-center items-center  bg-gray-100">
+      {successMessage && <SuccessMessage message={successMessage} onClose={handleCloseSuccessMessage} />}
       <form onSubmit={handleSubmit} className="w-full max-w-6xl bg-white shadow-md rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-6 text-center">Register</h2>
         <div className="grid grid-cols-6 gap-6">
