@@ -20,7 +20,7 @@ export default function Nav() {
   };
 
   return (
-    <Navbar className="w-full">
+    <Navbar className="w-full" isBordered>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label="Open menu"
