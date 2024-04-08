@@ -14,6 +14,10 @@ const RegisterTypePage = () => {
             <BriefcaseIcon className="h-8 w-8 mr-2" />
             Doctor
         </Link>
+        <Link href="/register/medical" className="button flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+            <UserCircleIcon className="h-8 w-8 mr-2" />
+            Medical
+        </Link>
       </div>
     </div>
   );

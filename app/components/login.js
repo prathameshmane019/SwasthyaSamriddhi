@@ -21,6 +21,9 @@ export default function LoginComponent() {
     if (session?.user?.role === "doctor") {
       router.replace("/doctor");      
     }
+    if (session?.user?.role === "medical") {
+      router.replace("/medical");      
+    }
   }, [session, dispatch]);
 
   const handleSubmit = async (e) => {
