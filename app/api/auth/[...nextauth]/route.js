@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { connectMongoDB } from '../../../libs/connectDb';
 import User from '../../../models/user';
 import Doctor from '@/app/models/doctor';
+import Medical from '@/app/models/medical';
 
 export const authOptions = ({
   providers: [
@@ -22,6 +23,7 @@ export const authOptions = ({
           const user = await User.findOne({ _id: Id });
           // Find doctor by _id
           const doctor = await Doctor.findOne({ _id: Id });
+          const medical = await Medical.findOne({ _id: Id });
           
           if (user) {
             userRole = "user";
@@ -29,18 +31,24 @@ export const authOptions = ({
           } else if (doctor) {
             userRole = "doctor";
             id = doctor._id;
-          } else {
+          }
+          else if (medical) {
+            userRole = "medical";
+            id = medical._id;
+          } 
+           else {
             // Neither user nor doctor found
             return null;
           }
       
           // Check if user or doctor password matches
-          const isVerified = (user && user.password === password) || (doctor && doctor.password === password);
+          const isVerified = (user && user.password === password) || (doctor && doctor.password === password)||(medical && medical.password === password);
       
           if (isVerified) {
             const userWithRole = {
               ...user?.toObject(), // Optional chaining to prevent errors if user is null
-              ...doctor?.toObject(), // Optional chaining to prevent errors if doctor is null
+              ...doctor?.toObject(),
+              ...medical?.toObject(), // Optional chaining to prevent errors if doctor is null
               role: userRole,
               id: id
             };
