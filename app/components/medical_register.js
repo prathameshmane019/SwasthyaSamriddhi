@@ -61,7 +61,6 @@ export default function MedicalRegistrationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (password === confirmPassword) {
       if (
         validateAadharCard(adharCard) &&
@@ -94,6 +93,7 @@ export default function MedicalRegistrationForm() {
           }
         };
 
+        console.log(formData);
         try {
           const result = await axios.post("/api/register/medical", formData);
           console.log(result);

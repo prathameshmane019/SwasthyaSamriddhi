@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardBody } from '@nextui-org/react';
 import { UserCircleIcon, UsersIcon, UserGroupIcon } from '@heroicons/react/solid'; // Importing the correct icons
-
+import {toast} from 'sonner'
 function Dashboard() {
   const [recordCount, setRecordCount] = useState("Loading");
   const [userCount, setUserCount] = useState("Loading");
@@ -21,6 +21,7 @@ function Dashboard() {
       setRecordCount(response.data.length);
     } catch (error) {
       console.error('Error fetching record data:', error);
+      toast.error('Error fetching record data');
     }
   };
 
@@ -30,6 +31,7 @@ function Dashboard() {
       setUserCount(response.data.length);
     } catch (error) {
       console.error('Error fetching user data:', error);
+      toast.error('Error fetching user data');
     }
   };
 
@@ -39,6 +41,7 @@ function Dashboard() {
       setDoctorCount(response.data.length);
     } catch (error) {
       console.error('Error fetching doctor data:', error);
+      toast.error('Error fetching doctor data');
     }
   };
 

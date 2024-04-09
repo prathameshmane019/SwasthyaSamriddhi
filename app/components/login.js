@@ -5,6 +5,7 @@ import { Input, Button } from '@nextui-org/react';
 import { signIn,useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import {toast} from 'sonner'
 export default function LoginComponent() {
 
   const [isVisible, setIsVisible] = useState(false);
@@ -37,9 +38,11 @@ export default function LoginComponent() {
       
       if (result.ok) {
         console.log('Login Successful');
+        toast.success('Login Successful');
       }
     } catch (error) {
       console.error('Failed to login', error);
+      toast.error('Failed to login');
     }
   };
 

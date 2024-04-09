@@ -24,6 +24,7 @@ async function sendEmail(data, subject, htmlContent) {
 }
 
 export async function sendRegistrationEmail(data) {
+    console.log(data);
     const subject = 'Welcome to SwasthyaSamriddhi';
     const htmlContent = `
     <!DOCTYPE html>

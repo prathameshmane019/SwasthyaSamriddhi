@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { Input, Button, Card, CardBody } from '@nextui-org/react';
 import { ExclamationCircleIcon, CheckCircleIcon } from '@heroicons/react/outline';
-
+import {toast} from 'sonner'
 const SearchUser = () => {
   const [showOtp, setShowOtp] = useState(false);
   const [id, setId] = useState("");
@@ -15,8 +15,7 @@ const SearchUser = () => {
   const [otpError, setOtpError] = useState(null);
   const [enteredOTP, setEnteredOTP] = useState("");
   const [action, setAction] = useState(""); 
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
-  const router = useRouter();
+   const router = useRouter();
 
   const generateOTP = () => {
     let otp = "";
@@ -30,11 +29,13 @@ const SearchUser = () => {
     try {
       const response = await axios.post("/api/finduser", { id });
       const userData = response.data;
+
       setUserData(userData);
       setError(null);
     } catch (error) {
       setUserData(null);
       setError("User not found");
+      toast.error("User not found")
     }
   };
 
@@ -45,6 +46,7 @@ const SearchUser = () => {
         await axios.post('/api/sendOtp', { email: userData.email, otp: otp, name: name });
       }
     } catch (error) {
+      toast.error("Failed to send OTP");
       throw new Error("Failed to send OTP");
     }
   };
@@ -64,20 +66,22 @@ const SearchUser = () => {
   const handleValidateOTP = async () => {
     if (!enteredOTP || !otp) {
       setOtpError("Please enter OTP first");
+      toast.error("Please enter OTP first");
       return;
     }
 
     if (otp === enteredOTP) {
       setOtpError(null);
+      toast.success("OTP validation Successfull!")
       if (action === "showRecords") {
         router.push(`/doctor/patients/records?id=${id}`);
       } else if (action === "addRecord") {
         router.push(`/doctor/patients/addrecords?id=${id}`);
       }
-      setSuccessMessage("Form submitted successfully."); // Setting success message
-      resetFields(); // Clear fields after successful submission
+       resetFields(); // Clear fields after successful submission
     } else {
       setOtpError("Invalid OTP");
+      toast.error("Invalid OTP");
     }
   };
 
@@ -154,12 +158,7 @@ const SearchUser = () => {
           <p>{otpError}</p>
         </div>
       )}
-      {successMessage && (
-        <div className="flex items-center mt-4 text-green-500">
-          <CheckCircleIcon className="w-6 h-6 mr-2" />
-          <p>{successMessage}</p>
-        </div>
-      )}
+      
     </div>
   );
 };

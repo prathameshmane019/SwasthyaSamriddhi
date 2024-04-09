@@ -3,21 +3,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
+import { toast } from 'sonner'
 
-const SuccessMessage = ({ message, onClose }) => {
-  return (
-    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-      <strong className="font-bold">Success!</strong>
-      <span className="block sm:inline"> {message}</span>
-      <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={onClose}>
-        <svg className="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-          <title>Close</title>
-          <path d="M14.348 5.652a.5.5 0 0 1 0 .707L10.06 10l4.288 4.646a.5.5 0 0 1-.707.707L9.354 10l4.287-4.646a.5.5 0 0 1 .707-.707z"/>
-        </svg>
-      </span>
-    </div>
-  );
-};
 
 export default function RegisterComponent() {
   const [password, setPassword] = useState("");
@@ -40,17 +27,12 @@ export default function RegisterComponent() {
   const [medicationName, setMedicationName] = useState("");
   const [medicationFrequency, setMedicationFrequency] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // State for success message
-
   const handleSelectionChange = (event) => {
     setGender(event.target.value);
   };
   const handleCancel = () => {
 
   }
-  const handleCloseSuccessMessage = () => {
-    setSuccessMessage("");
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password == confirmPassword) {
@@ -85,19 +67,18 @@ export default function RegisterComponent() {
       console.log("Form Data:", formData);
       try {
         const result = await axios.post("/api/register/user", formData);
-        setSuccessMessage("Registration successful!");
+        toast.success('User Registration Succesfull')
         console.log(result);
       } catch (error) {
         console.log("User Registration failed");
-        setSuccessMessage("Registration Failed!");
+        toast.error('User Registration failed')
       }
     } else {
-      setSuccessMessage("Passwords do not match.");
+      toast.warning("Passwords do not match.");
     }
   }
   return (
     <div className="flex flex-col justify-center items-center  bg-gray-100">
-      {successMessage && <SuccessMessage message={successMessage} onClose={handleCloseSuccessMessage} />}
       <form onSubmit={handleSubmit} className="w-full max-w-6xl bg-white shadow-md rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-6 text-center">Register</h2>
         <div className="grid grid-cols-6 gap-6">
