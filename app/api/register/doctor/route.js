@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
       const name = doctorData.fullname.firstName + " " + doctorData.fullname.surName;
      
-      await sendRegistrationDoctorEmail({ id:newDoctor._id,email: doctorData.email, name: doctorData.fullname.firstName });
+      await sendRegistrationDoctorEmail({ id:newDoctor._id,email: doctorData.email, name: name});
 
       console.log("Doctor registered successfully ", newDoctor);
       return NextResponse.json(res, { message: "Doctor registered", doctor: newDoctor });
