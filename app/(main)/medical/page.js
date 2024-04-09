@@ -24,7 +24,7 @@ const MedicalProfile = () => {
         <div className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">Medical Profile</h2>
 
-            {doctor && ( // Check if doctor data is available
+            {doctor && ( 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <div className="border-b border-gray-200 pb-4">
@@ -59,4 +59,4 @@ const MedicalProfile = () => {
     );
 };
 
-export default DoctorProfile;
+export default MedicalProfile;

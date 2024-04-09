@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
+import {toast} from 'sonner'
 import {
   Table,
   TableHeader,
@@ -40,6 +41,7 @@ export default function App() {
         setDoctors(response.data);
       } catch (error) {
         console.error('Error fetching doctor data:', error);
+        toast.error('Error fetching doctor data');
       }
     };
     fetchDoctors();

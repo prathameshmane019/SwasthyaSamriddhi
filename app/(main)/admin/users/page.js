@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
+import {toast} from 'sonner'
 import {
   Table,
   TableHeader,
@@ -41,6 +42,7 @@ export default function App() {
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users data:', error);
+        toast.error('Error fetching users data');
       }
     };
     fetchUsers();

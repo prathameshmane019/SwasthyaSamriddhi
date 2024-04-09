@@ -5,7 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { useSearchParams } from 'next/navigation';
 import { Card, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Spinner, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
-
+import {toast} from 'sonner'
 export default function UserRecords() {
   const searchParam = useSearchParams();
   const id = searchParam.get('id');
@@ -28,6 +28,7 @@ export default function UserRecords() {
           setIsLoading(false);
         } catch (error) {
           console.error("Error fetching records:", error);
+          toast.error("Error fetching records");
           setIsLoading(false);
         }
       };
