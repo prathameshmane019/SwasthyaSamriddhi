@@ -1,7 +1,7 @@
 import { connectMongoDB } from "@/app/libs/connectDb";
 import { NextResponse } from "next/server";
 import Doctor from "@/app/models/doctor";
-import { sendRegistrationEmail } from "../../nodemailer/route";
+import { sendRegistrationDoctorEmail } from "../../nodemailer/route";
 
 
 export default async function handler(req, res) {
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       const doctorData = await req.json();
       const newDoctor = new Doctor(doctorData);
       await newDoctor.save();
-      await sendRegistrationEmail({ email: doctorData.email, name: doctorData.fullname.firstName });
+      await sendRegistrationDoctorEmail({ id:newDoctor._id,email: doctorData.email, name: doctorData.fullname.firstName });
 
       console.log("Doctor registered successfully:", newDoctor);
       return NextResponse.json(res, { message: "Doctor registered", doctor: newDoctor });

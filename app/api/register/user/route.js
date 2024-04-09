@@ -9,7 +9,7 @@ export async function POST(req) {
         const user = await req.json();
         const newUser = new User(user)
         await newUser.save()
-        await sendRegistrationEmail({email:user.email,name:user.fullname.firstname})
+        await sendRegistrationEmail({email:user.email,id:newUser.id,name:user.fullname.firstname})
         console.log("user registered");
     return NextResponse.json({message:"User registered"});
         
