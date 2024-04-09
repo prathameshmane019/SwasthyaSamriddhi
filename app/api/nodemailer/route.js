@@ -103,6 +103,7 @@ export async function sendRegistrationEmail(data) {
                 <p>Your Privacy, Our Promise</p>
                 <h2 style="font-size: 16px;">Dear ${data.name},</h2>
                 <p>Thank you for registering with SwasthyaSamriddhi. We are excited to have you onboard!</p>
+                <p style="font-size: 16px;">Your Username is : ${data.id},</p>
                 <p>Best Regards,<br>SwasthyaSamriddhi Team</p>
             </div>
             <div class="illustration">
@@ -118,7 +119,101 @@ export async function sendRegistrationEmail(data) {
     `;
     await sendEmail(data, subject, htmlContent);
 }
-
+export async function sendRegistrationDoctorEmail(data) {
+    const subject = 'Welcome to SwasthyaSamriddhi';
+    const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welcome to Secure Health Management</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f5f5f5;
+                color: #333333;
+            }
+    
+            .container {
+                max-width: 600px;
+                margin: auto;
+                padding: 20px;
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
+    
+            .header {
+                background-color: #38761d;
+                padding: 20px;
+                text-align: center;
+                border-radius: 10px 10px 0 0;
+                color: #ffffff;
+            }
+    
+            .logo img {
+                max-width: 100px;
+                height: auto;
+            }
+    
+            .content {
+                padding: 20px;
+            }
+    
+            .content h1,
+            .content h2 {
+                color: #6aa84f;
+            }
+    
+            .footer {
+                text-align: center;
+                padding-top: 20px;
+                color: #888888;
+            }
+    
+            .illustration img {
+                display: block;
+                margin: auto;
+                max-width: 100%;
+                height: auto;
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="logo">
+                    <img src="https://eictdfu.stripocdn.email/content/guids/7bbde248-d214-40aa-9269-60756a26ac48/images/swasthya_logo1.png" alt="Logo">
+                </div>
+                <h3>Swasthya Samriddhi</h3>
+            </div>
+            <div class="content">
+                <h1>Welcome to Secure Health Management</h1>
+                <p>Your Privacy, Our Promise</p>
+                <h2 style="font-size: 16px;">Dear Dr.${data.name},</h2>
+                <p>Thank you for registering with SwasthyaSamriddhi. We are excited to have you onboard!</p>
+                <p style="font-size: 16px;">Your Username is : ${data.id},</p>
+                <p>Best Regards,<br>SwasthyaSamriddhi Team</p>
+            </div>
+            <div class="illustration">
+            <img class="adapt-img" src="https://eictdfu.stripocdn.email/content/guids/7bbde248-d214-40aa-9269-60756a26ac48/images/college_entrance_examcuate.png" alt="" style="display: block;" width="208">
+            </div>
+            <div class="footer">
+                <p>&copy; 2024 Swasthya Samriddhi. All rights reserved.</p>
+            </div>
+        </div>
+    </body>
+    
+    </html>
+    `;
+    await sendEmail(data, subject, htmlContent);
+}
 export async function sendHealthRecordAddedEmail(data) {
     const subject = 'New Health Record Added';
     const htmlContent = `

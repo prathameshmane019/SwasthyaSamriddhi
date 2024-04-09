@@ -1,3 +1,4 @@
+
 import DoctorRegistrationForm from '@/app/components/doctor_register'
 import React from 'react'
 
