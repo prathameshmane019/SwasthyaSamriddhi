@@ -30,6 +30,8 @@ export default function RegisterComponent() {
   const [gender, setGender] = useState("");
   const [mobile, setMobile] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
   const [building, setBuilding] = useState("");
   const [city, setCity] = useState("");
   const [taluka, setTaluka] = useState("");
@@ -66,6 +68,8 @@ export default function RegisterComponent() {
         gender,
         mobile,
         bloodGroup,
+        weight,
+        height,
         address: {
           building,
           city,
@@ -171,7 +175,26 @@ export default function RegisterComponent() {
               className="mb-4"
             />
           </div>
-
+          <div className="col-span-2">
+            <Input
+              type="weight"
+              variant="bordered"
+              label="Weight"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              className="mb-4"
+            />
+          </div>
+          <div className="col-span-2">
+            <Input
+              type="height"
+              variant="bordered"
+              label="height"
+              value={height}
+              onChange={(e) => setHeight(e.target.value)}
+              className="mb-4"
+            />
+          </div>
           <div className="col-span-2">
             <select
               id="gender"
