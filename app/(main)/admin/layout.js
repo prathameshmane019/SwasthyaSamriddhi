@@ -1,18 +1,16 @@
-"use client"
+
 import AdminDashboard from "@/app/components/adminDashboard";
-import Sidebar from "@/app/components/doctorSidebar";
-import { useEffect, useState } from 'react';
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../app/api/auth/[...nextauth]/route";
+export default async function DoctorLayout({ children }) {
 
-export default function DoctorLayout({ children }) {
-  const [admin, setAdmin] = useState(null);
-  useEffect(() => {
-    const adminInfo = localStorage.getItem('user');
-    if (adminInfo) {
-      const parsedDoctorInfo = JSON.parse(adminInfo);
-      setAdmin(parsedDoctorInfo);
-    }
-  }, []);
-
+  const session = await getServerSession(authOptions);
+  const role = session?.user?.role
+  if (!(role==="admin")) {
+    console.log("unauthorised")
+    redirect("/login");
+   }
   return (    
     <div className="flex ">
       <AdminDashboard admin={admin} />
