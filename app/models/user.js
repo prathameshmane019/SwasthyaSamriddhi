@@ -49,12 +49,10 @@ const userSchema = new Schema({
     required: true
   },
   height: {
-    type: String,
-    required: true
+    type: String
   },
   weight: {
-    type: String,
-    required: true
+    type: String
   },
   address: {
     building: String,
