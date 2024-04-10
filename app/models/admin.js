@@ -1,39 +1,29 @@
-const mongoose = require("mongoose");
-const { isEmail } = require("validator");
-const bcrypt = require("bcrypt");
-const adminSchema = new mongoose.Schema({
+import mongoose from 'mongoose';
+
+const { Schema, model } = mongoose;
+
+const adminSchema = new Schema({
+  _id: { type: String }, 
+  fullname: {
+    firstName: String,
+    middleName: String,
+    surName: String
+  },
+  adharCard: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
-    required: [true, "Please enter email"],
-    unique: true,
-    lowercase: true,
-    validate: [isEmail, "Please enter a valid email"],
+    required: true
   },
-  password: {
-    type: String,
-    required: [true, "Please enter password"],
-    minlength: [8, "Minimum length of password should must be 8 characters"],
-  },
-});
-
-adminSchema.pre("save", async function (next) {
-  const salt = bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
-
-adminSchema.statics.login = async function (email, password) {
-  const admin = await this.findOne({ email });
-  if (admin) {
-    const auth = await bcrypt.compare(password, admin.password);
-    if (auth) {
-      return admin;
-    }
-    throw Error("Incorrect Password");
+  password:{
+    type:String,
+    required: true
   }
-  throw Error("Invalid Email.");
-};
+}, { timestamps: true });
 
-const Admin = mongoose.model("admin", adminSchema);
 
-module.exports = Admin;
+const Admin = mongoose.models.Admin || model('Admin', adminSchema);
+
+export default Admin;

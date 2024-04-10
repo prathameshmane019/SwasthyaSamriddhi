@@ -3,14 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import moment from 'moment';
-import { Card, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Spinner, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import {  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Spinner, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
+import RecordSkeleton from '@/app/components/skeleton/record';
 
 const UserRecords = () => {
   const [userHealthRecords, setUserHealthRecords] = useState([]);
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRecord, setSelectedRecord] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   useEffect(() => {
     const fetchRecords = async () => {
       try {
@@ -26,62 +28,82 @@ const UserRecords = () => {
         }
       } catch (error) {
         console.error("Error fetching records:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
-
     fetchRecords();
   }, [session]);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const handleRowClick = (record) => {
     setSelectedRecord(record);
-    setModalOpen(true);
     onOpen();
   };
 
   return (
     <>
-      <Table
-        aria-label="User health records table"
-        css={{
-          "&.table": {
-            minHeight: "400px",
-          },
-        }}
-      >
-        <TableHeader>
-          <TableColumn key="doctorId" allowsSorting aria-sort="none">
-            Doctor ID
-          </TableColumn>
-          <TableColumn key="visitDate" allowsSorting aria-sort="none">
-            Visit Date
-          </TableColumn>
-          <TableColumn key="diagnosis" allowsSorting aria-sort="none">
-            Diagnosis
-          </TableColumn>
-          <TableColumn key="prescription" allowsSorting aria-sort="none">
-            Prescription
-          </TableColumn>
-          <TableColumn key="status" allowsSorting aria-sort="none">
-            Status
-          </TableColumn>
-          <TableColumn key="notes" allowsSorting aria-sort="none">
-            Notes
-          </TableColumn>
-        </TableHeader>
-        <TableBody
-          items={userHealthRecords}
-          isLoading={isLoading}
-          loadingComponent={<Spinner label="Loading records..." />}
+      {isLoading ? (
+        <div className='mt-10'>
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+          <RecordSkeleton />
+        </div>
+      ) : (
+        <Table
+          aria-label="User health records table"
+          css={{
+            "&.table": {
+              minHeight: "400px",
+            },
+          }}
         >
-          {(item) => (
-            <TableRow key={item._id} onClick={() => handleRowClick(item)}>
-              {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          <TableHeader>
+            <TableColumn key="doctorId" allowsSorting aria-sort="none">
+              Doctor ID
+            </TableColumn>
+            <TableColumn key="visitDate" allowsSorting aria-sort="none">
+              Visit Date
+            </TableColumn>
+            <TableColumn key="diagnosis" allowsSorting aria-sort="none">
+              Diagnosis
+            </TableColumn>
+            <TableColumn key="prescription" allowsSorting aria-sort="none">
+              Prescription
+            </TableColumn>
+            <TableColumn key="status" allowsSorting aria-sort="none">
+              Status
+            </TableColumn>
+            <TableColumn key="notes" allowsSorting aria-sort="none">
+              Notes
+            </TableColumn>
+          </TableHeader>
+          <TableBody
+            isLoading={isLoading}
+            loadingContent={<Spinner label="Loading..." />}>
+            {userHealthRecords.map(record => (
+              <TableRow key={record._id} onClick={() => handleRowClick(record)}>
+                <TableCell>{record.doctorId}</TableCell>
+                <TableCell>{record.visitDate}</TableCell>
+                <TableCell>{record.diagnosis}</TableCell>
+                <TableCell>{record.prescription}</TableCell>
+                <TableCell>{record.status}</TableCell>
+                <TableCell>{record.notes}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
       {selectedRecord && (
         <Modal
           backdrop="opaque"
@@ -96,7 +118,7 @@ const UserRecords = () => {
               <>
                 <ModalHeader className="flex flex-col gap-1">Health Record Details</ModalHeader>
                 <ModalBody>
-                  <Card>
+                  <div>
                     <div className="mb-4">
                       <label htmlFor="doctorId" className="block text-gray-700 font-bold mb-2">
                         Doctor ID:
@@ -145,7 +167,7 @@ const UserRecords = () => {
                         {selectedRecord.notes}
                       </p>
                     </div>
-                  </Card>
+                  </div>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onClick={onCloseModal}>

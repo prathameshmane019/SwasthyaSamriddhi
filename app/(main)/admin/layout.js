@@ -7,6 +7,7 @@ export default async function DoctorLayout({ children }) {
 
   const session = await getServerSession(authOptions);
   const role = session?.user?.role
+  const admin = session?.user
   if (!(role==="admin")) {
     console.log("unauthorised")
     redirect("/login");
