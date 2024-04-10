@@ -33,7 +33,7 @@ export default function App() {
   const [doctors, setDoctors] = useState([]);
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchDoctors = async () => {
       try {

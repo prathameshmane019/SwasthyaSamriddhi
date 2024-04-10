@@ -13,12 +13,11 @@ export default function Nav() {
     "About Us",
     "Log Out",
   ];
-
   const handleSignOut = async () => {
-    await signOut({ redirect: false }); // Sign out without redirect
-    router.replace("/"); // Redirect to the home page
+    await signOut({ redirect: false }); 
+    router.replace("/"); 
   };
-
+  
   return (
     <Navbar className="w-full" isBordered>
       <NavbarContent>
@@ -28,7 +27,7 @@ export default function Nav() {
         />
       </NavbarContent>
       <NavbarContent justify="center" >
-        <NavbarBrand className="w-[40vw] ml-0 mr-28">
+        <NavbarBrand className="w-[4    +0vw] ml-0 mr-28">
           <Image
             width={50}
             src="/logo.png"
@@ -56,7 +55,6 @@ export default function Nav() {
           </Link>
         </NavbarItem>
       </NavbarContent>
-
       <NavbarContent justify="end">
         {session ? (
           <>
@@ -79,7 +77,6 @@ export default function Nav() {
           </>
         )}
       </NavbarContent>
-
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
