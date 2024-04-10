@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 
 export default function RegisterHealthRecordComponent({ search }) {
   const [formData, setFormData] = useState({
+    
     diagnosis: "",
     prescription: "",
     status: "",
@@ -39,6 +40,7 @@ export default function RegisterHealthRecordComponent({ search }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+   
 
     try {
       const result = await axios.post("/api/records/newrecord", {
@@ -47,6 +49,7 @@ export default function RegisterHealthRecordComponent({ search }) {
         doctorId,
       });
       console.log(result);
+      console.log();
     } catch (error) {
       console.log("HealthRecord Registration failed");
     }
@@ -54,6 +57,7 @@ export default function RegisterHealthRecordComponent({ search }) {
 
   const handleCancel = () => {
     setFormData({
+   
       diagnosis: "",
       prescription: "",
       status: "",
@@ -77,6 +81,8 @@ export default function RegisterHealthRecordComponent({ search }) {
       <form onSubmit={handleSubmit} className="max-w-lg w-full p-8 bg-white rounded-lg shadow-md">
         <h2 className="text-3xl font-bold mb-6 text-center">Register Health Record</h2>
         <div className="grid grid-cols-1 gap-6">
+       
+          
           <Input
             type="text"
             variant="bordered"
