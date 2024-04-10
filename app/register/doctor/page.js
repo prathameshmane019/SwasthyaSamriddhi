@@ -4,7 +4,9 @@ import React from 'react'
 
 const page = () => {
   return (
-    <DoctorRegistrationForm></DoctorRegistrationForm>
+   
+      <DoctorRegistrationForm></DoctorRegistrationForm>
+    
   )
 }
 

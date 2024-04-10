@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Input, Button } from "@nextui-org/react";
 import axios from "axios";
 import { useSession } from 'next-auth/react';
-
+import {toast} from 'sonner'
 
 export default function RegisterHealthRecordComponent({ search }) {
   const [formData, setFormData] = useState({
@@ -25,9 +25,12 @@ export default function RegisterHealthRecordComponent({ search }) {
           setDoctorId(session.user.id);
         } else {
           console.log("Doctor ID not found in session");
+          toast.warning("Doctor ID not found in session");
+          
         }
       } else {
         console.log("Session not available");
+        toast.error("Session not available");
       }
     };
 
@@ -48,10 +51,13 @@ export default function RegisterHealthRecordComponent({ search }) {
         patientId,
         doctorId,
       });
+      handleCancel()
+      toast.success("HealthRecord Added Successfully")
       console.log(result);
       console.log();
     } catch (error) {
       console.log("HealthRecord Registration failed");
+      toast.error("HealthRecord Registration failed");
     }
   };
 
@@ -73,7 +79,10 @@ export default function RegisterHealthRecordComponent({ search }) {
   };
 
   if (status === "loading") {
+    const promise = () => new Promise((resolve) => resolve("Record has been added"));
+
     return <div>Loading...</div>;
+
   }
 
   return (

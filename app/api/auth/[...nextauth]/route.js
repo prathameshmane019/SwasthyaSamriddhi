@@ -4,6 +4,7 @@ import { connectMongoDB } from '../../../libs/connectDb';
 import User from '../../../models/user';
 import Doctor from '@/app/models/doctor';
 import Medical from '@/app/models/medical';
+import Admin from '@/app/models/admin';
 
 export const authOptions = ({
   providers: [
@@ -21,10 +22,9 @@ export const authOptions = ({
       
           // Find user by _id
           const user = await User.findOne({ _id: Id });
-          // Find doctor by _id
           const doctor = await Doctor.findOne({ _id: Id });
           const medical = await Medical.findOne({ _id: Id });
-          
+          const admin = await Admin.findOne({ _id: Id });
           if (user) {
             userRole = "user";
             id = user._id;
@@ -35,14 +35,16 @@ export const authOptions = ({
           else if (medical) {
             userRole = "medical";
             id = medical._id;
-          } 
+          } else if (admin) {
+            userRole = "admin";
+            id = admin._id;
+          }
            else {
-            // Neither user nor doctor found
+            
             return null;
           }
       
-          // Check if user or doctor password matches
-          const isVerified = (user && user.password === password) || (doctor && doctor.password === password)||(medical && medical.password === password);
+          const isVerified = (user && user.password === password) || (doctor && doctor.password === password)||(medical && medical.password === password)||(admin && admin.password === password);
       
           if (isVerified) {
             const userWithRole = {

@@ -3,7 +3,7 @@ import React from "react";
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button } from "@nextui-org/react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import { Image } from "@nextui-org/react";
 export default function Nav() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -13,12 +13,11 @@ export default function Nav() {
     "About Us",
     "Log Out",
   ];
-
   const handleSignOut = async () => {
-    await signOut({ redirect: false }); // Sign out without redirect
-    router.replace("/"); // Redirect to the home page
+    await signOut({ redirect: false }); 
+    router.replace("/"); 
   };
-
+  
   return (
     <Navbar className="w-full" isBordered>
       <NavbarContent>
@@ -27,9 +26,15 @@ export default function Nav() {
           className="sm:hidden"
         />
       </NavbarContent>
-      <NavbarContent  justify="start">
-        <NavbarBrand>
-          <p className="font-bold text-inherit text-blue-600 ">Swasthya Samriddhi</p>
+      <NavbarContent justify="center" >
+        <NavbarBrand className="w-[4    +0vw] ml-0 mr-28">
+          <Image
+            width={50}
+            src="/logo.png"
+            alt="Logo"
+            className="mr-28"
+          />          
+          <p className="font-bold text-inherit text-blue-600 ml-4">Swasthya Samriddhi</p>
         </NavbarBrand>
       </NavbarContent>
 
@@ -50,7 +55,6 @@ export default function Nav() {
           </Link>
         </NavbarItem>
       </NavbarContent>
-
       <NavbarContent justify="end">
         {session ? (
           <>
@@ -73,7 +77,6 @@ export default function Nav() {
           </>
         )}
       </NavbarContent>
-
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>

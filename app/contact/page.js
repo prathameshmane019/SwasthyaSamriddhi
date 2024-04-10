@@ -1,19 +1,19 @@
 "use client"
 import { useState } from 'react';
 import { Input, Textarea, Button } from '@nextui-org/react';
-import { CheckCircleIcon } from '@heroicons/react/solid';
 import axios from 'axios';
+import {  toast } from 'sonner'
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const handleChange = (e) => {
+   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    setShowSuccessMessage(true);
+    toast.success('Thank you for contacting us')
+    
     setFormData({ name: '', email: '', message: '' });
     console.log(formData);
     const result = await axios.post("/api/contact",formData);
@@ -60,12 +60,7 @@ const Contact = () => {
             </Button>
           </div>
         </form>
-        {showSuccessMessage && (
-          <div className="mt-4 flex items-center space-x-2 text-green-500">
-            <CheckCircleIcon className="h-6 w-6" />
-            <span>Your message has been submitted successfully!</span>
-          </div>
-        )}
+        
       </div>
     </div>
   );

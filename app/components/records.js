@@ -5,7 +5,8 @@ import axios from 'axios';
 import moment from 'moment';
 import { useSearchParams } from 'next/navigation';
 import { Card, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue, Spinner, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
-
+import {toast} from 'sonner'
+import RecordSkeleton from './skeleton/record';
 export default function UserRecords() {
   const searchParam = useSearchParams();
   const id = searchParam.get('id');
@@ -28,6 +29,7 @@ export default function UserRecords() {
           setIsLoading(false);
         } catch (error) {
           console.error("Error fetching records:", error);
+          toast.error("Error fetching records");
           setIsLoading(false);
         }
       };
@@ -44,7 +46,24 @@ export default function UserRecords() {
   };
 
   return (
-    <>
+    <> {isLoading ? ( 
+      <div className='mt-10'>
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      <RecordSkeleton />
+      </div>
+    ) : (
       <Table
         aria-label="User health records table"
         css={{
@@ -84,7 +103,7 @@ export default function UserRecords() {
             </TableRow>
           )}
         </TableBody>
-      </Table>
+      </Table>)}
       {selectedRecord && (
         <Modal
           backdrop="opaque"
@@ -98,8 +117,8 @@ export default function UserRecords() {
             {(onCloseModal) => (
               <>
                 <ModalHeader className="flex flex-col gap-1">Health Record Details</ModalHeader>
-                <ModalBody>
-                  <Card>
+                <ModalBody className='m-0'>
+                  <div className='m-0'>
                     <div className="mb-4">
                       <label htmlFor="doctorId" className="block text-gray-700 font-bold mb-2">
                         Doctor ID:
@@ -148,7 +167,7 @@ export default function UserRecords() {
                         {selectedRecord.notes}
                       </p>
                     </div>
-                  </Card>
+                  </div>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onClick={onCloseModal}>
