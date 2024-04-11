@@ -17,6 +17,10 @@ const healthRecordSchema = new Schema({
         type: String,
         required: [true, "Please provide Notes"]
     },
+    image: {
+        data: Buffer,
+        contentType: String
+      },
     patientId:{
         type:String,
         required:true,
