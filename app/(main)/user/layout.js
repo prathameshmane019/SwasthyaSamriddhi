@@ -10,8 +10,8 @@ export default  async function UserLayout({ children }) {
       redirect("/login");
      }
     return (    
-        <div className="flex "><UserSidebar/>
-        <div className="w-full h-full ">
+        <div className="flex overflow-y-hidden "><UserSidebar/>
+        <div className="w-[80%] h-full ml-[20%] ">
             {children}
         </div>
        </div>

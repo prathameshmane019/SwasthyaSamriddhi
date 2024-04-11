@@ -70,7 +70,8 @@ export default function UserRecords() {
           "&.table": {
             minHeight: "400px",
           },
-        }}
+        }
+      }
       >
         <TableHeader>
           <TableColumn key="doctorId" allowsSorting aria-sort="none">
@@ -93,6 +94,7 @@ export default function UserRecords() {
           </TableColumn>
         </TableHeader>
         <TableBody
+        className='overflow-y-scroll'
           items={userHealthRecords}
           isLoading={isLoading}
           loadingComponent={<Spinner label="Loading records..." />}

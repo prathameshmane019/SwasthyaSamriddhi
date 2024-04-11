@@ -17,7 +17,9 @@ export default function Nav() {
     await signOut({ redirect: false }); 
     router.replace("/"); 
   };
-  
+  const handleDashboard = ()=>{
+    router.replace("/"+ session?.user?.role)
+  }
   return (
     <Navbar className="w-full" isBordered>
       <NavbarContent>
@@ -58,6 +60,11 @@ export default function Nav() {
       <NavbarContent justify="end">
         {session ? (
           <>
+          <NavbarItem>
+          <Button  color="primary"  variant="flat" onClick={handleDashboard}>
+            Dashboard
+          </Button>
+        </NavbarItem>
             <NavbarItem>
               <Button onClick={handleSignOut} color="primary" variant="flat">
                 Log Out

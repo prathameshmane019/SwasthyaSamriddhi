@@ -23,7 +23,7 @@ useEffect(()=>{
   };
 
   return (
-    <div className="bg-gradient-to-br from-green-500 to-green-800 text-white h-[100vh] w-1/4 flex flex-col justify-between backdrop-blur-lg border border-green-900 rounded-md">
+    <div className="fixed  bg-gradient-to-br from-green-500 to-green-800 text-white h-[100vh] w-1/5 flex flex-col justify-between backdrop-blur-lg border border-green-900 rounded-md overflow-y-hidden">
       <div className="p-4">
         <h2 className="text-xl font-semibold mb-4">Doctor Dashboard</h2>
         <div className="flex items-center mb-4">
