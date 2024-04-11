@@ -1,4 +1,3 @@
-
 import Sidebar from "@/app/components/doctorSidebar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -12,9 +11,9 @@ export default async function DoctorLayout({ children }) {
    }
 
   return (    
-    <div className="flex ">
+    <div className="flex overflow-y-hidden">
       <Sidebar />
-      <div className="w-full h-full" >
+      <div className="w-[80%] h-full  ml-[20%]" >
         {children}
       </div>
     </div>

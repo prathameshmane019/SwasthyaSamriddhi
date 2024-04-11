@@ -1,150 +1,56 @@
+"use client"
+import { useState, useEffect } from "react";
 import React from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from 'sonner'
 import {
   Table,
   TableHeader,
+  Skeleton,
   TableColumn,
   TableBody,
   TableRow,
   TableCell,
-  Input,
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Chip,
+  Input,
   User,
   Pagination,
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
-import { SearchIcon } from "./SearchIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
-
-const users = [
-  {
-    id: 'D300324000007',
-    name: 'John Doe Smith',
-    email: 'ffsddef@example.com',
-    role: 'MD',
-    status: 'Cardiology',
-    actions: 'actions',
-  },
-  {
-    id: 'D300324000008',
-    name: 'Prathamesh Bharat Mane',
-    email: 'maneprathamesh019@gmail.com',
-    role: 'hbdbhb',
-    status: 'dhvbhhbvh',
-    actions: 'actions',
-  },
-];
-
-const statusColorMap = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
+import UserSkeleton from "./skeleton/user";
 
 const columns = [
   { uid: "name", name: "Name", sortable: true },
   { uid: "email", name: "Email", sortable: true },
-  { uid: "role", name: "Role", sortable: true },
-  { uid: "status", name: "Status", sortable: true },
-  { uid: "actions", name: "Actions", sortable: false },
+  { uid: "mobile", name: "Mobile No", sortable: true },
+  { uid: "adharCard", name: "AdharCard No", sortable: true },
 ];
 
-export default function App() {
-  const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: "name",
-    direction: "ascending",
-  });
-  const [page, setPage] = React.useState(1);
+export default function UserTable({user}) {
+  const [filterValue, setFilterValue] = useState("");
+  const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter()
 
-  const pages = Math.ceil(users.length / rowsPerPage);
-
-  const hasSearchFilter = Boolean(filterValue);
-
-  const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
-
-    if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
-
-    return filteredUsers;
-  }, [users, filterValue]);
-
-  const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    return filteredItems.slice(start, end);
-  }, [page, filteredItems, rowsPerPage]);
-
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a, b) => {
-      const first = a[sortDescriptor.column];
-      const second = b[sortDescriptor.column];
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
-  }, [sortDescriptor, items]);
-
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
-
-    switch (columnKey) {
-      case "name":
-        return (
-          <User
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
-        );
-      case "status":
-        return (
-          <Chip
-            color={statusColorMap[user.status]}
-            variant="dot"
-          >
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown className="bg-background border-1 border-default-200">
-              <DropdownTrigger>
-                <Button isIconOnly radius="full" size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-400" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-        );
-      default:
-        return cellValue;
-    }
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`/api/admin/${user}s`);
+        setUsers(response.data);
+        setLoading(true)
+      } catch (error) {
+        console.error('Error fetching users data:', error);
+        toast.error('Error fetching users data');
+      }
+    };
+    fetchUsers();
   }, []);
 
-  const onRowsPerPageChange = React.useCallback((e) => {
-    setRowsPerPage(Number(e.target.value));
-    setPage(1);
-  }, []);
+  const filteredUsers = users.filter((user) =>
+    user.fullname.firstName.toLowerCase().includes(filterValue.toLowerCase())
+  );
 
   const onSearchChange = React.useCallback((value) => {
     if (value) {
@@ -155,30 +61,130 @@ export default function App() {
     }
   }, []);
 
+  const onClear = React.useCallback(() => {
+    setFilterValue("")
+    setPage(1)
+  }, [])
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
   return (
-    <Table
-      isCompact
-      removeWrapper
-      aria-label="Example table with custom cells, pagination and sorting"
-    >
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-between gap-3 items-end m-2">
+        <Input
+          isClearable
+          className="w-full sm:max-w-[44%]"
+          placeholder="Search by name..."
+          startContent={<svg
+            aria-hidden="true"
+            fill="none"
+            focusable="false"
+            height="1em"
+            role="presentation"
+            viewBox="0 0 24 24"
+            width="1em"
           >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No users found"} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+            <path
+              d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            />
+            <path
+              d="M22 22L20 20"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            />
+          </svg>}
+          value={filterValue}
+          onClear={() => onClear()}
+          onValueChange={onSearchChange}
+        />
+        <Button color="primary" 
+    onClick={()=>{router.replace(`/register/${user}`)}} endContent={<svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    height={24}
+    role="presentation"
+    viewBox="0 0 24 24"
+    width={24}
+  >
+    <g
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+    >
+      <path d="M6 12h12" />
+      <path d="M12 18V6" />
+    </g>
+  </svg>}>
+              Add New
+            </Button>
+      </div>
+      {loading ? ( 
+        <div className="mt-10">
+        <UserSkeleton/>
+        <UserSkeleton/>
+        <UserSkeleton/>
+        <UserSkeleton/>
+        <UserSkeleton/>
+        <UserSkeleton/>
+        <UserSkeleton/>
+        <UserSkeleton/>
+        </div>
+      ) : (
+      <Table
+        isCompact
+        removeWrapper
+        aria-label="Users table with custom cells, pagination and sorting"
+
+        bottomContent={
+          totalPages > 0 ? (
+            <div className="flex w-full justify-center">
+              <Pagination
+                isCompact
+                showControls
+                showShadow
+                color="primary"
+                page={page}
+                total={totalPages}
+                onChange={(page) => setPage(page)}
+              />
+            </div>
+          ) : null
+        }
+      >
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn key={column.uid}>
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent="No users found" items={paginatedUsers}>
+          {(user) => (
+            <TableRow key={user._id}>
+              <TableCell>
+                <User
+                  name={`${user.fullname.firstName} ${user.fullname.surName}`}
+                  description={user.email}
+                />
+              </TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.mobile}</TableCell>
+              <TableCell>{user.adharCard}</TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>)}
+    </div>
   );
 }
