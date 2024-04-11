@@ -39,7 +39,7 @@ export default function UserTable({user}) {
       try {
         const response = await axios.get(`/api/admin/${user}s`);
         setUsers(response.data);
-        setLoading(true)
+        setLoading(false)
       } catch (error) {
         console.error('Error fetching users data:', error);
         toast.error('Error fetching users data');
