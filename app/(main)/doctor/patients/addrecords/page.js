@@ -5,6 +5,9 @@ const page = ({searchParams}) => {
   return (
     <div>
       <RegisterHealthRecordComponent search={searchParams}></RegisterHealthRecordComponent>
+      
+
+
     </div>
   )
 }
