@@ -18,8 +18,12 @@ const healthRecordSchema = new Schema({
         required: [true, "Please provide Notes"]
     },
     image: {
-        data: Buffer,
-        contentType: String
+        image_url:{
+            type:String
+        },
+        public_id:{
+            type:String
+        }
       },
     patientId:{
         type:String,
