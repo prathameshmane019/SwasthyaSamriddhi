@@ -15,9 +15,7 @@ export default function RegisterHealthRecordComponent({ search }) {
   const [patientId, setPatientId] = useState("");
   const [doctorId, setDoctorId] = useState("");
   const [file, setFile] = useState(null);
-
-  const { data: session, status } = useSession(); // Using useSession hook
-
+  const { data: session, status } = useSession(); 
   useEffect(() => {
     const fetchDoctorId = async () => {
       if (session) {
