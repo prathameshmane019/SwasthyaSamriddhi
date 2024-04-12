@@ -292,7 +292,7 @@ export async function sendHealthRecordAddedEmail(data) {
                 <h1>New Health Record Added Successfully</h1>
                 <p>Your Privacy, Our Promise</p>
                 <h2 style="font-size: 16px;">Dear ${data.name},</h2>
-                <p>New health record added !!</p>
+                <p>New health record added by doctor ID : ${data.doctorId} !!</p>
 
                 <p>"Take care and  We hope you feel better soon." </p>
                 <p>Best Regards,<br>SwasthyaSamriddhi Team</p>
