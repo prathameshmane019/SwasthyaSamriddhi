@@ -4,6 +4,7 @@ import { connectMongoDB } from '@/app/libs/connectDb';
 import HealthRecord from '@/app/models/records';
 import { decrypt } from "../../../libs/encryption";
 
+
 export async function POST(req) {
     connectMongoDB();
     const { id } = await req.json();
@@ -14,7 +15,6 @@ export async function POST(req) {
             throw new Error('User not found');
         }
         const records = await HealthRecord.find({ _id: { $in: user.records } });
-
         // Map records and attempt decryption
         const decryptedRecords = records.map(record => {
             try {
