@@ -2,7 +2,6 @@
 import { NextUIProvider } from "@nextui-org/system";
 import { SessionProvider } from "next-auth/react";
 import { StoreProviders } from "./redux/provider";
-import 'react-toastify/dist/ReactToastify.css';
 
 import { Toaster } from 'sonner'
 export const AuthProvider = ({ children }) => {

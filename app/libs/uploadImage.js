@@ -21,9 +21,9 @@ export async function uploadImage(file, folder) {
       resource_type: "auto"
     }, async (err, result) => {
       if (err) {
-        reject(err.message)
+       return reject(err.message)
       }
-      resolve(resolve)
+      return resolve(result)
     }
     )
       .end(bytes)
