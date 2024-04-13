@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./Providers";
 import Nav from "./components/navbar";
+import Footer from "./components/footer";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "SwasthyaSamriddhi",
@@ -18,7 +19,9 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <Nav />
           {children}
-          </AuthProvider></body>
+          <Footer/>
+          </AuthProvider>
+          </body>
     </html>
       );
 }

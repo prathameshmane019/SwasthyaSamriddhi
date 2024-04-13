@@ -1,21 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* :root {
-
-} */
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
- 
-  }
+.custom-shape-divider-bottom-1713021709 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
 }
 
-body {
-  
+.custom-shape-divider-bottom-1713021709 svg {
+  position: relative;
+  display: block;
+  width: calc(143% + 1.3px);
+  height: 200px;
 }
 
-@layer utilities {
-  
-} */
+.custom-shape-divider-bottom-1713021709 .shape-fill {
+  fill: #FFFFFF;
+}
