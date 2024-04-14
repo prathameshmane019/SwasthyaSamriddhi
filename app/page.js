@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-
+import Footer from "@/app/components/footer"
 export default function Home() {
   return (
     <>
@@ -63,6 +63,7 @@ export default function Home() {
         </div>
       </section>
 </div>
+<Footer/>
     </>
   );
 }
