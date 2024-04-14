@@ -5,7 +5,6 @@ const NotFound = () => {
   return (
     <div>
       <Image
-            
             src="/bg5-1.svg"
             alt="Not-Found"
             className="w-full h-full"
