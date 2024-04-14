@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
@@ -15,7 +14,6 @@ export default function UserRecords() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [userHealthRecords, setUserHealthRecords] = useState([]);
-
   useEffect(() => {
     if (id) {
       const fetchRecords = async () => {

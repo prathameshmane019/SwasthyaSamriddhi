@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Input, Textarea, Button } from '@nextui-org/react';
 import axios from 'axios';
+import  Footer  from '@/app/components/footer';
 import {  toast } from 'sonner'
 const Contact = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -20,6 +21,7 @@ const Contact = () => {
   };
 
   return (
+    <>
     <div className="min-h-screen flex flex-col justify-center items-center">
       <div className="bg-white shadow-md rounded-md p-8 max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4">Contact Us</h1>
@@ -62,7 +64,9 @@ const Contact = () => {
         </form>
         
       </div>
+      
     </div>
+    <Footer/></>
   );
 };
 
