@@ -30,3 +30,12 @@
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;    
 }
+.mask2 {
+  -webkit-mask-image: url('../public/blob(3).svg');
+  mask-image: url('../public/blob(3).svg');
+  -webkit-mask-size: 40%;
+  mask-size: 40%;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;    
+}
