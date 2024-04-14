@@ -1,28 +1,35 @@
-// components/Footer.js
-import { MailIcon, PhoneIcon, LocationMarkerIcon } from '@heroicons/react/outline';
-
-const Footer = () => {
+import React from 'react'
+import Link from 'next/link'
+const footer = () => {
   return (
-    <footer className=" absoulute mb-0 bottom-0 bg-gray-900 text-white py-4">
-      <div className="container mx-auto flex justify-between items-center px-4">
-        <div>
-          <h3 className="text-xl font-bold mb-4">Contact Us</h3>
-          <p className="flex items-center text-sm mb-2"><MailIcon className="h-4 w-4 mr-2" /> @SwasthyaSamriddhi.gov.in</p>
-          <p className="flex items-center text-sm mb-2"><PhoneIcon className="h-4 w-4 mr-2" /> 123-456-7890</p>
-          <p className="flex items-center text-sm mb-2"><LocationMarkerIcon className="h-4 w-4 mr-2" /> 123 Main Street, City, Country</p>
+
+
+    <footer className="bg-white rounded-t-3xl shadow dark:bg-gray-900 mx-0 mb-0">
+      <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+        <div className="sm:flex sm:items-center sm:justify-between">
+          <a href="https://flowbite.com/" className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+            <img src="/logo.png" className="h-8" alt="SwasthyaSamridhhi Logo" />
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">SwasthyaSamridhhi</span>
+          </a>
+          <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+            <li>
+              <Link href="/" className="hover:underline me-4 md:me-6">Home</Link>
+            </li>
+            <li>
+              <Link href="/about" className="hover:underline me-4 md:me-6">About</Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:underline me-4 md:me-6">Contact</Link>
+            </li>
+          </ul>
         </div>
-        <div className="flex space-x-4">
-          <a href="#" className="text-xl"><i className="fab fa-facebook"></i></a>
-          <a href="#" className="text-xl"><i className="fab fa-twitter"></i></a>
-          <a href="#" className="text-xl"><i className="fab fa-instagram"></i></a>
-          <a href="#" className="text-xl"><i className="fab fa-linkedin"></i></a>
-        </div>
-      </div>
-      <div className="text-center mt-4">
-        <p className="text-sm">&copy; {new Date().getFullYear()} SwasthyaSamriddhi. All rights reserved.</p>
+        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+        <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="https://flowbite.com/" className="hover:underline">SwasthyaSamridhhi</a>. All Rights Reserved.</span>
       </div>
     </footer>
-  );
-};
 
-export default Footer;
+
+  )
+}
+
+export default footer
