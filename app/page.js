@@ -18,12 +18,18 @@ export default function Home() {
           <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
         </svg>
       </div>
-      <div className='w-full items-center mx-auto py-6 mt-10 text-center'>
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Why Choose SwasthyaSamriddhi?</h2>
-      </div>
+      <div className='mx-[8%]'>
+      <div className='w-full items-center mx-auto py-6 mt-10 mb-0 text-center'>
+  <h2 className="text-2xl md:text-3xl font-bold mb-4">
+    <span style={{ background: '-webkit-linear-gradient(45deg, #8A2BE2, #00BFFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+      Why Choose SwasthyaSamriddhi?
+    </span>
+  </h2>
+</div>
+
       <section className="relative py-6 my-10 flex flex-col md:flex-row items-center ">
         <div className="max-w-7xl mx-30 px-4 sm:px-6 lg:px-8 text-center md:w-2/3">
-          <p className="text-md md:text-md text-gray-700 mb-4">Centralised Health Record Management: Access, manage, and share your health records anytime, anywhere, eliminating the need for physical documents and ensuring continuity of care.</p>
+          <p className="text-md md:text-lg text-gray-700 mb-4">Centralised Health Record Management: Access, manage, and share your health records anytime, anywhere, eliminating the need for physical documents and ensuring continuity of care.</p>
         </div>
         <div className='w-full md:w-1/3 mx-auto animate-pulse'>
           <img src='/Computer.svg' className='mx-auto w-[200px]' />
@@ -34,12 +40,12 @@ export default function Home() {
           <img src='/Wallet.svg' className='mx-auto w-[200px]' />
         </div>
         <div className="max-w-7xl mx-30 px-4 sm:px-6 lg:px-8 text-center md:w-2/3">
-          <p className="text-md md:text-md text-gray-700 mb-4">Secure & Confidential: We prioritize the highest standards of data protection and privacy with robust encryption, secure servers, and strict adherence to healthcare regulations like HIPAA, ensuring the confidentiality and integrity of your health information.</p>
+          <p className="text-md md:text-lg text-gray-700 mb-4">Secure & Confidential: We prioritize the highest standards of data protection and privacy with robust encryption, secure servers, and strict adherence to healthcare regulations like HIPAA, ensuring the confidentiality and integrity of your health information.</p>
         </div>
       </section>
       <section className="relative py-6 my-10 flex flex-col md:flex-row items-center ">
         <div className="max-w-7xl mx-30 px-5 sm:px-6 lg:px-8 text-center md:w-2/3">
-          <p className="text-md md:text-md p-5 m-5 text-gray-700 mb-4">Equitable Access to Healthcare: We are dedicated to bridging the healthcare gap by providing our services to every individual, especially in rural areas, empowering them with access to quality healthcare services and resources.</p>
+          <p className="text-md md:text-lg p-5 m-5 text-gray-700 mb-4">Equitable Access to Healthcare: We are dedicated to bridging the healthcare gap by providing our services to every individual, especially in rural areas, empowering them with access to quality healthcare services and resources.</p>
         </div>
         <div className='w-full md:w-1/3 mx-auto animate-pulse'>
           <img src='/card.svg' className='mx-auto w-[200px]' />
@@ -50,11 +56,13 @@ export default function Home() {
           <img src='/rocket.svg' className='mx-auto w-[200px]' />
         </div>
         <div className="relative z-10 max-w-7xl mx-30 px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Join Us</h2>
-          <p className="text-md text-gray-700">Be Part of the Future of Healthcare: Join our growing community, explore our innovative services, and experience the future of healthcare with SwasthyaSamriddhi. Sign up today, stay connected, and take the first step towards empowered, personalized, and seamless healthcare access across India.
+        <h2 className="text-2xl md:text-3xl font-bold mb-4"><span style={{ background: '-webkit-linear-gradient(45deg, #8A2BE2, #00BFFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+      Join now
+    </span></h2> <p className="text-md md:text-lg text-gray-700">Be Part of the Future of Healthcare: Join our growing community, explore our innovative services, and experience the future of healthcare with SwasthyaSamriddhi. Sign up today, stay connected, and take the first step towards empowered, personalized, and seamless healthcare access across India.
           </p>
         </div>
       </section>
+</div>
     </>
   );
 }
