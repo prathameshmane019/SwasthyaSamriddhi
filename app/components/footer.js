@@ -3,7 +3,7 @@ import { MailIcon, PhoneIcon, LocationMarkerIcon } from '@heroicons/react/outlin
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-4">
+    <footer className=" absoulute mb-0 bottom-0 bg-gray-900 text-white py-4">
       <div className="container mx-auto flex justify-between items-center px-4">
         <div>
           <h3 className="text-xl font-bold mb-4">Contact Us</h3>
