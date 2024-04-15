@@ -4,6 +4,7 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, Navba
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Image } from "@nextui-org/react";
+import { ThemeSwitcher } from "./theme-toggle";
 export default function Nav() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -14,11 +15,11 @@ export default function Nav() {
     "Log Out",
   ];
   const handleSignOut = async () => {
-    await signOut({ redirect: false }); 
-    router.replace("/"); 
+    await signOut({ redirect: false });
+    router.replace("/");
   };
-  const handleDashboard = ()=>{
-    router.replace("/"+ session?.user?.role)
+  const handleDashboard = () => {
+    router.replace("/" + session?.user?.role)
   }
   return (
     <Navbar className="w-full" isBordered>
@@ -35,7 +36,7 @@ export default function Nav() {
             src="/logo.png"
             alt="Logo"
             className="mr-28"
-          />          
+          />
           <p className="font-bold text-inherit text-blue-600 ml-4">Swasthya Samriddhi</p>
         </NavbarBrand>
       </NavbarContent>
@@ -60,11 +61,11 @@ export default function Nav() {
       <NavbarContent justify="end">
         {session ? (
           <>
-          <NavbarItem>
-          <Button  color="primary"  variant="flat" onClick={handleDashboard}>
-            Dashboard
-          </Button>
-        </NavbarItem>
+            <NavbarItem>
+              <Button color="primary" variant="flat" onClick={handleDashboard}>
+                Dashboard
+              </Button>
+            </NavbarItem>
             <NavbarItem>
               <Button onClick={handleSignOut} color="primary" variant="flat">
                 Log Out
@@ -84,6 +85,9 @@ export default function Nav() {
           </>
         )}
       </NavbarContent>
+      <NavbarItem>
+              <ThemeSwitcher />           
+       </NavbarItem>
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
@@ -100,6 +104,7 @@ export default function Nav() {
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
+
     </Navbar>
   );
 }
