@@ -8,7 +8,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-indigo-600 leading-tight mb-4">About Us</h1>
-            <p className="text-lg text-gray-600">Welcome to Swasthya Samrudhhi. Here's a brief overview of our project and what we aim to achieve.</p>
+            <p className="text-lg text-gray-600">Welcome to Swasthya Samrudhhi. Here&apos;s a brief overview of our project and what we aim to achieve.</p>
           </div>
         </div>
       </div>
