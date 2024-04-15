@@ -85,8 +85,8 @@ console.log(file);
   };
 
   return (
-    <div className="flex justify-center items-center bg-gray-100 min-h-screen">
-      <form onSubmit={handleSubmit} className="max-w-lg w-full p-8 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center items-center  min-h-screen">
+      <form onSubmit={handleSubmit} className="max-w-lg w-full p-8  rounded-lg shadow-md">
         <h2 className="text-3xl font-bold mb-6 text-center">Register Health Record</h2>
         <div className="grid grid-cols-1 gap-6">
           <Input
