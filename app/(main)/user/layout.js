@@ -9,9 +9,10 @@ export default  async function UserLayout({ children }) {
       console.log("unauthorised")
       redirect("/login");
      }
+     
     return (    
         <div className="flex overflow-y-hidden "><UserSidebar/>
-        <div className="w-[80%] h-full ml-[20%] ">
+        <div className="w-full h-full  ">
             {children}
         </div>
        </div>

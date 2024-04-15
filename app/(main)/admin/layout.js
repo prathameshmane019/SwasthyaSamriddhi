@@ -13,9 +13,9 @@ export default async function DoctorLayout({ children }) {
     redirect("/login");
    }
   return (    
-    <div className="flex ">
+    <div className="flex overflow-hidden ">
       <AdminDashboard admin={admin} />
-      <div className="w-full h-full" >
+      <div className="w-full h-full " >
         {children}
       </div>
     </div>

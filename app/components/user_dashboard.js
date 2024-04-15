@@ -1,45 +1,71 @@
 "use client"
+import Image from "next/image";
+import { BsCardChecklist } from "react-icons/bs";
+
+import { CgProfile } from "react-icons/cg";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
-import { LogoutIcon } from '@heroicons/react/solid';
-import { Logout } from "../utils/logout";
+import { useState } from "react";
+import { useRouter,usePathname } from "next/navigation"; 
 
-const UserSidebar = () => {
+const sidebarItems = [
+  {
+    name: "Dashboard",
+    href: "/user",
+    icon: CgProfile,
+  },
+  {
+    name: "Records",
+    href: "/user/records",
+    icon: BsCardChecklist,
+  },
+];
+
+const Sidebar = () => {
   const router = useRouter();
-  const [activeMenu, setActiveMenu] = useState('');
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    setActiveMenu(router.pathname);
-  }, [router.pathname]);
-
-  const handleLogout = async () => {
-    await Logout()
+  const pathname = usePathname()
+  console.log(pathname);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const toggleSidebarcollapse = () => {
+    setIsCollapsed((prevState) => !prevState);
   };
 
   return (
-    <div className=" fixed bg-gradient-to-br from-green-500 to-green-800 text-white h-[100vh] w-1/5 flex flex-col justify-between backdrop-blur-lg border border-green-900 rounded-md">
-      <div className="p-4">
-        <h2 className="text-xl font-semibold">User Dashboard</h2>
-        <div className="flex items-center mb-4">
-          <p className="text-lg font-medium">{session ? `ID: ${session.user.id}` : 'Loading...'}</p>
+    <div className={`sidebar__wrapper ${isCollapsed ? 'collapsed' : ''}`}>
+      <button className="btn shadow-xl " onClick={toggleSidebarcollapse}>
+        {isCollapsed ? <MdKeyboardArrowRight  className=" "/> : <MdKeyboardArrowLeft />}
+      </button>
+      <aside className="sidebar rounded-r-lg shadow-2xl bg-primary-500  text-gray-100" data-collapse={isCollapsed}>
+        <div className="sidebar__top  text-slate-900">
+          <Image
+            width={80}
+            height={80}
+            className="sidebar__logo rounded-full"
+            src="/logo.png"
+            alt="logo"
+          />
+          <p className="sidebar__logo-name">SwasthyaSamridhhi</p>
         </div>
-        <nav>
-          <Link href="/user/" className={`block py-2 px-4 rounded-md ${activeMenu === '/user/' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/user/')}>Profile
-          </Link>
-          <Link href={{ pathname: '/user/records', query: { id: session ? session.user.id : '' } }} className={`block py-2 px-4 rounded-md ${activeMenu === '/user/records' ? 'bg-blue-600' : ''}`} onClick={() => setActiveMenu('/user/records')}>Records
-          </Link>
-        </nav>
-        <button onClick={handleLogout} className="flex items-center justify-center  py-2 px-4 rounded-md mt-4 bg-red-500 text-white">
-          <LogoutIcon className="w-6 h-6 mr-2" /> Logout
-        </button></div>
-      <div className="p-4">
-        <p className="text-xs">&copy; 2024 User Dashboard</p>
-      </div>
+        <ul className="sidebar__list">
+          {sidebarItems.map(({ name, href, icon: Icon }) => {
+            return (
+              <li className="sidebar__item" key={name}>
+                <Link
+                  className={`sidebar__link ${pathname === href ? "sidebar__link--active" : ""}`}
+                  href={href}
+                >
+                  <span className="sidebar__icon">
+                    <Icon className="inline-block mr-2" />
+                  </span>
+                  <span className="sidebar__name">{name}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </aside>
     </div>
   );
 };
 
-export default UserSidebar;
+export default Sidebar;
