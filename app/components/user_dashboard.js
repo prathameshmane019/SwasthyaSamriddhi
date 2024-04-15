@@ -22,7 +22,6 @@ const sidebarItems = [
 ];
 
 const Sidebar = () => {
-  const router = useRouter();
   const pathname = usePathname()
   console.log(pathname);
   const [isCollapsed, setIsCollapsed] = useState(false);

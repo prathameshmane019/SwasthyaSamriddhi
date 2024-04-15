@@ -28,7 +28,6 @@ const Sidebar = () => {
   const toggleSidebarcollapse = () => {
     setIsCollapsed((prevState) => !prevState);
   };
-
   return (
     <div className={`h-screen sidebar__wrapper ${isCollapsed ? 'collapsed' : ''}`}>
       <button className="btn shadow-xl " onClick={toggleSidebarcollapse}>

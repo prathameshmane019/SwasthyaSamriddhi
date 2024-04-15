@@ -13,7 +13,7 @@ export default async function DoctorLayout({ children }) {
   return (    
     <div className="flex overflow-y-hidden">
       <Sidebar />
-      <div className="w-[80%] h-full  ml-[20%]" >
+      <div className=" w-full h-full  " >
         {children}
       </div>
     </div>

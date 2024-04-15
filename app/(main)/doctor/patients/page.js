@@ -109,7 +109,7 @@ const SearchUser = () => {
           className="flex-grow"
           placeholder="Enter user ID"
         />
-        <Button onClick={handleSearch} className="bg-blue-500 text-white">
+        <Button onClick={handleSearch} className="bg-primary text-white">
           Search
         </Button>
       </div>
@@ -122,7 +122,7 @@ const SearchUser = () => {
                 <div className="text-lg font-semibold text-gray-900">{userData.fullname.firstName} {userData.fullname.middleName} {userData.fullname.surName}</div>
                 <p className="text-gray-600">{userData.mobile}</p>
               </div>
-              <Button onClick={() => handleAction("showRecords")} className="bg-blue-500 text-white mr-2">
+              <Button onClick={() => handleAction("showRecords")} className="bg-primary-500 text-white mr-2">
                 Show Records
               </Button>
               <Button onClick={() => handleAction("addRecord")} className="bg-green-500 text-white">
