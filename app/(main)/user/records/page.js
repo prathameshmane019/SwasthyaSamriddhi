@@ -60,7 +60,7 @@ const UserRecords = () => {
           <RecordSkeleton />
         </div>
       ) : (
-        <Table
+        <Table className='mt-10 mx-5'
           aria-label="User health records table"
           css={{
             "&.table": {

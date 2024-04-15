@@ -70,7 +70,7 @@ export default function UserTable({user}) {
   const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mx-5 mt-5 overflow-y-scroll" >
       <div className="flex justify-between gap-3 items-end m-2">
         <Input
           isClearable
