@@ -9,13 +9,13 @@ export async function POST(req) {
     connectMongoDB();
     const { id } = await req.json();
     console.log(id);
+    let user;
     try {
-        const user = await User.findById(id);
+         user = await User.findById(id);
         if (!user) {
             throw new Error('User not found');
         }
         const records = await HealthRecord.find({ _id: { $in: user.records } });
-        // Map records and attempt decryption
         const decryptedRecords = records.map(record => {
             try {
                 return {
@@ -32,8 +32,8 @@ export async function POST(req) {
         }).filter(record => record !== null); // Filter out records where decryption failed
 
         console.log("Decrypted Records:", decryptedRecords);
-
-        return NextResponse.json(decryptedRecords);
+        console.log(user);
+        return NextResponse.json({decryptedRecords,user});
     } catch (error) {
         console.error("Error:", error);
         return NextResponse.error("Failed to fetch records", 500); // Return an error response

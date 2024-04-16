@@ -82,8 +82,8 @@ export default function RegisterComponent() {
     }
   }
   return (
-    <div className="flex flex-col justify-center items-center  bg-gray-100">
-      <form onSubmit={handleSubmit} className="w-full max-w-6xl bg-white shadow-md rounded-lg p-8">
+    <div className="flex flex-col justify-center items-center  ">
+      <form onSubmit={handleSubmit} className="w-full max-w-6xl  shadow-md rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-6 text-center">Register</h2>
         <div className="grid grid-cols-6 gap-6">
           <div className="col-span-2">
@@ -181,7 +181,7 @@ export default function RegisterComponent() {
               id="gender"
               value={gender}
               onChange={handleSelectionChange}
-              className="block appearance-none w-full border border-gray-300 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:border-gray-500 bg-white text-gray-700 h-14"
+              className="block appearance-none w-full border  py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:border-gray-500 text-gray-700 h-14"
             >
               <option value="">Select gender</option>
               <option value="male">Male</option>

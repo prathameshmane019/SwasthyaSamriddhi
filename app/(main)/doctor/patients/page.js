@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { Input, Button, Card, CardBody } from '@nextui-org/react';
-import { ExclamationCircleIcon, CheckCircleIcon } from '@heroicons/react/outline';
+import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import {toast} from 'sonner'
 const SearchUser = () => {
   const [showOtp, setShowOtp] = useState(false);
@@ -14,6 +14,7 @@ const SearchUser = () => {
   const [otp, setOtp] = useState("");
   const [otpError, setOtpError] = useState(null);
   const [enteredOTP, setEnteredOTP] = useState("");
+  const [verifiedOtp, setVerifiedOtp] = useState(false);
   const [action, setAction] = useState(""); 
    const router = useRouter();
 
@@ -52,7 +53,14 @@ const SearchUser = () => {
   };
   
   const handleAction = async(actionType) => {
-    if (!otpSent) {
+    if(verifiedOtp){
+      if (action === "showRecords") {
+        router.push(`/doctor/patients/records?id=${id}`);
+      } else if (action === "addRecord") {
+        router.push(`/doctor/patients/addrecords?id=${id}`);
+      }
+    }
+    if (!otpSent || !verifiedOtp) {
       setShowOtp(true)
       const generatedOtp = generateOTP(); 
       setOtp(generatedOtp); 
@@ -72,6 +80,7 @@ const SearchUser = () => {
 
     if (otp === enteredOTP) {
       setOtpError(null);
+      setVerifiedOtp(true)
       toast.success("OTP validation Successfull!")
       if (action === "showRecords") {
         router.push(`/doctor/patients/records?id=${id}`);
@@ -119,13 +128,13 @@ const SearchUser = () => {
             <div className="flex items-center">
               <div className="flex-grow">
                 <div className="text-indigo-500 font-semibold">{userData._id}</div>
-                <div className="text-lg font-semibold text-gray-900">{userData.fullname.firstName} {userData.fullname.middleName} {userData.fullname.surName}</div>
-                <p className="text-gray-600">{userData.mobile}</p>
+                <div className="text-lg font-semibold ">{userData.fullname.firstName} {userData.fullname.middleName} {userData.fullname.surName}</div>
+                <p className="">{userData.mobile}</p>
               </div>
-              <Button onClick={() => handleAction("showRecords")} className="bg-primary-500 text-white mr-2">
+              <Button onClick={() => handleAction("showRecords")} className="bg-primary-500 text-slate-50  mr-2">
                 Show Records
               </Button>
-              <Button onClick={() => handleAction("addRecord")} className="bg-green-500 text-white">
+              <Button onClick={() => handleAction("addRecord")} className="bg-green-500 text-slate-50 ">
                 Add Record
               </Button>
             </div>

@@ -115,8 +115,8 @@ export default function DoctorRegistrationForm() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="w-full max-w-6xl bg-white shadow-md rounded-lg p-8">
+    <div className="flex justify-center items-center ">
+      <form onSubmit={handleSubmit} className="w-full max-w-6xl shadow-md rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-6 text-center">Doctor Registration</h2>
         <div className="grid grid-cols-6 gap-6">
           <div className="col-span-2">
@@ -138,7 +138,7 @@ export default function DoctorRegistrationForm() {
             <Input type="date" variant="bordered" label="Date of Birth" value={dob} onChange={(e) => setDob(e.target.value)} required />
           </div>
           <div className="col-span-2">
-            <select id="gender" value={gender} onChange={handleSelectionChange} className="block appearance-none w-full border border-gray-300 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:border-gray-500 bg-white text-gray-700 h-14" required>
+            <select id="gender" value={gender} onChange={handleSelectionChange} className="block appearance-none w-full border border-gray-300 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:border-gray-500  h-14" required>
               <option value="">Select gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
