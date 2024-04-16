@@ -40,7 +40,7 @@ export default function LoginComponent() {
       });
       
       if (result.ok) {
-        console.log('Login Successful');
+        console.log('Login Successful !');
         toast.success('Login Successful');
       }
     } catch (error) {
