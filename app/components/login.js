@@ -59,7 +59,7 @@ export default function LoginComponent() {
   return (
     <div className="flex justify-center items-center h-screen">
       <form onSubmit={handleSubmit} className="w-full max-w-md">
-        <div className="w-full p-9 bg-white rounded-lg shadow-lg text-center">
+        <div className="w-full p-9  rounded-lg shadow-lg text-center">
           <h2 className="text-2xl font-bold mb-4">Login</h2>
           <Input
             type="text"

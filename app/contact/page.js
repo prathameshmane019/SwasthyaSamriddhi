@@ -23,7 +23,7 @@ const Contact = () => {
   return (
     <>
     <div className="min-h-screen flex flex-col justify-center items-center">
-      <div className="bg-white shadow-md rounded-md p-8 max-w-md w-full">
+      <div className=" shadow-md rounded-md p-8 max-w-md w-full">
         <h1 className="text-2xl font-bold mb-4">Contact Us</h1>
         <form onSubmit={handleSubmit}>
           <Input
@@ -56,7 +56,7 @@ const Contact = () => {
           <div className="flex justify-center"> 
             <Button
               type="submit"
-              className="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition duration-300"
+              className="bg-indigo-600  px-6 py-3 rounded-md hover:bg-indigo-700 transition duration-300"
             >
               Submit
             </Button>
