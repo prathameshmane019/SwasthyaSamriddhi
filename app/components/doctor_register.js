@@ -5,6 +5,7 @@ import { Input, Button, Select, SelectItem } from "@nextui-org/react";
 import axios from "axios";
 import { toast } from 'sonner';
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 const steps = [
   { 
@@ -62,6 +63,9 @@ export default function DoctorRegistrationForm() {
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+  const router = useRouter();
   const validateField = (field, value, required) => {
     if (!required && !value) return "";
 
