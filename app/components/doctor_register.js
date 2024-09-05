@@ -5,6 +5,7 @@ import { Input, Button, Select, SelectItem } from "@nextui-org/react";
 import axios from "axios";
 import { toast } from 'sonner';
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 const steps = [
   { 
@@ -61,7 +62,10 @@ export default function DoctorRegistrationForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+
+  const router = useRouter();
   const validateField = (field, value, required) => {
     if (!required && !value) return "";
 
@@ -320,9 +324,10 @@ export default function DoctorRegistrationForm() {
               type={currentStep === steps.length - 1 ? "submit" : "button"} 
               color={currentStep === steps.length - 1 ? "primary" : "default"}
               onClick={currentStep === steps.length - 1 ? handleSubmit : nextStep}
+              disabled={isSubmitting}
             >
-              {currentStep === steps.length - 1 ? "Register" : "Next"}
-            </Button>
+               {currentStep === steps.length - 1 ? (isSubmitting ? "Registering..." : "Register") : "Next"}
+               </Button>
           </div>
         </form>
         <div className="mt-4 text-center">

@@ -45,6 +45,8 @@ export const authOptions = {
             id = admin._id;
             userModel = admin;
           } else {
+            console.log("user not found");
+            
             return null;
           }
           
