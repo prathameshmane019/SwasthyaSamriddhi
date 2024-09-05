@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { Input, Button, Card, CardBody } from '@nextui-org/react';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
-import {toast} from 'sonner'
+import { toast } from 'sonner';
+
 const SearchUser = () => {
   const [showOtp, setShowOtp] = useState(false);
   const [id, setId] = useState("");
@@ -16,7 +17,7 @@ const SearchUser = () => {
   const [enteredOTP, setEnteredOTP] = useState("");
   const [verifiedOtp, setVerifiedOtp] = useState(false);
   const [action, setAction] = useState(""); 
-   const router = useRouter();
+  const router = useRouter();
 
   const generateOTP = () => {
     let otp = "";
@@ -27,16 +28,29 @@ const SearchUser = () => {
   };
 
   const handleSearch = async () => {
-    try {
+    try { 
+      setOtp("");
+      setOtpSent(false);
+      setVerifiedOtp(false);
+      if (id.trim().length === 0 || id.trim().length < 13 || !id.trim().includes("U")) {
+        setError("Please enter a valid ID");
+        toast.error("Please enter a valid ID");
+        setUserData(null);
+        return;
+      }
+      if(userData?._id === id)
+      {
+        setUserData(userData);
+        return;
+      }
       const response = await axios.post("/api/finduser", { id });
-      const userData = response.data;
-
-      setUserData(userData);
+      const userData1 = response.data;
+      setUserData(userData1);
       setError(null);
     } catch (error) {
       setUserData(null);
       setError("User not found");
-      toast.error("User not found")
+      toast.error("User not found");
     }
   };
 
@@ -52,8 +66,8 @@ const SearchUser = () => {
     }
   };
   
-  const handleAction = async(actionType) => {
-    if(verifiedOtp){
+  const handleAction = async (actionType) => {
+    if (verifiedOtp) {
       if (action === "showRecords") {
         router.push(`/doctor/patients/records?id=${id}`);
       } else if (action === "addRecord") {
@@ -61,7 +75,7 @@ const SearchUser = () => {
       }
     }
     if (!otpSent || !verifiedOtp) {
-      setShowOtp(true)
+      setShowOtp(true);
       const generatedOtp = generateOTP(); 
       setOtp(generatedOtp); 
       await sendOTP(generatedOtp); // Send OTP
@@ -80,18 +94,26 @@ const SearchUser = () => {
 
     if (otp === enteredOTP) {
       setOtpError(null);
-      setVerifiedOtp(true)
-      toast.success("OTP validation Successfull!")
+      setVerifiedOtp(true);
+      toast.success("OTP validation Successful!");
       if (action === "showRecords") {
         router.push(`/doctor/patients/records?id=${id}`);
       } else if (action === "addRecord") {
         router.push(`/doctor/patients/addrecords?id=${id}`);
       }
-       resetFields(); // Clear fields after successful submission
+      // Clear only OTP-related fields after successful submission
+      resetOtpFields();
     } else {
       setOtpError("Invalid OTP");
       toast.error("Invalid OTP");
     }
+  };
+
+  const resetOtpFields = () => {
+    setOtp("");
+    setOtpError(null);
+    setEnteredOTP("");
+    setShowOtp(false);
   };
 
   const resetFields = () => {
@@ -107,7 +129,7 @@ const SearchUser = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto mt-5 p-10">
       <h1 className="text-2xl font-bold mb-4">Search for a User</h1>
       <div className="flex items-center space-x-4">
         <Input
@@ -116,13 +138,14 @@ const SearchUser = () => {
           variant='bordered'
           onChange={(e) => setId(e.target.value)}
           className="flex-grow"
-          placeholder="Enter user ID"
+          placeholder="Enter user"
         />
         <Button onClick={handleSearch} className="bg-primary text-white">
           Search
         </Button>
       </div>
       {userData && (
+        <div className='mt-5'>
         <Card shadow>
           <CardBody>
             <div className="flex items-center">
@@ -131,14 +154,9 @@ const SearchUser = () => {
                 <div className="text-lg font-semibold ">{userData.fullname.firstName} {userData.fullname.middleName} {userData.fullname.surName}</div>
                 <p className="">{userData.mobile}</p>
               </div>
-              <Button onClick={() => handleAction("showRecords")} className="bg-primary-500 text-slate-50  mr-2">
-                Show Records
-              </Button>
-              <Button onClick={() => handleAction("addRecord")} className="bg-green-500 text-slate-50 ">
-                Add Record
-              </Button>
+              {verifiedOtp ? <div className='flex flex-row flex-wrap gap-2'><Button onClick={() => handleAction("showRecords")} className="bg-green-500 text-slate-50 ">Show Record</Button><Button onClick={() => handleAction("addRecord")} className="bg-green-500 text-slate-50 ">Add Record</Button></div> : <Button onClick={() => handleAction("")} className="bg-primary-500 text-slate-50  mr-2">Send OTP</Button>}
             </div>
-            {showOtp && (
+            {otp ? (
               <div className="mt-4">
                 <Input
                   type="text"
@@ -151,9 +169,11 @@ const SearchUser = () => {
                   Validate OTP
                 </Button>
               </div>
-            )}
+            ) : ""}
           </CardBody>
         </Card>
+      </div>
+        
       )}
       {error && (
         <div className="flex items-center mt-4 text-red-500">
@@ -167,7 +187,6 @@ const SearchUser = () => {
           <p>{otpError}</p>
         </div>
       )}
-      
     </div>
   );
 };
