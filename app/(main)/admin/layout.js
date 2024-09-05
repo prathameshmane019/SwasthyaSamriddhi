@@ -15,7 +15,7 @@ export default async function DoctorLayout({ children }) {
   return (    
     <div className="flex overflow-hidden ">
       <AdminDashboard admin={admin} />
-      <div className="w-full h-full " >
+      <div className="w-full h-full" >
         {children}
       </div>
     </div>

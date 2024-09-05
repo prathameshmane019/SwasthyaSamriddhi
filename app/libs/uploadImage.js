@@ -8,9 +8,6 @@ cloudinary.config({
   secure: true,
 });
 
-
-
-
 export async function uploadImage(file, folder) {
   const buffer = await file.arrayBuffer()
   const bytes = Buffer.from(buffer)
@@ -28,4 +25,9 @@ export async function uploadImage(file, folder) {
     )
       .end(bytes)
   });
+}
+
+export async function uploadImages(files, folder) {
+  const uploadPromises = files.map(file => uploadImage(file, folder));
+  return Promise.all(uploadPromises);
 }
