@@ -22,7 +22,7 @@ export default function Nav() {
     router.replace("/" + session?.user?.role)
   }
   return (
-    <Navbar className="w-full" isBordered>
+    <Navbar className="max-w-[60vw] rounded-2xl mx-auto"  isBordered>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label="Open menu"
@@ -30,7 +30,7 @@ export default function Nav() {
         />
       </NavbarContent>
       <NavbarContent justify="center" >
-        <NavbarBrand className="w-[4    +0vw] ml-0 mr-28">
+        <NavbarBrand className="w-[4+0vw] ml-0 mr-28">
           <Image
             width={50}
             src="/logo.png"

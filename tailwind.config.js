@@ -26,17 +26,17 @@ module.exports = {
             foreground: "#11181C", // or 50 to 900 DEFAULT
             primary: {
               foreground: "#FFFFFF",
-              DEFAULT: "#6020A0",
+              DEFAULT: "#14532d",
             },
             secondary: {
-              50: "#faf5ff",
-              100: "#f3e8ff",
-              200: "#e9d5ff",
-              300: "#d8b4fe",
-              400: "#c084fc",
-              500: "#a855f7",
-              600: "#9333ea",
-              700: "#7e22ce",
+              50: "#6ee7b7",
+              100: "#34d399",
+              200: "#10b981",
+              300: "#059669",
+              400: "#047857",
+              500: "#065f46",
+              600: "#064e3b",
+              700: "#022c22",
               800: "#6b21a8",
               900: "#581c87",
               950:"#3b0764"
@@ -52,7 +52,7 @@ module.exports = {
               foreground: "#FFFFFF",
               DEFAULT: "#690bdc",
             },
-            secondary: {
+            sec: {
               50: "#faf5ff",
               100: "#f3e8ff",
               200: "#e9d5ff",
