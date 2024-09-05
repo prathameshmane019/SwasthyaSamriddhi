@@ -8,10 +8,13 @@ export async function POST(req) {
     try {
       await connectMongoDB();
       const doctorData = await req.json();
+
+      console.log(doctorData);
+      
       const newDoctor = new Doctor(doctorData);
       await newDoctor.save();
 
-      const name = doctorData.fullname.firstName + " " + doctorData.fullname.surName;
+      const name = doctorData.firstName + " " + doctorData.surName;
      
       await sendRegistrationDoctorEmail({ id:newDoctor._id,email: doctorData.email, name: name});
 
