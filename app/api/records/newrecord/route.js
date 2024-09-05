@@ -27,8 +27,8 @@ export async function POST(req) {
         if (images && images.length > 0) {
             const uploadResults = await uploadImages(images, 'records');
             imageUrls = uploadResults.map(result => ({
-                image_url: result.url,
-                public_id: result.public_id
+                image_url: encrypt(result.url),
+                public_id: encrypt(result.public_id)
             }));
         }
         
