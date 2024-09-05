@@ -124,6 +124,13 @@ export default function LoginComponent() {
               </Link>
             </p>
           </div>
+          <div className="mt-2">
+              <p className="text-sm">
+                <Link href="/reset_password" className="content-start text-blue-500">
+                  Reset password
+                </Link>
+              </p>
+            </div>
         </div>
       </form>
     </div>
