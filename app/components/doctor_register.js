@@ -61,7 +61,7 @@ export default function DoctorRegistrationForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const validateField = (field, value, required) => {
     if (!required && !value) return "";
 
@@ -320,9 +320,10 @@ export default function DoctorRegistrationForm() {
               type={currentStep === steps.length - 1 ? "submit" : "button"} 
               color={currentStep === steps.length - 1 ? "primary" : "default"}
               onClick={currentStep === steps.length - 1 ? handleSubmit : nextStep}
+              disabled={isSubmitting}
             >
-              {currentStep === steps.length - 1 ? "Register" : "Next"}
-            </Button>
+               {currentStep === steps.length - 1 ? (isSubmitting ? "Registering..." : "Register") : "Next"}
+               </Button>
           </div>
         </form>
         <div className="mt-4 text-center">
