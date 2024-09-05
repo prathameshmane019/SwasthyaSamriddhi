@@ -26,3 +26,8 @@ export async function uploadImage(file, folder) {
       .end(bytes)
   });
 }
+
+export async function uploadImages(files, folder) {
+  const uploadPromises = files.map(file => uploadImage(file, folder));
+  return Promise.all(uploadPromises);
+}

@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import {  useSession } from 'next-auth/react';
 import { LogoutIcon } from '@heroicons/react/solid';
 import { Logout } from "../utils/logout";
+// import {Tooltip} from "@nextui-org/tooltip";
+import {Tooltip} from "@nextui-org/react";
 const MedicalSidebar = () => {
   const router = useRouter();
   const [activeMenu, setActiveMenu] = useState('');

@@ -1,13 +1,13 @@
 "use client"
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Input, Button } from '@nextui-org/react';
-import { signIn,useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import {toast} from 'sonner'
-export default function LoginComponent() {
+import { toast } from 'sonner'
 
+export default function LoginComponent() {
   const [isVisible, setIsVisible] = useState(false);
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +15,7 @@ export default function LoginComponent() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { data: session } = useSession();
+
   useEffect(() => {
     if (session?.user?.role === "user") {
       router.replace("/user");
@@ -28,7 +29,7 @@ export default function LoginComponent() {
     if (session?.user?.role === "admin") {
       router.replace("/admin");      
     }
-  }, [session, dispatch]);
+  }, [session, dispatch, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,8 +41,10 @@ export default function LoginComponent() {
       });
       
       if (result.ok) {
-        console.log('Login Successful');
+        console.log('Login Successful !');
         toast.success('Login Successful');
+      } else {
+        toast.error('Login failed. Please check your credentials.');
       }
     } catch (error) {
       console.error('Failed to login', error);
@@ -49,17 +52,15 @@ export default function LoginComponent() {
     }
   };
 
-  // Define handleCancel function to clear all fields in the form
   const handleCancel = () => {
     setUserId('');
     setPassword('');
   };
 
-  // Return JSX for the LoginComponent
   return (
     <div className="flex justify-center items-center h-screen">
       <form onSubmit={handleSubmit} className="w-full max-w-md">
-        <div className="w-full p-9  rounded-lg shadow-lg text-center">
+        <div className="w-full p-9 rounded-lg shadow-lg text-center">
           <h2 className="text-2xl font-bold mb-4">Login</h2>
           <Input
             type="text"
@@ -108,7 +109,7 @@ export default function LoginComponent() {
             onChange={(e) => setPassword(e.target.value)}
             className="mb-4"
           />
-            <div className="flex justify-center space-x-4">
+          <div className="flex justify-center space-x-4">
             <Button color="default" onClick={handleCancel} className="w-36">
               Cancel
             </Button>
@@ -121,6 +122,13 @@ export default function LoginComponent() {
               Don&apos;t have an account?{' '}
               <Link href="/register" className="text-blue-500">
                 Register
+              </Link>
+            </p>
+          </div>
+          <div className="mt-2">
+            <p className="text-sm">
+              <Link href="/reset_password" className="content-start text-blue-500">
+                Reset password
               </Link>
             </p>
           </div>
