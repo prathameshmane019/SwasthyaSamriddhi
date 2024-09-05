@@ -6,9 +6,7 @@ import { decrypt } from "../../../libs/encryption"; // Import decrypt function
 
 export async function GET(req) {
     connectMongoDB();
-    
     try {
-        
         const records = await HealthRecord.find();
 
         // Map records and attempt decryption
