@@ -10,13 +10,11 @@ const ScrollSection = () => {
   const beamRef = useRef(null);
 
   useEffect(() => {
-    // Mousemove effect to create a subtle interactive movement of background beams
     const handleMouseMove = (e) => {
       const { clientX, clientY } = e;
       const beam = beamRef.current;
 
       if (beam) {
-        // Slightly shift the background based on the cursor position
         const moveX = (clientX / window.innerWidth) * 50;
         const moveY = (clientY / window.innerHeight) * 50;
 
@@ -36,7 +34,7 @@ const ScrollSection = () => {
         className="absolute inset-0 bg-gradient-to-br from-transparent to-secondary-200 opacity-50 bg-beams -z-10 pointer-events-none"
       />
 
-      {/* Foreground content */}
+      {/* Existing sections */}
       <motion.div className="py-16 lg:py-20" style={{ scale }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -76,12 +74,80 @@ const ScrollSection = () => {
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <img src="/aboutus.png" alt="Cash stack" className="w-full max-w-md mx-auto rounded-lg" />
+              <img src="/aboutus.png" alt="Cash stack" className="custom-image-size mx-auto rounded-lg" />
+
             </motion.div>
           </motion.div>
         </div>
       </motion.div>
 
+      {/* Vision section */}
+      <motion.div className="py-16 lg:py-20" style={{ scale }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col md:flex-row items-center justify-between"
+          >
+            <div className="md:w-1/2 mb-8 md:mb-0 text-dark">
+              <motion.h2
+                className="text-4xl font-bold mb-6"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                Our Vision
+              </motion.h2>
+              <p className="text-lg mb-6">
+              To create a unified healthcare platform that connects all hospitals across India, enabling seamless sharing of patient health records. By fostering collaboration and enhancing accessibility, our vision is to empower healthcare providers to deliver high-quality, personalized care to every patient, no matter their location, ensuring that medical information is accessible nationwide.
+              .
+              </p>
+            </div>
+            <motion.div
+              className="md:w-1/2"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <img src="/vision.png" alt="Vision" className="w-full max-w-md mx-auto rounded-lg" />
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Mission section */}
+      <motion.div className="py-16 lg:py-20" style={{ scale }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col md:flex-row-reverse items-center justify-between"
+          >
+            <div className="md:w-1/2 mb-8 md:mb-0 text-dark">
+              <motion.h2
+                className="text-4xl font-bold mb-6"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                Our Mission
+              </motion.h2>
+              <p className="text-lg mb-6">
+              Our mission is to provide a robust and affordable Electronic Health Record (EHR) system to every hospital, including those in small cities and rural areas. We aim to improve the healthcare system's efficiency, accuracy, and security by offering a centralized solution that bridges the gap between urban and rural healthcare, ensuring that every patient receives the best possible care, no matter where they are.
+
+              </p>
+            </div>
+            <motion.div
+              className="md:w-1/2"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <img src="/mission1.png" alt="Mission" className="w-full max-w-md mx-auto rounded-lg" />
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Existing section - Simplify claim process */}
       <motion.div className="py-16 lg:py-20" style={{ scale }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div

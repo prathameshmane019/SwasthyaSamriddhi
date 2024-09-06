@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import { Schema,model } from 'mongoose';
+import { Schema, model } from 'mongoose';
+
 const healthRecordSchema = new Schema({
     diagnosis: {
         type: String,
@@ -17,26 +18,32 @@ const healthRecordSchema = new Schema({
         type: String,
         required: [true, "Please provide Notes"]
     },
-    image: {
-        image_url:{
-            type:String
-        },
-        public_id:{
-            type:String
+    images: [
+        {
+            image_url: {
+                type: String,
+                required: false
+            },
+            public_id: {
+                type: String,
+                required: false
+            }
         }
-      },
-    patientId:{
-        type:String,
-        required:true,
+        
+    ],
+    patientId: {
+        type: String,
+        required: true,
         ref: 'User',
     },
-    doctorId:{
-        type:String,
-        required:true
+    doctorId: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true
 });
+
 const HealthRecord = mongoose.models.HealthRecord || model('HealthRecord', healthRecordSchema);
 
-export default HealthRecord
+export default HealthRecord;

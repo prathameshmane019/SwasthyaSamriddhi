@@ -5,8 +5,9 @@ import User from '../../../models/user';
 import Doctor from '@/app/models/doctor';
 import Medical from '@/app/models/medical';
 import Admin from '@/app/models/admin';
+import bcrypt from 'bcrypt';
 
-export const authOptions = ({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -14,43 +15,50 @@ export const authOptions = ({
       async authorize(credentials) {
         try {
           await connectMongoDB();
-      
+          
+          console.log(credentials);
+          
           const Id = credentials.userId;
           const password = credentials.password;
           let userRole;
           let id;
-      
+          let userModel;
+          
           // Find user by _id
           const user = await User.findOne({ _id: Id });
           const doctor = await Doctor.findOne({ _id: Id });
           const medical = await Medical.findOne({ _id: Id });
           const admin = await Admin.findOne({ _id: Id });
+          
           if (user) {
             userRole = "user";
             id = user._id;
+            userModel = user;
           } else if (doctor) {
             userRole = "doctor";
             id = doctor._id;
-          }
-          else if (medical) {
+            userModel = doctor;
+          } else if (medical) {
             userRole = "medical";
             id = medical._id;
+            userModel = medical;
           } else if (admin) {
             userRole = "admin";
             id = admin._id;
-          }
-           else {
-            
+            userModel = admin;
+          } else {
             return null;
           }
-      
-          const isVerified = (user && user.password === password) || (doctor && doctor.password === password)||(medical && medical.password === password)||(admin && admin.password === password);
-      
+          
+          console.log(userModel);
+          
+          // Verify password
+          const isVerified = await bcrypt.compare(password, userModel.password);
+          console.log(isVerified);
+          
           if (isVerified) {
             const userWithRole = {
-              ...user?.toObject(), // Optional chaining to prevent errors if user is null
-              ...doctor?.toObject(),
-              ...medical?.toObject(), // Optional chaining to prevent errors if doctor is null
+              ...userModel.toObject(),
               role: userRole,
               id: id
             };
@@ -63,39 +71,30 @@ export const authOptions = ({
           return null;
         }
       }
-      
-      ,
     }),
   ],
   session: {
-    sessionCallback: async (session, user) => {
-      session.user = { ...user, role: user.role, id: user.id }; // Add id to the session
-      return Promise.resolve(session);
-    },
+    strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, account, user }) {
-      if (account) {
-        token.accessToken = account.access_token;
+    async jwt({ token, user }) {
+      if (user) {
         token.role = user.role;
-        token.id = user.id; // Add id to the token
+        token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
-      // Send properties to the client, like an access_token and user id from a provider.
-      session.user.accessToken = token.accessToken;
       session.user.role = token.role;
-      session.user.id = token.id; // Add id to the session
-
+      session.user.id = token.id;
       return session;
     }
   },
-  secret: process.env.NEXTAUTH_SECRET, // Your secret should be set in your environment variables
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/", // Customize the sign-in page route as needed
+    signIn: "/",
   },
-});
+};
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
