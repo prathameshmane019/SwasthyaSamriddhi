@@ -1,8 +1,15 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, CardBody } from '@/components/ui/card';
+import { Card, CardBody } from '@nextui-org/react';
 import { UserCircle, Users, UserPlus } from 'lucide-react';
 import { toast } from 'sonner';
+import { DateRangePicker } from '@nextui-org/react';
+import { Input } from '@nextui-org/react';
+import dynamic from 'next/dynamic';
+
+// Dynamically import ApexCharts with SSR disabled
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState({
@@ -10,15 +17,31 @@ export default function Dashboard() {
     userCount: 'Loading',
     doctorCount: 'Loading'
   });
+  const [chartData, setChartData] = useState([]);
+  const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
+  const [address, setAddress] = useState('');
+  const [disease, setDisease] = useState('');
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [dateRange, address, disease]);
 
   const fetchDashboardData = async () => {
     try {
-      const response = await axios.get('/api/admin/dashboard');
-      setDashboardData(response.data);
+      const [dashboardResponse, recordsResponse] = await Promise.all([
+        axios.get('/api/admin/dashboard'),
+        axios.get('/api/dashboard', {
+          params: {
+            startDate: dateRange.startDate,
+            endDate: dateRange.endDate,
+            address,
+            disease
+          }
+        })
+      ]);
+
+      setDashboardData(dashboardResponse.data);
+      setChartData(recordsResponse.data.chartData);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
       toast.error('Error fetching dashboard data');
@@ -35,10 +58,48 @@ export default function Dashboard() {
     </Card>
   );
 
+  const pieChartOptions = {
+    chart: {
+      type: 'pie',
+    },
+    labels: chartData.map(item => item.disease),
+    responsive: [{
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 200
+        },
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }]
+  };
+
+  const pieChartSeries = chartData.map(item => item.count);
+
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-3xl text-center my-8">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      
+      <div className="mb-8 flex flex-wrap gap-4">
+        <DateRangePicker
+          onChange={(range) => setDateRange(range)}
+          value={dateRange}
+        />
+        <Input
+          placeholder="Filter by address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <Input
+          placeholder="Filter by disease"
+          value={disease}
+          onChange={(e) => setDisease(e.target.value)}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         <DashboardCard
           title="Total Records"
           count={dashboardData.recordCount}
@@ -60,6 +121,19 @@ export default function Dashboard() {
           gradientFrom="yellow"
           gradientTo="yellow"
         />
+      </div>
+
+      <div className="mb-8">
+        <h2 className="text-2xl mb-4">Disease Distribution</h2>
+        <div style={{ height: '400px' }}>
+          <Chart
+            options={pieChartOptions}
+            series={pieChartSeries}
+            type="pie"
+            width="100%"
+            height="100%"
+          />
+        </div>
       </div>
     </div>
   );

@@ -326,10 +326,8 @@ import { Input, Button, Select, SelectItem } from "@nextui-org/react";
 import axios from "axios";
 import { toast } from 'sonner';
 import Link from "next/link";
-<<<<<<< HEAD
-=======
+
 import { useRouter } from 'next/navigation';
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
 
 const steps = [
   { 
@@ -350,12 +348,8 @@ const steps = [
       { name: "gender", required: true },
       { name: "weight", required: false },
       { name: "height", required: false },
-<<<<<<< HEAD
       { name: "bloodGroup", required: false }
-=======
-      { name: "bloodGroup", required: true }
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-    ]
+ ]
   },
   { 
     title: "Address", 
@@ -366,11 +360,7 @@ const steps = [
       { name: "taluka", required: false },
       { name: "district", required: true },
       { name: "state", required: true }
-<<<<<<< HEAD
-=======
-     
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-    ]
+ ]
   },
   { 
     title: "Medical Information", 
@@ -390,13 +380,7 @@ const steps = [
 ];
 
 const initialFormData = {
-<<<<<<< HEAD
-  firstName: "", middleName: "", surName: "", mobile: "", email: "", adharCard: "",
-  dob: "", gender: "", weight: "", height: "", bloodGroup: "",
-  pincode: "", building: "", city: "", taluka: "", district: "", state: "",
-  allergies: "", medicationName: "", medicationFrequency: "",
-  password: "", confirmPassword: ""
-=======
+
   fullname: { firstName: "", middleName: "", surName: "" },
   mobile: "",
   email: "",
@@ -422,24 +406,18 @@ const initialFormData = {
   },
   password: "",
   confirmPassword: ""
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
 };
 
 export default function MultiStepRegistrationForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
-<<<<<<< HEAD
 
-  const validateField = (field, value, required) => {
-    if (!required && !value) return ""; // If field is not required and empty, it's valid
-=======
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const validateField = (field, value, required) => {
     if (!required && !value) return "";
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
 
     switch (field) {
       case "firstName":
@@ -459,12 +437,7 @@ export default function MultiStepRegistrationForm() {
         return value ? "" : "Date of Birth is required";
       case "gender":
         return value ? "" : "Gender is required";
-<<<<<<< HEAD
-=======
-      case "bloodGroup":
-        return value ? "" : "Blood Group is required";
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-      case "weight":
+ case "weight":
       case "height":
         return value === "" || (!isNaN(value) && value > 0) ? "" : `Invalid ${field}`;
       case "pincode":
@@ -479,9 +452,7 @@ export default function MultiStepRegistrationForm() {
   };
 
   const handleInputChange = (field, value) => {
-<<<<<<< HEAD
-    setFormData({ ...formData, [field]: value });
-=======
+
     let updatedFormData = { ...formData };
     if (field === "firstName" || field === "middleName" || field === "surName") {
       updatedFormData.fullname = { ...updatedFormData.fullname, [field]: value };
@@ -495,41 +466,30 @@ export default function MultiStepRegistrationForm() {
       updatedFormData[field] = value;
     }
     setFormData(updatedFormData);
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-    const fieldConfig = steps.flatMap(step => step.fields).find(f => f.name === field);
+ const fieldConfig = steps.flatMap(step => step.fields).find(f => f.name === field);
     setErrors({ ...errors, [field]: validateField(field, value, fieldConfig.required) });
   };
 
   const handleAddressLookup = async () => {
-<<<<<<< HEAD
-    if (!formData.pincode) {
-=======
+
     if (!formData.address.pincode) {
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-      toast.error("Please enter a pincode");
+toast.error("Please enter a pincode");
       return;
     }
     try {
-<<<<<<< HEAD
-      const response = await axios.get(`https://api.postalpincode.in/pincode/${formData.pincode}`);
-=======
+
       const response = await axios.get(`https://api.postalpincode.in/pincode/${formData.address.pincode}`);
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-      if (response.data[0].Status === "Success") {
+   if (response.data[0].Status === "Success") {
         const { District, State } = response.data[0].PostOffice[0];
         setFormData(prev => ({
           ...prev,
-<<<<<<< HEAD
-          district: District,
-          state: State
-=======
+
           address: {
             ...prev.address,
             district: District,
             state: State
           }
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-        }));
+  }));
         setErrors(prev => ({
           ...prev,
           district: "",
@@ -550,9 +510,7 @@ export default function MultiStepRegistrationForm() {
     let isValid = true;
 
     stepFields.forEach(field => {
-<<<<<<< HEAD
-      const error = validateField(field.name, formData[field.name], field.required);
-=======
+
       let value;
       if (field.name === "firstName" || field.name === "middleName" || field.name === "surName") {
         value = formData.fullname[field.name];
@@ -566,8 +524,7 @@ export default function MultiStepRegistrationForm() {
         value = formData[field.name];
       }
       const error = validateField(field.name, value, field.required);
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-      if (error) {
+if (error) {
         stepErrors[field.name] = error;
         isValid = false;
       }
@@ -581,16 +538,7 @@ export default function MultiStepRegistrationForm() {
     e.preventDefault();
     if (validateStep(currentStep)) {
       if (currentStep === steps.length - 1) {
-<<<<<<< HEAD
-        try {
-          const result = await axios.post("/api/register/user", formData);
-          toast.success('User Registration Successful');
-          console.log(result);
-          // Reset form or redirect user
-        } catch (error) {
-          console.error("User Registration failed", error);
-          toast.error('User Registration failed');
-=======
+
         if (isSubmitting) return;
         setIsSubmitting(true);
         try {
@@ -604,8 +552,7 @@ export default function MultiStepRegistrationForm() {
           toast.error('User Registration failed');
         } finally {
           setIsSubmitting(false);
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-        }
+   }
       } else {
         nextStep();
       }
@@ -670,12 +617,9 @@ export default function MultiStepRegistrationForm() {
             <Input
               type="text"
               label="Pincode"
-<<<<<<< HEAD
-              value={formData.pincode}
-=======
+
               value={formData.address.pincode}
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-              onChange={(e) => handleInputChange("pincode", e.target.value)}
+      onChange={(e) => handleInputChange("pincode", e.target.value)}
               errorMessage={errors.pincode}
               isInvalid={!!errors.pincode}
             />
@@ -683,8 +627,7 @@ export default function MultiStepRegistrationForm() {
           </div>
         );
       default:
-<<<<<<< HEAD
-=======
+
         let value;
         if (field.name === "firstName" || field.name === "middleName" || field.name === "surName") {
           value = formData.fullname[field.name];
@@ -697,17 +640,13 @@ export default function MultiStepRegistrationForm() {
         } else {
           value = formData[field.name];
         }
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-        return (
+ return (
           <Input
             type="text"
             label={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
-<<<<<<< HEAD
-            value={formData[field.name]}
-=======
+
             value={value}
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-            onChange={(e) => handleInputChange(field.name, e.target.value)}
+   onChange={(e) => handleInputChange(field.name, e.target.value)}
             errorMessage={errors[field.name]}
             isInvalid={!!errors[field.name]}
           />
@@ -753,24 +692,17 @@ export default function MultiStepRegistrationForm() {
             ))}
           </motion.div>
           <div className="flex justify-between mt-6">
-<<<<<<< HEAD
-            <Button onClick={prevStep} disabled={currentStep === 0}>Previous</Button>
-=======
+
             <Button onClick={prevStep} disabled={currentStep === 0 || isSubmitting}>Previous</Button>
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-            <Button 
+   <Button 
               type={currentStep === steps.length - 1 ? "submit" : "button"} 
               color={currentStep === steps.length - 1 ? "primary" : "default"}
               onClick={currentStep === steps.length - 1 ? handleSubmit : nextStep}
-<<<<<<< HEAD
-            >
-              {currentStep === steps.length - 1 ? "Register" : "Next"}
-=======
+
               disabled={isSubmitting}
             >
               {currentStep === steps.length - 1 ? (isSubmitting ? "Registering..." : "Register") : "Next"}
->>>>>>> ac079be7c37a6ec449d84e94576e5076a322d3ab
-            </Button>
+  </Button>
           </div>
         </form>
         <div className="mt-4 text-center">
