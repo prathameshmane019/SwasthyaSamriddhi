@@ -16,8 +16,6 @@ export const authOptions = {
         try {
           await connectMongoDB();
           
-          console.log(credentials);
-          
           const Id = credentials.userId;
           const password = credentials.password;
           let userRole;
@@ -47,14 +45,13 @@ export const authOptions = {
             id = admin._id;
             userModel = admin;
           } else {
+            console.log("user not found");
+            
             return null;
           }
           
-          console.log(userModel);
-          
           // Verify password
           const isVerified = await bcrypt.compare(password, userModel.password);
-          console.log(isVerified);
           
           if (isVerified) {
             const userWithRole = {
