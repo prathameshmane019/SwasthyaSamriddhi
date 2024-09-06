@@ -15,7 +15,6 @@ export async function GET(req) {
 
     try {
         const aggregationPipeline = [
-            // Date range filter
             startDate && endDate ? {
                 $match: {
                     createdAt: {
@@ -25,6 +24,7 @@ export async function GET(req) {
                 }
             } : null,
 
+            // Join with User collection for address
             {
                 $lookup: {
                     from: 'users',
@@ -49,7 +49,6 @@ export async function GET(req) {
                 }
             } : null,
 
-            // Group by disease for visualization
             {
                 $group: {
                     _id: '$diagnosis',

@@ -1,13 +1,14 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card,CardBody } from '@nextui-org/react';
+import { Card, CardBody } from '@nextui-org/react';
 import { UserCircle, Users, UserPlus } from 'lucide-react';
 import { toast } from 'sonner';
 import { DateRangePicker } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
 import dynamic from 'next/dynamic';
 
+// Dynamically import ApexCharts with SSR disabled
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function Dashboard() {
@@ -29,7 +30,7 @@ export default function Dashboard() {
     try {
       const [dashboardResponse, recordsResponse] = await Promise.all([
         axios.get('/api/admin/dashboard'),
-        axios.get('/api/health-records', {
+        axios.get('/api/dashboard', {
           params: {
             startDate: dateRange.startDate,
             endDate: dateRange.endDate,
