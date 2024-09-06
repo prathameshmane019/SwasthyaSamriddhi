@@ -24,6 +24,10 @@ export async function POST(req) {
                     prescription: decrypt(record.prescription),
                     status: decrypt(record.status),
                     notes: decrypt(record.notes),
+                    images: record.images.map(image => ({
+                        image_url: decrypt(image.image_url),
+                        public_id: decrypt(image.public_id)
+                    }))
                 };
             } catch (error) {
                 console.error("Error decrypting record:", error);

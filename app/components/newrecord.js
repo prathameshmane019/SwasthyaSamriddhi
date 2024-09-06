@@ -87,7 +87,7 @@ export default function RegisterHealthRecordComponent({ search }) {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center">
       <form onSubmit={handleSubmit} className="max-w-lg w-full p-8 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold mb-6 text-center">Register Health Record</h2>
         <div className="grid grid-cols-1 gap-6">
