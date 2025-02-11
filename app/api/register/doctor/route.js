@@ -5,6 +5,7 @@ import { sendRegistrationDoctorEmail } from "../../nodemailer/route";
 import bcrypt from "bcrypt"; // Added missing bcrypt import
 
 export async function POST(req) {
+ 
   console.log("Trying");
   try {
     // Connect to MongoDB

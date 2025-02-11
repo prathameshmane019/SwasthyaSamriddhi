@@ -49,25 +49,25 @@ const ScrollSection = () => {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                Access to immediate cash
+                SwasthyaSamriddhi
               </motion.h2>
               <p className="text-lg mb-6">
-                Ease your risk of delayed payments and get paid what you're owed by insurance companies, on time!
+              The solution enhances healthcare by creating a centralized platform for managing patient health records, ensuring accuracy, and promoting collaboration among healthcare providers. It improves efficiency, accuracy, security, collaboration, and patient engagement. By integrating electronic health records (EHR), prioritizing data security, and promoting interoperability, it empowers healthcare providers to deliver high-quality, personalized care to patients.
               </p>
-              <ul className="list-disc list-inside text-lg">
+              {/* <ul className="list-disc list-inside text-lg">
                 <motion.li
                   whileHover={{ x: 10, color: '#22c55e' }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >
-                  Apply for KLAIM financing plan and get advance payments
+               
                 </motion.li>
                 <motion.li
                   whileHover={{ x: 10, color: '#22c55e' }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >
-                  No need to wait for insurance companies to pay you in 90 days
+                
                 </motion.li>
-              </ul>
+              </ul> */}
             </div>
             <motion.div
               className="md:w-1/2"
@@ -132,7 +132,7 @@ const ScrollSection = () => {
                 Our Mission
               </motion.h2>
               <p className="text-lg mb-6">
-              Our mission is to provide a robust and affordable Electronic Health Record (EHR) system to every hospital, including those in small cities and rural areas. We aim to improve the healthcare system's efficiency, accuracy, and security by offering a centralized solution that bridges the gap between urban and rural healthcare, ensuring that every patient receives the best possible care, no matter where they are.
+              Our mission is to provide a robust and affordable Electronic Health Record (EHR) system to every hospital, including those in small cities and rural areas. We aim to improve the healthcare system &#39; s efficiency, accuracy, and security by offering a centralized solution that bridges the gap between urban and rural healthcare, ensuring that every patient receives the best possible care, no matter where they are.
 
               </p>
             </div>
