@@ -59,16 +59,17 @@ We welcome contributions to SwasthyaSamriddhi! Please follow these steps:
 
 ## Flow Diagrams
 
-[Placeholder for system architecture and flow diagrams]
+![Flow Diagram](./public/Flow.png)
 
 ## Screenshots
 
-[Placeholder for application screenshots]
- 
+![Home Page](./public/HomeScreenshot.png)
+
+
 ## Contact
 
 For any queries or support, please reach out to:
-- Email: [your-email@example.com]
+- Email: [maneprathamesh019@gmail.com]
 - Website: [https://swasthya-samriddhi.vercel.app]
 
 ## Acknowledgments
